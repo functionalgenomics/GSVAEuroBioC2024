@@ -1,0 +1,40 @@
+---
+title: "Import gene sets from GMT files"
+author:
+  - name: Axel Klenk
+      affiliation:
+        - &idupf Dept. of Medicine and Life Sciences, Universitat Pompeu Fabra, Barcelona, Spain
+      email: axelvolker.klenk@upf.edu
+  - name: Robert Castelo
+      affiliation: *idupf
+      email: robert.castelo@upf.edu
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Import gene sets from GMT files}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+# What are GMT files
+
+```{r}
+library(GSVA)
+
+genesets <- readGMT("https://data.broadinstitute.org/gsea-msigdb/msigdb/release/7.0/c2.cp.kegg.v7.0.symbols.gmt")
+head(lapply(genesets, head))
+length(genesets)
+```
+
+# Session information
+
+```{r}
+sessionInfo()
+```
