@@ -1,52 +1,74 @@
-# BuildABiocWorkshop
+# Pathway-centric analyses of omics data with GSVA
 
-This package is a template for building a Bioconductor workshop. The package
-includes Github actions to:
+# Quick-install
 
-1. Set up bioconductor/bioconductor_docker:devel on Github resources
-2. Install package dependencies for your package (based on the `DESCRIPTION` file)
-3. Run `rcmdcheck::rcmdcheck`
-4. Build a pkgdown website and push it to github pages
-5. Build a docker image with the installed package and dependencies and deploy to [the Github Container Repository](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-container-registry#pulling-container-images) at the name `ghcr.io/gihub_user/repo_name`, all lowercase. 
-
-## Responsibilities
-
-Package authors are primarily responsible for:
-
-1. Creating a landing site of their choosing for their workshops (a website). This website should be listed in the `DESCRIPTION` file as the `URL`.
-2. Creating a docker image that will contain workshop materials and the installed packages necessary to run those materials. The name of the resulting docker image, including "tag" if desired, should be listed in a non-standard tag, `DockerImage:` in the `DESCRIPTION` file. 
-
-Both of those tasks can be accomplished using the Github actions included in this template package. The vignette accompanying this package describes how to accomplish both of these tasks.
-
-## Details
-
-For detailed instructions, see the `How to build a workshop` article/vignette.
-
-## Results of successful deployment
-
-- A working docker image that contains the installed package and dependencies.
-- An up-to-date `pkgdown` website at https://YOURUSERNAME.github.io/YOURREPOSITORYNAME/
-- Docker image will be tagged with `latest`, `sha-XXXXXX` where `XXXXXX` is the hash of the current `master` commit, and `master`. 
-
-## To use the resulting image:
-
-```sh
-docker run -e PASSWORD=<choose_a_password_for_rstudio> -p 8787:8787 YOURDOCKERIMAGENAME
 ```
-Once running, navigate to http://localhost:8787/ and then login with `rstudio`:`yourchosenpassword`. 
-
-To try with **this** repository docker image:
-
-```sh
-docker run -e PASSWORD=abc -p 8787:8787 ghcr.io/bioconductor/buildabiocworkshop
+BiocManager::install(
+    "functionalgenomics/GSVAEuroBioC2024", dependencies=TRUE, build_vignettes=TRUE
+)
 ```
 
-*NOTE*: Running docker that uses the password in plain text like above exposes the password to others 
-in a multi-user system (like a shared workstation or compute node). In practice, consider using an environment 
-variable instead of plain text to pass along passwords and other secrets in docker command lines. 
+# Instructor names and contact information
 
+[Axel Klenk](mailto:axel.klenk@upf.edu),
+[Robert Castelo](mailto:robert.castelo@upf.edu)
 
-## Whatcha get
+Dept. of Medicine and Life Sciences
 
-- https://bioconductor.github.io/BuildABiocWorkshop
-- A Docker image that you can run locally, in the cloud, or (usually) even as a singularity container on HPC systems. 
+Universitat Pompeu Fabra
+
+Barcelona
+
+# Workshop description
+
+This workshop demonstrates how to use GSVA to conduct pathway-centric analyses of
+omics data.
+
+**Keywords**: pathway analysis, transcriptomics, proteomics
+
+## Pre-requisites
+
+* Basic knowledge of R syntax.
+* Familiarity with the `SummarizedExperiment` and the `SingleCellExperiment` classes.
+
+## Time outline
+
+40 minutes total
+
+| Activity                             | Time |
+|--------------------------------------|------|
+| Import gene set annotations          |  5m  |
+| Analysis of bulk RNA-seq data        | 15m  |
+| Analysis of single-cell RNA-seq data | 10m  |
+| Analysis of spatial RNA-seq data     | 10m  |
+
+## Docker commands for this workshop
+
+The Docker image for this workshop is available on the GitHub Container
+Registry. Pull (download) the image with the following command:
+
+```sh
+docker pull ghcr.io/functionalgenomics/GSVAEuroBioC2024:latest
+```
+
+Run the workshop with Docker by using the following command:
+
+```sh
+docker run -e PASSWORD=bioc -p 8787:8787 ghcr.io/functionalgenomics/GSVAEuroBioC2024:latest
+```
+
+## Workshop goals and objectives
+
+### Learning goals
+
+* Import gene sets from GMT files.
+
+* Obtain pathway enrichment scores using GSVA.
+
+* Use the resulting pathway enrichment scores in a downstream analyses.
+
+## Questions & Comments
+
+For questions, comments, or bug reports, please use the
+Bioconductor [support site](https://support.bioconductor.org/) or create an
+issue on the `GSVA` Github [repo](https://github.com/rcastelo/GSVA/issues).
