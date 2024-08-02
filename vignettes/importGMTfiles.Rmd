@@ -2,11 +2,10 @@
 title: "Import gene sets from GMT files"
 author:
   - name: Axel Klenk
-      affiliation:
-        - &idupf Dept. of Medicine and Life Sciences, Universitat Pompeu Fabra, Barcelona, Spain
+      affiliation: Dept. of Medicine and Life Sciences, Universitat Pompeu Fabra, Barcelona
       email: axelvolker.klenk@upf.edu
   - name: Robert Castelo
-      affiliation: *idupf
+      affiliation: Dept. of Medicine and Life Sciences, Universitat Pompeu Fabra, Barcelona
       email: robert.castelo@upf.edu
 output: rmarkdown::html_vignette
 vignette: >
