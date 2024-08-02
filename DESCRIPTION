@@ -1,28 +1,28 @@
-Package: BuildABiocWorkshop
-Title: Bioconductor or R Workshop Template and Github Actions
+Package: GSVAEuroBioC2024
+Title: Pathway-centric analyses of omics data with GSVA
 Version: 2.0.1
-Authors@R: 
-    person(given = "Sean",
-           family = "Davis",
-           role = c("aut", "cre"),
-           email = "seandavi@gmail.com",
-           comment = c(ORCID = "0000-0002-8991-6458"))
-Description: This package serves as a template for using github actions to 
-    prepare a Bioconductor Workshop package for use. In particular,
-    a pkgdown website and docker image are generated based on workflow 
-    settings. 
+Authors@R: c(person(given = "Robert",
+                    family = "Castelo",
+                    role = c("aut", "cre"),
+                    email = "robert.castelo@upf.edu",
+                    comment = c(ORCID = "0000-0003-2229-4508")),
+             person(given = "Axel",
+                    family = "Klenk",
+                    role = "aut",
+                    email = "axelvolker.klenk@upf.edu"))
+Description: GSVA workshop at the EuroBioC 2024.
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.0
 Depends: 
-    Biobase
+    GSVA
 Suggests: 
     knitr,
     rmarkdown,
     pkgdown
-URL: https://seandavi.github.io/BuildABiocWorkshop/
-BugReports: https://github.com/seandavi/BuildABiocWorkshop/issues/new/choose
+URL: https://functionalgenomics.github.io/GSVAEuroBioC2024
+BugReports: https://github.com/functionalgenomics/GSVAEuroBioC2024/issues/new/choose
 VignetteBuilder: knitr
-DockerImage: ghcr.io/seandavi/buildabiocworkshop:latest
+DockerImage: ghcr.io/functionalgenomics/gsvaeurobioc2024:latest
