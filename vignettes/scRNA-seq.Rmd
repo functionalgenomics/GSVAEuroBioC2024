@@ -9,7 +9,7 @@ author:
     email: robert.castelo@upf.edu
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Import gene sets from GMT files}
+  %\VignetteIndexEntry{Analysis of single-cell RNA-seq data}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -26,6 +26,13 @@ knitr::opts_chunk$set(
 
 # Importing gene sets
 
+```{r}
+library(GSVA)
+
+fname <- "PBMC_gene_sets_TrianaEtAl2021.gmt"
+gsets <- readGMT(system.file("extdata", fname, package="GSVAEuroBioC2024"))
+
+```
 # How to run GSVA
 
 # Session information
@@ -33,3 +40,5 @@ knitr::opts_chunk$set(
 ```{r}
 sessionInfo()
 ```
+
+# References

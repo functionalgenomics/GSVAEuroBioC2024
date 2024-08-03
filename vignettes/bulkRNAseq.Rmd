@@ -12,6 +12,7 @@ vignette: >
   %\VignetteIndexEntry{Import gene sets from GMT files}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
+bibliography: GSVAEuroBioC2024.bib
 ---
 
 
@@ -24,7 +25,44 @@ knitr::opts_chunk$set(
 
 # Importing bulk RNA-seq data into a `SummarizedExperiment` object
 
+Here we will use the bulk RNA-seq data from [@costa2021genome].
+
+```{r}
+fname <- "CostaEtAl2021_FIRDBS_bulkRNAseq_data_ENTREZID.csv.gz"
+expr <- read.csv(system.file(file.path("extdata", fname), package="GSVAEuroBioC2024"),
+                 row.names=1)
+dim(expr)
+expr[1:5, 1:5]
+fname <- "CostaEtAl2021_FIRDBS_phenotype_data.csv.gz"
+pdat <- read.csv(system.file(file.path("extdata", fname), package="GSVAEuroBioC2024"),
+                 row.names=1)
+dim(pdat)
+head(pdat)
+table(pdat$FIR, pdat$Sex)
+```
+
+Build a `SummarizedExperiment` object.
+
+```{r, message=FALSE}
+library(SummarizedExperiment)
+
+stopifnot(all(colnames(expr) == rownames(pdat))) ## QC
+se <- SummarizedExperiment(assay=list(logCPM=as.matrix(expr)),
+                           colData=pdat,
+                           metadata=list(annotation="org.Hs.eg.db"))
+se
+```
+
 # Importing gene sets
+
+```{r}
+library(GSVA)
+
+URL <- "https://data.broadinstitute.org/gsea-msigdb/msigdb/release/2023.2.Hs/c7.immunesigdb.v2023.2.Hs.symbols.gmt"
+genesets <- readGMT(URL)
+head(lapply(genesets, head))
+length(genesets)
+```
 
 # How to run GSVA
 
@@ -33,3 +71,5 @@ knitr::opts_chunk$set(
 ```{r}
 sessionInfo()
 ```
+
+# References

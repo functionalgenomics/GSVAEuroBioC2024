@@ -9,7 +9,7 @@ author:
     email: robert.castelo@upf.edu
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Import gene sets from GMT files}
+  %\VignetteIndexEntry{Analysis of spatial omics data}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
