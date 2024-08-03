@@ -2,9 +2,11 @@ pandoc: '3.2'
 pkgdown: 2.1.0
 pkgdown_sha: ~
 articles:
-  HOWTO_BUILD_WORKSHOP: HOWTO_BUILD_WORKSHOP.html
+  bulkRNAseq: bulkRNAseq.html
   importGMTfiles: importGMTfiles.html
-last_built: 2024-08-02T22:17Z
+  scRNA-seq: scRNA-seq.html
+  spatial: spatial.html
+last_built: 2024-08-03T07:31Z
 urls:
   reference: https://functionalgenomics.github.io/GSVAEuroBioC2024/reference
   article: https://functionalgenomics.github.io/GSVAEuroBioC2024/articles
