@@ -1,0 +1,35 @@
+---
+title: "Analysis of spatial omics data"
+author:
+  - name: Axel Klenk
+    affiliation: Dept. of Medicine and Life Sciences, Universitat Pompeu Fabra, Barcelona
+    email: axelvolker.klenk@upf.edu
+  - name: Robert Castelo
+    affiliation: Dept. of Medicine and Life Sciences, Universitat Pompeu Fabra, Barcelona
+    email: robert.castelo@upf.edu
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Import gene sets from GMT files}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+# Importing spatial omics data into a `SpatialExperiment` object
+
+# Importing gene sets
+
+# How to run GSVA
+
+# Session information
+
+```{r}
+sessionInfo()
+```

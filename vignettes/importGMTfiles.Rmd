@@ -12,6 +12,7 @@ vignette: >
   %\VignetteIndexEntry{Import gene sets from GMT files}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
+bibliography: GSVAEuroBioC2024.bib
 ---
 
 
@@ -24,10 +25,30 @@ knitr::opts_chunk$set(
 
 # What are GMT files
 
+An important source of gene sets is the
+[Molecular Signatures Database](https://www.gsea-msigdb.org/gsea/msigdb)
+[@subramanian2005gene], which stores them in plain text files following the
+so-called
+[_gene matrix transposed_ (GMT) format](https://software.broadinstitute.org/cancer/software/gsea/wiki/index.php/Data_formats#GMT:_Gene_Matrix_Transposed_file_format_.28.2A.gmt.29).
+In the GMT format, each line stores a gene set with the following values
+separated by tabs:
+
+  * A gene set identifier.
+  * A gene set description.
+  * One or more gene identifiers.
+
+Because each different gene set may consist of a different number of genes, each
+line in a GMT file may contain a different number of tab-separated values.
+
+# How to read GMT files
+
+We can read GMT files using the `readGMT()` function from the GSVA package.
+
 ```{r}
 library(GSVA)
 
-genesets <- readGMT("https://data.broadinstitute.org/gsea-msigdb/msigdb/release/7.0/c2.cp.kegg.v7.0.symbols.gmt")
+URL <- "https://data.broadinstitute.org/gsea-msigdb/msigdb/release/2023.2.Hs/c7.immunesigdb.v2023.2.Hs.symbols.gmt"
+genesets <- readGMT(URL)
 head(lapply(genesets, head))
 length(genesets)
 ```
