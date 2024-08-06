@@ -10,7 +10,7 @@ BiocManager::install(
 
 # Instructor names and contact information
 
-[Axel Klenk](mailto:axel.klenk@upf.edu),
+[Axel Klenk](mailto:axelvolker.klenk@upf.edu),
 [Robert Castelo](mailto:robert.castelo@upf.edu)
 
 Dept. of Medicine and Life Sciences
@@ -65,7 +65,7 @@ docker run -e PASSWORD=bioc -p 8787:8787 ghcr.io/functionalgenomics/GSVAEuroBioC
 
 * Obtain pathway enrichment scores using GSVA.
 
-* Use the resulting pathway enrichment scores in a downstream analyses.
+* Use the resulting pathway enrichment scores in downstream analyses.
 
 ## Questions & Comments
 
