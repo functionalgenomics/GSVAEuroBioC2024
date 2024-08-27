@@ -24,6 +24,13 @@ knitr::opts_chunk$set(
 
 # Importing scRNA-seq data into a `SingleCellExperiment` object
 
+```{r, message=FALSE}
+library(TENxPBMCData)
+
+sce <- TENxPBMCData(dataset="pbmc4k")
+sce
+```
+
 # Importing gene sets
 
 ```{r}
