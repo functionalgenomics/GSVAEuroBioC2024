@@ -44,7 +44,7 @@ line in a GMT file may contain a different number of tab-separated values.
 
 We can read GMT files using the `readGMT()` function from the GSVA package.
 
-```{r}
+```{r, message=FALSE}
 library(GSEABase)
 library(GSVA)
 
