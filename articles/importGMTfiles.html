@@ -127,30 +127,60 @@ tab-separated values.</p>
 <p>We can read GMT files using the <code><a href="https://rdrr.io/pkg/GSVA/man/readGMT.html" class="external-link">readGMT()</a></code> function from
 the GSVA package.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/rcastelo/GSVA" class="external-link">GSVA</a></span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">GSEABase</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Loading required package: BiocGenerics</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Attaching package: 'BiocGenerics'</span></span>
+<span><span class="co">#&gt; The following objects are masked from 'package:stats':</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;     IQR, mad, sd, var, xtabs</span></span>
+<span><span class="co">#&gt; The following objects are masked from 'package:base':</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;     anyDuplicated, aperm, append, as.data.frame, basename, cbind,</span></span>
+<span><span class="co">#&gt;     colnames, dirname, do.call, duplicated, eval, evalq, Filter, Find,</span></span>
+<span><span class="co">#&gt;     get, grep, grepl, intersect, is.unsorted, lapply, Map, mapply,</span></span>
+<span><span class="co">#&gt;     match, mget, order, paste, pmax, pmax.int, pmin, pmin.int,</span></span>
+<span><span class="co">#&gt;     Position, rank, rbind, Reduce, rownames, sapply, setdiff, table,</span></span>
+<span><span class="co">#&gt;     tapply, union, unique, unsplit, which.max, which.min</span></span>
+<span><span class="co">#&gt; Loading required package: Biobase</span></span>
+<span><span class="co">#&gt; Welcome to Bioconductor</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;     Vignettes contain introductory material; view with</span></span>
+<span><span class="co">#&gt;     'browseVignettes()'. To cite Bioconductor, see</span></span>
+<span><span class="co">#&gt;     'citation("Biobase")', and for packages 'citation("pkgname")'.</span></span>
+<span><span class="co">#&gt; Loading required package: annotate</span></span>
+<span><span class="co">#&gt; Loading required package: AnnotationDbi</span></span>
+<span><span class="co">#&gt; Loading required package: stats4</span></span>
+<span><span class="co">#&gt; Loading required package: IRanges</span></span>
+<span><span class="co">#&gt; Loading required package: S4Vectors</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Attaching package: 'S4Vectors'</span></span>
+<span><span class="co">#&gt; The following object is masked from 'package:utils':</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;     findMatches</span></span>
+<span><span class="co">#&gt; The following objects are masked from 'package:base':</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;     expand.grid, I, unname</span></span>
+<span><span class="co">#&gt; Loading required package: XML</span></span>
+<span><span class="co">#&gt; Loading required package: graph</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Attaching package: 'graph'</span></span>
+<span><span class="co">#&gt; The following object is masked from 'package:XML':</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;     addNode</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/rcastelo/GSVA" class="external-link">GSVA</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">URL</span> <span class="op">&lt;-</span> <span class="st">"https://data.broadinstitute.org/gsea-msigdb/msigdb/release/2023.2.Hs/c7.immunesigdb.v2023.2.Hs.symbols.gmt"</span></span>
-<span><span class="va">genesets</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/GSVA/man/readGMT.html" class="external-link">readGMT</a></span><span class="op">(</span><span class="va">URL</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="va">genesets</span>, <span class="va">head</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt; $GOLDRATH_EFF_VS_MEMORY_CD8_TCELL_DN</span></span>
-<span><span class="co">#&gt; [1] "ABCA2"   "ABCC5"   "ABHD14A" "ACADM"   "ACP5"    "ACP6"   </span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; $GOLDRATH_EFF_VS_MEMORY_CD8_TCELL_UP</span></span>
-<span><span class="co">#&gt; [1] "ADAM8" "AK3"   "ANLN"  "ANXA1" "ANXA2" "ANXA4"</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; $GOLDRATH_NAIVE_VS_EFF_CD8_TCELL_DN</span></span>
-<span><span class="co">#&gt; [1] "ACOT7" "ADAM8" "ANLN"  "ANXA1" "ANXA2" "ANXA4"</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; $GOLDRATH_NAIVE_VS_EFF_CD8_TCELL_UP</span></span>
-<span><span class="co">#&gt; [1] "AAMP"  "ABCC5" "ABCD3" "ABCG1" "ACAP1" "ACP5" </span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; $GOLDRATH_NAIVE_VS_MEMORY_CD8_TCELL_DN</span></span>
-<span><span class="co">#&gt; [1] "ABCB1" "ABHD5" "ACOT7" "ACY1"  "AHNAK" "AIF1" </span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; $GOLDRATH_NAIVE_VS_MEMORY_CD8_TCELL_UP</span></span>
-<span><span class="co">#&gt; [1] "ACP5"   "ACTN1"  "ACTN2"  "ACVRL1" "ADCY6"  "ADGRL1"</span></span>
+<span><span class="va">genesets</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/GSVA/man/readGMT.html" class="external-link">readGMT</a></span><span class="op">(</span><span class="va">URL</span>, geneIdType<span class="op">=</span><span class="fu"><a href="https://rdrr.io/pkg/GSEABase/man/GeneIdentifierType-constructors.html" class="external-link">SymbolIdentifier</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">genesets</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] 4872</span></span></code></pre></div>
+<span><span class="co">#&gt; [1] 4872</span></span>
+<span><span class="va">genesets</span></span>
+<span><span class="co">#&gt; GeneSetCollection</span></span>
+<span><span class="co">#&gt;   names: GOLDRATH_EFF_VS_MEMORY_CD8_TCELL_DN, GOLDRATH_EFF_VS_MEMORY_CD8_TCELL_UP, ..., KAECH_NAIVE_VS_MEMORY_CD8_TCELL_UP (4872 total)</span></span>
+<span><span class="co">#&gt;   unique identifiers: ABCA2, ABCC5, ..., LINC00841 (20457 total)</span></span>
+<span><span class="co">#&gt;   types in collection:</span></span>
+<span><span class="co">#&gt;     geneIdType: SymbolIdentifier (1 total)</span></span>
+<span><span class="co">#&gt;     collectionType: NullCollection (1 total)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="session-information">Session information<a class="anchor" aria-label="anchor" href="#session-information"></a>
@@ -177,54 +207,53 @@ the GSVA package.</p>
 <span><span class="co">#&gt; tzcode source: system (glibc)</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; attached base packages:</span></span>
-<span><span class="co">#&gt; [1] stats     graphics  grDevices utils     datasets  methods   base     </span></span>
+<span><span class="co">#&gt; [1] stats4    stats     graphics  grDevices utils     datasets  methods  </span></span>
+<span><span class="co">#&gt; [8] base     </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; other attached packages:</span></span>
-<span><span class="co">#&gt; [1] GSVA_1.53.6</span></span>
+<span><span class="co">#&gt;  [1] GSVA_1.53.11         GSEABase_1.67.0      graph_1.83.0        </span></span>
+<span><span class="co">#&gt;  [4] annotate_1.83.0      XML_3.99-0.17        AnnotationDbi_1.67.0</span></span>
+<span><span class="co">#&gt;  [7] IRanges_2.39.2       S4Vectors_0.43.2     Biobase_2.65.0      </span></span>
+<span><span class="co">#&gt; [10] BiocGenerics_0.51.0 </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; loaded via a namespace (and not attached):</span></span>
 <span><span class="co">#&gt;  [1] SummarizedExperiment_1.35.1 KEGGREST_1.45.1            </span></span>
-<span><span class="co">#&gt;  [3] rjson_0.2.21                xfun_0.46                  </span></span>
+<span><span class="co">#&gt;  [3] rjson_0.2.22                xfun_0.47                  </span></span>
 <span><span class="co">#&gt;  [5] bslib_0.8.0                 htmlwidgets_1.6.4          </span></span>
-<span><span class="co">#&gt;  [7] rhdf5_2.49.0                Biobase_2.65.0             </span></span>
-<span><span class="co">#&gt;  [9] lattice_0.22-6              rhdf5filters_1.17.0        </span></span>
-<span><span class="co">#&gt; [11] vctrs_0.6.5                 tools_4.4.1                </span></span>
-<span><span class="co">#&gt; [13] stats4_4.4.1                parallel_4.4.1             </span></span>
-<span><span class="co">#&gt; [15] AnnotationDbi_1.67.0        RSQLite_2.3.7              </span></span>
-<span><span class="co">#&gt; [17] blob_1.2.4                  Matrix_1.7-0               </span></span>
-<span><span class="co">#&gt; [19] sparseMatrixStats_1.17.2    desc_1.4.3                 </span></span>
-<span><span class="co">#&gt; [21] S4Vectors_0.43.2            graph_1.83.0               </span></span>
-<span><span class="co">#&gt; [23] GenomeInfoDbData_1.2.12     lifecycle_1.0.4            </span></span>
-<span><span class="co">#&gt; [25] compiler_4.4.1              textshaping_0.4.0          </span></span>
-<span><span class="co">#&gt; [27] Biostrings_2.73.1           codetools_0.2-20           </span></span>
-<span><span class="co">#&gt; [29] GenomeInfoDb_1.41.1         htmltools_0.5.8.1          </span></span>
-<span><span class="co">#&gt; [31] sass_0.4.9                  yaml_2.3.10                </span></span>
-<span><span class="co">#&gt; [33] pkgdown_2.1.0               crayon_1.5.3               </span></span>
-<span><span class="co">#&gt; [35] jquerylib_0.1.4             SingleCellExperiment_1.27.2</span></span>
-<span><span class="co">#&gt; [37] BiocParallel_1.39.0         DelayedArray_0.31.11       </span></span>
-<span><span class="co">#&gt; [39] cachem_1.1.0                magick_2.8.4               </span></span>
-<span><span class="co">#&gt; [41] abind_1.4-5                 rsvd_1.0.5                 </span></span>
-<span><span class="co">#&gt; [43] digest_0.6.36               BiocSingular_1.21.2        </span></span>
-<span><span class="co">#&gt; [45] fastmap_1.2.0               grid_4.4.1                 </span></span>
-<span><span class="co">#&gt; [47] cli_3.6.3                   SparseArray_1.5.31         </span></span>
-<span><span class="co">#&gt; [49] magrittr_2.0.3              S4Arrays_1.5.6             </span></span>
-<span><span class="co">#&gt; [51] XML_3.99-0.17               GSEABase_1.67.0            </span></span>
-<span><span class="co">#&gt; [53] UCSC.utils_1.1.0            bit64_4.0.5                </span></span>
-<span><span class="co">#&gt; [55] rmarkdown_2.27              XVector_0.45.0             </span></span>
-<span><span class="co">#&gt; [57] httr_1.4.7                  matrixStats_1.3.0          </span></span>
-<span><span class="co">#&gt; [59] bit_4.0.5                   ragg_1.3.2                 </span></span>
-<span><span class="co">#&gt; [61] png_0.1-8                   SpatialExperiment_1.15.1   </span></span>
-<span><span class="co">#&gt; [63] ScaledMatrix_1.13.0         beachmat_2.21.5            </span></span>
-<span><span class="co">#&gt; [65] HDF5Array_1.33.5            memoise_2.0.1              </span></span>
-<span><span class="co">#&gt; [67] evaluate_0.24.0             knitr_1.48                 </span></span>
-<span><span class="co">#&gt; [69] GenomicRanges_1.57.1        IRanges_2.39.2             </span></span>
-<span><span class="co">#&gt; [71] irlba_2.3.5.1               rlang_1.1.4                </span></span>
-<span><span class="co">#&gt; [73] Rcpp_1.0.13                 xtable_1.8-4               </span></span>
-<span><span class="co">#&gt; [75] DBI_1.2.3                   BiocGenerics_0.51.0        </span></span>
-<span><span class="co">#&gt; [77] annotate_1.83.0             jsonlite_1.8.8             </span></span>
-<span><span class="co">#&gt; [79] Rhdf5lib_1.27.0             R6_2.5.1                   </span></span>
-<span><span class="co">#&gt; [81] MatrixGenerics_1.17.0       systemfonts_1.1.0          </span></span>
-<span><span class="co">#&gt; [83] fs_1.6.4                    zlibbioc_1.51.1</span></span></code></pre></div>
+<span><span class="co">#&gt;  [7] rhdf5_2.49.0                lattice_0.22-6             </span></span>
+<span><span class="co">#&gt;  [9] rhdf5filters_1.17.0         vctrs_0.6.5                </span></span>
+<span><span class="co">#&gt; [11] tools_4.4.1                 parallel_4.4.1             </span></span>
+<span><span class="co">#&gt; [13] RSQLite_2.3.7               blob_1.2.4                 </span></span>
+<span><span class="co">#&gt; [15] Matrix_1.7-0                sparseMatrixStats_1.17.2   </span></span>
+<span><span class="co">#&gt; [17] desc_1.4.3                  lifecycle_1.0.4            </span></span>
+<span><span class="co">#&gt; [19] GenomeInfoDbData_1.2.12     compiler_4.4.1             </span></span>
+<span><span class="co">#&gt; [21] textshaping_0.4.0           Biostrings_2.73.1          </span></span>
+<span><span class="co">#&gt; [23] codetools_0.2-20            GenomeInfoDb_1.41.1        </span></span>
+<span><span class="co">#&gt; [25] htmltools_0.5.8.1           sass_0.4.9                 </span></span>
+<span><span class="co">#&gt; [27] yaml_2.3.10                 pkgdown_2.1.0              </span></span>
+<span><span class="co">#&gt; [29] crayon_1.5.3                jquerylib_0.1.4            </span></span>
+<span><span class="co">#&gt; [31] SingleCellExperiment_1.27.2 BiocParallel_1.39.0        </span></span>
+<span><span class="co">#&gt; [33] cachem_1.1.0                DelayedArray_0.31.11       </span></span>
+<span><span class="co">#&gt; [35] magick_2.8.4                abind_1.4-5                </span></span>
+<span><span class="co">#&gt; [37] rsvd_1.0.5                  digest_0.6.37              </span></span>
+<span><span class="co">#&gt; [39] BiocSingular_1.21.2         fastmap_1.2.0              </span></span>
+<span><span class="co">#&gt; [41] grid_4.4.1                  cli_3.6.3                  </span></span>
+<span><span class="co">#&gt; [43] SparseArray_1.5.31          magrittr_2.0.3             </span></span>
+<span><span class="co">#&gt; [45] S4Arrays_1.5.7              UCSC.utils_1.1.0           </span></span>
+<span><span class="co">#&gt; [47] bit64_4.0.5                 rmarkdown_2.28             </span></span>
+<span><span class="co">#&gt; [49] XVector_0.45.0              httr_1.4.7                 </span></span>
+<span><span class="co">#&gt; [51] matrixStats_1.3.0           bit_4.0.5                  </span></span>
+<span><span class="co">#&gt; [53] ragg_1.3.2                  png_0.1-8                  </span></span>
+<span><span class="co">#&gt; [55] SpatialExperiment_1.15.1    beachmat_2.21.5            </span></span>
+<span><span class="co">#&gt; [57] ScaledMatrix_1.13.0         HDF5Array_1.33.6           </span></span>
+<span><span class="co">#&gt; [59] memoise_2.0.1               evaluate_0.24.0            </span></span>
+<span><span class="co">#&gt; [61] knitr_1.48                  GenomicRanges_1.57.1       </span></span>
+<span><span class="co">#&gt; [63] irlba_2.3.5.1               rlang_1.1.4                </span></span>
+<span><span class="co">#&gt; [65] Rcpp_1.0.13                 xtable_1.8-4               </span></span>
+<span><span class="co">#&gt; [67] DBI_1.2.3                   jsonlite_1.8.8             </span></span>
+<span><span class="co">#&gt; [69] Rhdf5lib_1.27.0             R6_2.5.1                   </span></span>
+<span><span class="co">#&gt; [71] MatrixGenerics_1.17.0       systemfonts_1.1.0          </span></span>
+<span><span class="co">#&gt; [73] fs_1.6.4                    zlibbioc_1.51.1</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 class="unnumbered" id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
