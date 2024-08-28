@@ -48,13 +48,13 @@ The Docker image for this workshop is available on the GitHub Container
 Registry. Pull (download) the image with the following command:
 
 ```sh
-docker pull ghcr.io/functionalgenomics/GSVAEuroBioC2024:latest
+docker pull ghcr.io/functionalgenomics/gsvaeurobioc2024:latest
 ```
 
 Run the workshop with Docker by using the following command:
 
 ```sh
-docker run -e PASSWORD=bioc -p 8787:8787 ghcr.io/functionalgenomics/GSVAEuroBioC2024:latest
+docker run -e PASSWORD=bioc -p 8787:8787 ghcr.io/functionalgenomics/gsvaeurobioc2024:latest
 ```
 
 ## Workshop goals and objectives

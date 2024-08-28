@@ -1,6 +1,6 @@
 Package: GSVAEuroBioC2024
 Title: Pathway-centric analyses of omics data with GSVA
-Version: 2.0.1
+Version: 2.0.2
 Authors@R: c(person(given = "Robert",
                     family = "Castelo",
                     role = c("aut", "cre"),

@@ -54,6 +54,38 @@ length(genesets)
 genesets
 ```
 
+## Differences between `readGMT()` and `getGmt()`
+
+Function `readGMT()` from package GSVA is based on the `getGmt()` function from package GSEABase and behaves almost the same.  It has, however, two extensions that may prove useful in certain cases.
+
+### GMT files with duplicated gene set identifiers
+
+When responding to a user issue, we discovered that some GMT files contain duplicated gene set identifiers, although this is forbidden by the file format's definition, and, consequently, `getGmt()` refuses to read them.
+
+```{r, message=FALSE, error=TRUE}
+URL <- "https://data.broadinstitute.org/gsea-msigdb/msigdb/release/7.5/c2.all.v7.5.symbols.gmt"
+genesets <- getGmt(URL, geneIdType=SymbolIdentifier())
+```
+
+In such a case, `readGMT()` will rather warn about the problem and resolve it using one of a range of strategies that are described in more detail on its help page (see `?readGMT`).
+
+```{r, message=FALSE}
+URL <- "https://data.broadinstitute.org/gsea-msigdb/msigdb/release/7.5/c2.all.v7.5.symbols.gmt"
+genesets <- readGMT(URL, geneIdType=SymbolIdentifier())
+genesets
+args(readGMT)
+```
+
+### Return a `list` instead of a `GeneSetCollection`
+
+Using gene sets in a `GeneSetCollection` object offers a number of advantages inluding automatic gene identifier mapping and therefore `readGMT()` returns such an object by default.  If, however, a user prefers using gene sets represented as a `list` of `character` vectors, this is possible without multiple conversions by setting argument `valueType="list"`.
+
+```{r, message=FALSE}
+URL <- "https://data.broadinstitute.org/gsea-msigdb/msigdb/release/2023.2.Hs/c7.immunesigdb.v2023.2.Hs.symbols.gmt"
+genesets <- readGMT(URL, valueType="list")
+head(genesets, 2)
+```
+
 # Session information
 
 ```{r}
