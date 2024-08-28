@@ -48,20 +48,20 @@ library(SummarizedExperiment)
 
 stopifnot(all(colnames(expr) == rownames(pdat))) ## QC
 se <- SummarizedExperiment(assay=list(logCPM=as.matrix(expr)),
-                           colData=pdat,
-                           metadata=list(annotation="org.Hs.eg.db"))
+                           colData=pdat)
+gsvaAnnotation(se) <- ENSEMBLIdentifier("org.Hs.eg.db")
 se
 ```
 
 # Importing gene sets
 
-```{r}
+```{r, message=FALSE}
+library(GSEABase)
 library(GSVA)
 
 URL <- "https://data.broadinstitute.org/gsea-msigdb/msigdb/release/2023.2.Hs/c7.immunesigdb.v2023.2.Hs.symbols.gmt"
-genesets <- readGMT(URL)
-head(lapply(genesets, head))
-length(genesets)
+genesets <- readGMT(URL, geneIdType=SymbolIdentifier())
+genesets
 ```
 
 # How to run GSVA
