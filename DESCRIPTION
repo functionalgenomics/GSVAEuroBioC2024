@@ -17,8 +17,11 @@ Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.0
 Depends: R (>= 4.4.0)
 Imports:
+    org.Hs.eg.db,
     GSEABase,
+    SummarizedExperiment,
     GSVA,
+    limma,
     TENxPBMCData
 Suggests: 
     knitr,
