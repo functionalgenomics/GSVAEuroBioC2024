@@ -50,7 +50,10 @@ library(SummarizedExperiment)
 stopifnot(all(colnames(expr) == rownames(pdat))) ## QC
 se <- SummarizedExperiment(assay=list(logCPM=as.matrix(expr)),
                            colData=pdat)
-gsvaAnnotation(se) <- ENSEMBLIdentifier("org.Hs.eg.db")
+## temporary hack until version 1.53.16 is available at the Bioc build system
+## gsvaAnnotation(se) <- ENSEMBLIdentifier("org.Hs.eg.db")
+metadata(se)$annotation <- ENSEMBLIdentifier("org.Hs.eg.db")
+
 se
 ```
 
