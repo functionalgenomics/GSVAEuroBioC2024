@@ -142,12 +142,16 @@ object<a class="anchor" aria-label="anchor" href="#importing-bulk-rna-seq-data-i
 <span><span class="co">#&gt;   yes      4    6</span></span></code></pre></div>
 <p>Build a <code>SummarizedExperiment</code> object.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://bioconductor.org/packages/SummarizedExperiment" class="external-link">SummarizedExperiment</a></span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">GSEABase</span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://bioconductor.org/packages/SummarizedExperiment" class="external-link">SummarizedExperiment</a></span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html" class="external-link">stopifnot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/all.html" class="external-link">all</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">expr</span><span class="op">)</span> <span class="op">==</span> <span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">pdat</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="co">## QC</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html" class="external-link">stopifnot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/all.html" class="external-link">all</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/row_colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">expr</span><span class="op">)</span> <span class="op">==</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/row_colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">pdat</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="co">## QC</span></span>
 <span><span class="va">se</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html" class="external-link">SummarizedExperiment</a></span><span class="op">(</span>assay<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>logCPM<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">as.matrix</a></span><span class="op">(</span><span class="va">expr</span><span class="op">)</span><span class="op">)</span>,</span>
-<span>                           colData<span class="op">=</span><span class="va">pdat</span>,</span>
-<span>                           metadata<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>annotation<span class="op">=</span><span class="st">"org.Hs.eg.db"</span><span class="op">)</span><span class="op">)</span></span>
+<span>                           colData<span class="op">=</span><span class="va">pdat</span><span class="op">)</span></span>
+<span><span class="co">## temporary hack until version 1.53.16 is available at the Bioc build system</span></span>
+<span><span class="co">## gsvaAnnotation(se) &lt;- ENSEMBLIdentifier("org.Hs.eg.db")</span></span>
+<span><span class="fu">metadata</span><span class="op">(</span><span class="va">se</span><span class="op">)</span><span class="op">$</span><span class="va">annotation</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/GSEABase/man/GeneIdentifierType-constructors.html" class="external-link">ENSEMBLIdentifier</a></span><span class="op">(</span><span class="st">"org.Hs.eg.db"</span><span class="op">)</span></span>
+<span></span>
 <span><span class="va">se</span></span>
 <span><span class="co">#&gt; class: SummarizedExperiment </span></span>
 <span><span class="co">#&gt; dim: 11279 21 </span></span>
@@ -165,51 +169,14 @@ object<a class="anchor" aria-label="anchor" href="#importing-bulk-rna-seq-data-i
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/rcastelo/GSVA" class="external-link">GSVA</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">URL</span> <span class="op">&lt;-</span> <span class="st">"https://data.broadinstitute.org/gsea-msigdb/msigdb/release/2023.2.Hs/c7.immunesigdb.v2023.2.Hs.symbols.gmt"</span></span>
-<span><span class="va">genesets</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/GSVA/man/readGMT.html" class="external-link">readGMT</a></span><span class="op">(</span><span class="va">URL</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="va">genesets</span>, <span class="va">head</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [[1]]</span></span>
-<span><span class="co">#&gt; setName: GOLDRATH_EFF_VS_MEMORY_CD8_TCELL_DN </span></span>
-<span><span class="co">#&gt; geneIds: ABCA2 (total: 1)</span></span>
-<span><span class="co">#&gt; geneIdType: Null</span></span>
-<span><span class="co">#&gt; collectionType: Null </span></span>
-<span><span class="co">#&gt; details: use 'details(object)'</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; [[2]]</span></span>
-<span><span class="co">#&gt; setName: GOLDRATH_EFF_VS_MEMORY_CD8_TCELL_UP </span></span>
-<span><span class="co">#&gt; geneIds: ADAM8 (total: 1)</span></span>
-<span><span class="co">#&gt; geneIdType: Null</span></span>
-<span><span class="co">#&gt; collectionType: Null </span></span>
-<span><span class="co">#&gt; details: use 'details(object)'</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; [[3]]</span></span>
-<span><span class="co">#&gt; setName: GOLDRATH_NAIVE_VS_EFF_CD8_TCELL_DN </span></span>
-<span><span class="co">#&gt; geneIds: ACOT7 (total: 1)</span></span>
-<span><span class="co">#&gt; geneIdType: Null</span></span>
-<span><span class="co">#&gt; collectionType: Null </span></span>
-<span><span class="co">#&gt; details: use 'details(object)'</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; [[4]]</span></span>
-<span><span class="co">#&gt; setName: GOLDRATH_NAIVE_VS_EFF_CD8_TCELL_UP </span></span>
-<span><span class="co">#&gt; geneIds: AAMP (total: 1)</span></span>
-<span><span class="co">#&gt; geneIdType: Null</span></span>
-<span><span class="co">#&gt; collectionType: Null </span></span>
-<span><span class="co">#&gt; details: use 'details(object)'</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; [[5]]</span></span>
-<span><span class="co">#&gt; setName: GOLDRATH_NAIVE_VS_MEMORY_CD8_TCELL_DN </span></span>
-<span><span class="co">#&gt; geneIds: ABCB1 (total: 1)</span></span>
-<span><span class="co">#&gt; geneIdType: Null</span></span>
-<span><span class="co">#&gt; collectionType: Null </span></span>
-<span><span class="co">#&gt; details: use 'details(object)'</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; [[6]]</span></span>
-<span><span class="co">#&gt; setName: GOLDRATH_NAIVE_VS_MEMORY_CD8_TCELL_UP </span></span>
-<span><span class="co">#&gt; geneIds: ACP5 (total: 1)</span></span>
-<span><span class="co">#&gt; geneIdType: Null</span></span>
-<span><span class="co">#&gt; collectionType: Null </span></span>
-<span><span class="co">#&gt; details: use 'details(object)'</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">genesets</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] 4872</span></span></code></pre></div>
+<span><span class="va">genesets</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/GSVA/man/readGMT.html" class="external-link">readGMT</a></span><span class="op">(</span><span class="va">URL</span>, geneIdType<span class="op">=</span><span class="fu"><a href="https://rdrr.io/pkg/GSEABase/man/GeneIdentifierType-constructors.html" class="external-link">SymbolIdentifier</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">genesets</span></span>
+<span><span class="co">#&gt; GeneSetCollection</span></span>
+<span><span class="co">#&gt;   names: GOLDRATH_EFF_VS_MEMORY_CD8_TCELL_DN, GOLDRATH_EFF_VS_MEMORY_CD8_TCELL_UP, ..., KAECH_NAIVE_VS_MEMORY_CD8_TCELL_UP (4872 total)</span></span>
+<span><span class="co">#&gt;   unique identifiers: ABCA2, ABCC5, ..., LINC00841 (20457 total)</span></span>
+<span><span class="co">#&gt;   types in collection:</span></span>
+<span><span class="co">#&gt;     geneIdType: SymbolIdentifier (1 total)</span></span>
+<span><span class="co">#&gt;     collectionType: NullCollection (1 total)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="how-to-run-gsva">How to run GSVA<a class="anchor" aria-label="anchor" href="#how-to-run-gsva"></a>
@@ -244,11 +211,14 @@ object<a class="anchor" aria-label="anchor" href="#importing-bulk-rna-seq-data-i
 <span><span class="co">#&gt; [8] base     </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; other attached packages:</span></span>
-<span><span class="co">#&gt;  [1] GSVA_1.53.11                SummarizedExperiment_1.35.1</span></span>
-<span><span class="co">#&gt;  [3] Biobase_2.65.0              GenomicRanges_1.57.1       </span></span>
-<span><span class="co">#&gt;  [5] GenomeInfoDb_1.41.1         IRanges_2.39.2             </span></span>
-<span><span class="co">#&gt;  [7] S4Vectors_0.43.2            BiocGenerics_0.51.0        </span></span>
-<span><span class="co">#&gt;  [9] MatrixGenerics_1.17.0       matrixStats_1.3.0          </span></span>
+<span><span class="co">#&gt;  [1] GSVA_1.53.15                SummarizedExperiment_1.35.1</span></span>
+<span><span class="co">#&gt;  [3] GenomicRanges_1.57.1        GenomeInfoDb_1.41.1        </span></span>
+<span><span class="co">#&gt;  [5] MatrixGenerics_1.17.0       matrixStats_1.3.0          </span></span>
+<span><span class="co">#&gt;  [7] GSEABase_1.67.0             graph_1.83.0               </span></span>
+<span><span class="co">#&gt;  [9] annotate_1.83.0             XML_3.99-0.17              </span></span>
+<span><span class="co">#&gt; [11] AnnotationDbi_1.67.0        IRanges_2.39.2             </span></span>
+<span><span class="co">#&gt; [13] S4Vectors_0.43.2            Biobase_2.65.0             </span></span>
+<span><span class="co">#&gt; [15] BiocGenerics_0.51.0        </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; loaded via a namespace (and not attached):</span></span>
 <span><span class="co">#&gt;  [1] KEGGREST_1.45.1             rjson_0.2.22               </span></span>
@@ -256,38 +226,36 @@ object<a class="anchor" aria-label="anchor" href="#importing-bulk-rna-seq-data-i
 <span><span class="co">#&gt;  [5] htmlwidgets_1.6.4           rhdf5_2.49.0               </span></span>
 <span><span class="co">#&gt;  [7] lattice_0.22-6              rhdf5filters_1.17.0        </span></span>
 <span><span class="co">#&gt;  [9] vctrs_0.6.5                 tools_4.4.1                </span></span>
-<span><span class="co">#&gt; [11] parallel_4.4.1              AnnotationDbi_1.67.0       </span></span>
-<span><span class="co">#&gt; [13] RSQLite_2.3.7               blob_1.2.4                 </span></span>
-<span><span class="co">#&gt; [15] Matrix_1.7-0                sparseMatrixStats_1.17.2   </span></span>
-<span><span class="co">#&gt; [17] desc_1.4.3                  graph_1.83.0               </span></span>
-<span><span class="co">#&gt; [19] lifecycle_1.0.4             GenomeInfoDbData_1.2.12    </span></span>
-<span><span class="co">#&gt; [21] compiler_4.4.1              Biostrings_2.73.1          </span></span>
-<span><span class="co">#&gt; [23] textshaping_0.4.0           codetools_0.2-20           </span></span>
-<span><span class="co">#&gt; [25] htmltools_0.5.8.1           sass_0.4.9                 </span></span>
-<span><span class="co">#&gt; [27] yaml_2.3.10                 pkgdown_2.1.0              </span></span>
-<span><span class="co">#&gt; [29] crayon_1.5.3                jquerylib_0.1.4            </span></span>
-<span><span class="co">#&gt; [31] SingleCellExperiment_1.27.2 BiocParallel_1.39.0        </span></span>
-<span><span class="co">#&gt; [33] DelayedArray_0.31.11        cachem_1.1.0               </span></span>
-<span><span class="co">#&gt; [35] magick_2.8.4                abind_1.4-5                </span></span>
-<span><span class="co">#&gt; [37] rsvd_1.0.5                  digest_0.6.37              </span></span>
-<span><span class="co">#&gt; [39] BiocSingular_1.21.2         fastmap_1.2.0              </span></span>
-<span><span class="co">#&gt; [41] grid_4.4.1                  cli_3.6.3                  </span></span>
-<span><span class="co">#&gt; [43] SparseArray_1.5.31          magrittr_2.0.3             </span></span>
-<span><span class="co">#&gt; [45] S4Arrays_1.5.7              XML_3.99-0.17              </span></span>
-<span><span class="co">#&gt; [47] GSEABase_1.67.0             UCSC.utils_1.1.0           </span></span>
-<span><span class="co">#&gt; [49] bit64_4.0.5                 rmarkdown_2.28             </span></span>
-<span><span class="co">#&gt; [51] XVector_0.45.0              httr_1.4.7                 </span></span>
-<span><span class="co">#&gt; [53] bit_4.0.5                   png_0.1-8                  </span></span>
-<span><span class="co">#&gt; [55] ragg_1.3.2                  SpatialExperiment_1.15.1   </span></span>
-<span><span class="co">#&gt; [57] ScaledMatrix_1.13.0         beachmat_2.21.5            </span></span>
-<span><span class="co">#&gt; [59] HDF5Array_1.33.6            memoise_2.0.1              </span></span>
-<span><span class="co">#&gt; [61] evaluate_0.24.0             knitr_1.48                 </span></span>
-<span><span class="co">#&gt; [63] irlba_2.3.5.1               rlang_1.1.4                </span></span>
-<span><span class="co">#&gt; [65] Rcpp_1.0.13                 xtable_1.8-4               </span></span>
-<span><span class="co">#&gt; [67] DBI_1.2.3                   annotate_1.83.0            </span></span>
-<span><span class="co">#&gt; [69] jsonlite_1.8.8              Rhdf5lib_1.27.0            </span></span>
-<span><span class="co">#&gt; [71] R6_2.5.1                    systemfonts_1.1.0          </span></span>
-<span><span class="co">#&gt; [73] fs_1.6.4                    zlibbioc_1.51.1</span></span></code></pre></div>
+<span><span class="co">#&gt; [11] parallel_4.4.1              RSQLite_2.3.7              </span></span>
+<span><span class="co">#&gt; [13] blob_1.2.4                  Matrix_1.7-0               </span></span>
+<span><span class="co">#&gt; [15] sparseMatrixStats_1.17.2    desc_1.4.3                 </span></span>
+<span><span class="co">#&gt; [17] lifecycle_1.0.4             GenomeInfoDbData_1.2.12    </span></span>
+<span><span class="co">#&gt; [19] compiler_4.4.1              textshaping_0.4.0          </span></span>
+<span><span class="co">#&gt; [21] Biostrings_2.73.1           codetools_0.2-20           </span></span>
+<span><span class="co">#&gt; [23] htmltools_0.5.8.1           sass_0.4.9                 </span></span>
+<span><span class="co">#&gt; [25] yaml_2.3.10                 pkgdown_2.1.0              </span></span>
+<span><span class="co">#&gt; [27] crayon_1.5.3                jquerylib_0.1.4            </span></span>
+<span><span class="co">#&gt; [29] SingleCellExperiment_1.27.2 BiocParallel_1.39.0        </span></span>
+<span><span class="co">#&gt; [31] cachem_1.1.0                DelayedArray_0.31.11       </span></span>
+<span><span class="co">#&gt; [33] magick_2.8.4                abind_1.4-5                </span></span>
+<span><span class="co">#&gt; [35] rsvd_1.0.5                  digest_0.6.37              </span></span>
+<span><span class="co">#&gt; [37] BiocSingular_1.21.2         fastmap_1.2.0              </span></span>
+<span><span class="co">#&gt; [39] grid_4.4.1                  cli_3.6.3                  </span></span>
+<span><span class="co">#&gt; [41] SparseArray_1.5.31          magrittr_2.0.3             </span></span>
+<span><span class="co">#&gt; [43] S4Arrays_1.5.7              UCSC.utils_1.1.0           </span></span>
+<span><span class="co">#&gt; [45] bit64_4.0.5                 rmarkdown_2.28             </span></span>
+<span><span class="co">#&gt; [47] XVector_0.45.0              httr_1.4.7                 </span></span>
+<span><span class="co">#&gt; [49] bit_4.0.5                   ragg_1.3.2                 </span></span>
+<span><span class="co">#&gt; [51] png_0.1-8                   SpatialExperiment_1.15.1   </span></span>
+<span><span class="co">#&gt; [53] beachmat_2.21.5             ScaledMatrix_1.13.0        </span></span>
+<span><span class="co">#&gt; [55] HDF5Array_1.33.6            memoise_2.0.1              </span></span>
+<span><span class="co">#&gt; [57] evaluate_0.24.0             knitr_1.48                 </span></span>
+<span><span class="co">#&gt; [59] irlba_2.3.5.1               rlang_1.1.4                </span></span>
+<span><span class="co">#&gt; [61] Rcpp_1.0.13                 xtable_1.8-4               </span></span>
+<span><span class="co">#&gt; [63] DBI_1.2.3                   jsonlite_1.8.8             </span></span>
+<span><span class="co">#&gt; [65] Rhdf5lib_1.27.0             R6_2.5.1                   </span></span>
+<span><span class="co">#&gt; [67] systemfonts_1.1.0           fs_1.6.4                   </span></span>
+<span><span class="co">#&gt; [69] zlibbioc_1.51.1</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 class="unnumbered" id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
