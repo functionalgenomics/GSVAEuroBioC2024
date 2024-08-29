@@ -32,7 +32,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">GSVAEuroBioC2024</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.0.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.0.2</span>
       </span>
     </div>
 
@@ -111,20 +111,22 @@ object<a class="anchor" aria-label="anchor" href="#importing-bulk-rna-seq-data-i
 <p>Here we will use the bulk RNA-seq data from <span class="citation">(Costa et al. 2021)</span>.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">fname</span> <span class="op">&lt;-</span> <span class="st">"CostaEtAl2021_FIRDBS_bulkRNAseq_data_ENTREZID.csv.gz"</span></span>
-<span><span class="va">expr</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.csv</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="va">fname</span><span class="op">)</span>, package<span class="op">=</span><span class="st">"GSVAEuroBioC2024"</span><span class="op">)</span>,</span>
-<span>                 row.names<span class="op">=</span><span class="fl">1</span><span class="op">)</span></span>
+<span><span class="va">fname</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="va">fname</span><span class="op">)</span>,</span>
+<span>                     package<span class="op">=</span><span class="st">"GSVAEuroBioC2024"</span><span class="op">)</span></span>
+<span><span class="va">expr</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.csv</a></span><span class="op">(</span><span class="va">fname</span>, row.names<span class="op">=</span><span class="fl">1</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="va">expr</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] 11279    21</span></span>
-<span><span class="va">expr</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">]</span></span>
-<span><span class="co">#&gt;               BS03     BS04     BS05     BS06     BS07</span></span>
-<span><span class="co">#&gt; 100       1.907142 2.378443 1.416999 2.688953 2.541277</span></span>
-<span><span class="co">#&gt; 10000     4.669820 4.492745 4.380702 5.134757 4.893896</span></span>
-<span><span class="co">#&gt; 100008587 6.388405 7.167047 4.472078 6.851124 6.868794</span></span>
-<span><span class="co">#&gt; 100009676 1.849203 1.467252 1.928039 1.266955 2.033022</span></span>
-<span><span class="co">#&gt; 10001     4.463245 4.288214 4.075431 4.294054 4.220348</span></span>
+<span><span class="va">expr</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">7</span><span class="op">]</span></span>
+<span><span class="co">#&gt;               BS03     BS04     BS05     BS06     BS07     BS08     BS09</span></span>
+<span><span class="co">#&gt; 100       1.907142 2.378443 1.416999 2.688953 2.541277 2.807271 3.299930</span></span>
+<span><span class="co">#&gt; 10000     4.669820 4.492745 4.380702 5.134757 4.893896 4.408717 4.921101</span></span>
+<span><span class="co">#&gt; 100008587 6.388405 7.167047 4.472078 6.851124 6.868794 4.531868 5.141607</span></span>
+<span><span class="co">#&gt; 100009676 1.849203 1.467252 1.928039 1.266955 2.033022 1.369181 2.742960</span></span>
+<span><span class="co">#&gt; 10001     4.463245 4.288214 4.075431 4.294054 4.220348 4.095428 4.033399</span></span>
 <span><span class="va">fname</span> <span class="op">&lt;-</span> <span class="st">"CostaEtAl2021_FIRDBS_phenotype_data.csv.gz"</span></span>
-<span><span class="va">pdat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.csv</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="va">fname</span><span class="op">)</span>, package<span class="op">=</span><span class="st">"GSVAEuroBioC2024"</span><span class="op">)</span>,</span>
-<span>                 row.names<span class="op">=</span><span class="fl">1</span><span class="op">)</span></span>
+<span><span class="va">fname</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="va">fname</span><span class="op">)</span>,</span>
+<span>                     package<span class="op">=</span><span class="st">"GSVAEuroBioC2024"</span><span class="op">)</span></span>
+<span><span class="va">pdat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.csv</a></span><span class="op">(</span><span class="va">fname</span>, row.names<span class="op">=</span><span class="fl">1</span>, stringsAsFactors<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="va">pdat</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] 21  2</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">pdat</span><span class="op">)</span></span>
@@ -144,13 +146,12 @@ object<a class="anchor" aria-label="anchor" href="#importing-bulk-rna-seq-data-i
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">GSEABase</span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://bioconductor.org/packages/SummarizedExperiment" class="external-link">SummarizedExperiment</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/rcastelo/GSVA" class="external-link">GSVA</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html" class="external-link">stopifnot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/all.html" class="external-link">all</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/row_colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">expr</span><span class="op">)</span> <span class="op">==</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/row_colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">pdat</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="co">## QC</span></span>
 <span><span class="va">se</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html" class="external-link">SummarizedExperiment</a></span><span class="op">(</span>assay<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>logCPM<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">as.matrix</a></span><span class="op">(</span><span class="va">expr</span><span class="op">)</span><span class="op">)</span>,</span>
 <span>                           colData<span class="op">=</span><span class="va">pdat</span><span class="op">)</span></span>
-<span><span class="co">## temporary hack until version 1.53.16 is available at the Bioc build system</span></span>
-<span><span class="co">## gsvaAnnotation(se) &lt;- ENSEMBLIdentifier("org.Hs.eg.db")</span></span>
-<span><span class="fu">metadata</span><span class="op">(</span><span class="va">se</span><span class="op">)</span><span class="op">$</span><span class="va">annotation</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/GSEABase/man/GeneIdentifierType-constructors.html" class="external-link">ENSEMBLIdentifier</a></span><span class="op">(</span><span class="st">"org.Hs.eg.db"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/GSVA/man/gsvaAnnotation.html" class="external-link">gsvaAnnotation</a></span><span class="op">(</span><span class="va">se</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/GSEABase/man/GeneIdentifierType-constructors.html" class="external-link">EntrezIdentifier</a></span><span class="op">(</span><span class="st">"org.Hs.eg.db"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">se</span></span>
 <span><span class="co">#&gt; class: SummarizedExperiment </span></span>
@@ -166,9 +167,7 @@ object<a class="anchor" aria-label="anchor" href="#importing-bulk-rna-seq-data-i
 <h2 id="importing-gene-sets">Importing gene sets<a class="anchor" aria-label="anchor" href="#importing-gene-sets"></a>
 </h2>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/rcastelo/GSVA" class="external-link">GSVA</a></span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">URL</span> <span class="op">&lt;-</span> <span class="st">"https://data.broadinstitute.org/gsea-msigdb/msigdb/release/2023.2.Hs/c7.immunesigdb.v2023.2.Hs.symbols.gmt"</span></span>
+<code class="sourceCode R"><span><span class="va">URL</span> <span class="op">&lt;-</span> <span class="st">"https://data.broadinstitute.org/gsea-msigdb/msigdb/release/2023.2.Hs/c7.immunesigdb.v2023.2.Hs.symbols.gmt"</span></span>
 <span><span class="va">genesets</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/GSVA/man/readGMT.html" class="external-link">readGMT</a></span><span class="op">(</span><span class="va">URL</span>, geneIdType<span class="op">=</span><span class="fu"><a href="https://rdrr.io/pkg/GSEABase/man/GeneIdentifierType-constructors.html" class="external-link">SymbolIdentifier</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">genesets</span></span>
 <span><span class="co">#&gt; GeneSetCollection</span></span>
@@ -181,11 +180,75 @@ object<a class="anchor" aria-label="anchor" href="#importing-bulk-rna-seq-data-i
 <div class="section level2">
 <h2 id="how-to-run-gsva">How to run GSVA<a class="anchor" aria-label="anchor" href="#how-to-run-gsva"></a>
 </h2>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">gsvapar</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/GSVA/man/gsvaParam-class.html" class="external-link">gsvaParam</a></span><span class="op">(</span><span class="va">se</span>, <span class="va">genesets</span>, assay<span class="op">=</span><span class="st">"logCPM"</span>, minSize<span class="op">=</span><span class="fl">5</span>, maxSize<span class="op">=</span><span class="fl">300</span><span class="op">)</span></span>
+<span><span class="va">gsvapar</span></span>
+<span><span class="co">#&gt; A GSVA::gsvaParam object</span></span>
+<span><span class="co">#&gt; expression data:</span></span>
+<span><span class="co">#&gt;   class: SummarizedExperiment </span></span>
+<span><span class="co">#&gt;   dim: 11279 21 </span></span>
+<span><span class="co">#&gt;   metadata(1): annotation</span></span>
+<span><span class="co">#&gt;   assays(1): logCPM</span></span>
+<span><span class="co">#&gt;   rownames(11279): 100 10000 ... 9994 9997</span></span>
+<span><span class="co">#&gt;   rowData names(0):</span></span>
+<span><span class="co">#&gt;   colnames(21): BS03 BS04 ... BS23 BS24</span></span>
+<span><span class="co">#&gt;   colData names(2): FIR Sex</span></span>
+<span><span class="co">#&gt; using assay: logCPM</span></span>
+<span><span class="co">#&gt; using annotation: none</span></span>
+<span><span class="co">#&gt; gene sets:</span></span>
+<span><span class="co">#&gt;   GeneSetCollection</span></span>
+<span><span class="co">#&gt;     names: GOLDRATH_EFF_VS_MEMORY_CD8_TCELL_DN, GOLDRATH_EFF_VS_MEMORY_CD8_TCELL_UP, ..., KAECH_NAIVE_VS_MEMORY_CD8_TCELL_UP (4872 total)</span></span>
+<span><span class="co">#&gt;     unique identifiers: ABCA2, ABCC5, ..., LINC00841 (20457 total)</span></span>
+<span><span class="co">#&gt;     types in collection:</span></span>
+<span><span class="co">#&gt;       geneIdType: SymbolIdentifier (1 total)</span></span>
+<span><span class="co">#&gt;       collectionType: NullCollection (1 total)</span></span>
+<span><span class="co">#&gt; gene set size: [5, 300]</span></span>
+<span><span class="co">#&gt; kcdf: auto</span></span>
+<span><span class="co">#&gt; kcdfNoneMinSampleSize: 50</span></span>
+<span><span class="co">#&gt; tau: 1</span></span>
+<span><span class="co">#&gt; maxDiff: TRUE</span></span>
+<span><span class="co">#&gt; absRanking: FALSE</span></span>
+<span><span class="co">#&gt; sparse: TRUE</span></span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">es</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/GSVA/man/gsva.html" class="external-link">gsva</a></span><span class="op">(</span><span class="va">gsvapar</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Mapping identifiers between gene sets and feature names.</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Estimating GSVA scores for 4872 gene sets.</span></span>
+<span><span class="co">#&gt; Figuring out automatically how to estimate ECDFs</span></span>
+<span><span class="co">#&gt; Estimating ECDFs with Gaussian kernels</span></span>
+<span><span class="co">#&gt;   |                                                                              |                                                                      |   0%  |                                                                              |===                                                                   |   5%  |                                                                              |=======                                                               |  10%  |                                                                              |==========                                                            |  14%  |                                                                              |=============                                                         |  19%  |                                                                              |=================                                                     |  24%  |                                                                              |====================                                                  |  29%  |                                                                              |=======================                                               |  33%  |                                                                              |===========================                                           |  38%  |                                                                              |==============================                                        |  43%  |                                                                              |=================================                                     |  48%  |                                                                              |=====================================                                 |  52%  |                                                                              |========================================                              |  57%  |                                                                              |===========================================                           |  62%  |                                                                              |===============================================                       |  67%  |                                                                              |==================================================                    |  71%  |                                                                              |=====================================================                 |  76%  |                                                                              |=========================================================             |  81%  |                                                                              |============================================================          |  86%  |                                                                              |===============================================================       |  90%  |                                                                              |===================================================================   |  95%  |                                                                              |======================================================================| 100%</span></span>
+<span><span class="va">es</span></span>
+<span><span class="co">#&gt; class: SummarizedExperiment </span></span>
+<span><span class="co">#&gt; dim: 4872 21 </span></span>
+<span><span class="co">#&gt; metadata(0):</span></span>
+<span><span class="co">#&gt; assays(1): es</span></span>
+<span><span class="co">#&gt; rownames(4872): GOLDRATH_EFF_VS_MEMORY_CD8_TCELL_DN</span></span>
+<span><span class="co">#&gt;   GOLDRATH_EFF_VS_MEMORY_CD8_TCELL_UP ...</span></span>
+<span><span class="co">#&gt;   KAECH_NAIVE_VS_MEMORY_CD8_TCELL_DN KAECH_NAIVE_VS_MEMORY_CD8_TCELL_UP</span></span>
+<span><span class="co">#&gt; rowData names(1): gs</span></span>
+<span><span class="co">#&gt; colnames(21): BS03 BS04 ... BS23 BS24</span></span>
+<span><span class="co">#&gt; colData names(2): FIR Sex</span></span></code></pre></div>
+</div>
+<div class="section level2">
+<h2 id="differential-expression-at-pathway-level">Differential expression at pathway level<a class="anchor" aria-label="anchor" href="#differential-expression-at-pathway-level"></a>
+</h2>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://bioinf.wehi.edu.au/limma/" class="external-link">limma</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">mod</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/model.matrix.html" class="external-link">model.matrix</a></span><span class="op">(</span><span class="op">~</span> <span class="va">FIR</span> <span class="op">+</span> <span class="va">Sex</span>, <span class="fu"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html" class="external-link">colData</a></span><span class="op">(</span><span class="va">es</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/limma/man/lmFit.html" class="external-link">lmFit</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html" class="external-link">assay</a></span><span class="op">(</span><span class="va">es</span><span class="op">)</span>, <span class="va">mod</span><span class="op">)</span></span>
+<span><span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/limma/man/ebayes.html" class="external-link">eBayes</a></span><span class="op">(</span><span class="va">fit</span><span class="op">)</span></span>
+<span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/limma/man/decideTests.html" class="external-link">decideTests</a></span><span class="op">(</span><span class="va">fit</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">res</span><span class="op">)</span></span>
+<span><span class="co">#&gt;        (Intercept) FIRyes Sexmale</span></span>
+<span><span class="co">#&gt; Down             3    153       0</span></span>
+<span><span class="co">#&gt; NotSig        4869   4194    4872</span></span>
+<span><span class="co">#&gt; Up               0    525       0</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="session-information">Session information<a class="anchor" aria-label="anchor" href="#session-information"></a>
 </h2>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/sessionInfo.html" class="external-link">sessionInfo</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt; R version 4.4.1 (2024-06-14)</span></span>
 <span><span class="co">#&gt; Platform: x86_64-pc-linux-gnu</span></span>
@@ -211,14 +274,15 @@ object<a class="anchor" aria-label="anchor" href="#importing-bulk-rna-seq-data-i
 <span><span class="co">#&gt; [8] base     </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; other attached packages:</span></span>
-<span><span class="co">#&gt;  [1] GSVA_1.53.15                SummarizedExperiment_1.35.1</span></span>
-<span><span class="co">#&gt;  [3] GenomicRanges_1.57.1        GenomeInfoDb_1.41.1        </span></span>
-<span><span class="co">#&gt;  [5] MatrixGenerics_1.17.0       matrixStats_1.3.0          </span></span>
-<span><span class="co">#&gt;  [7] GSEABase_1.67.0             graph_1.83.0               </span></span>
-<span><span class="co">#&gt;  [9] annotate_1.83.0             XML_3.99-0.17              </span></span>
-<span><span class="co">#&gt; [11] AnnotationDbi_1.67.0        IRanges_2.39.2             </span></span>
-<span><span class="co">#&gt; [13] S4Vectors_0.43.2            Biobase_2.65.0             </span></span>
-<span><span class="co">#&gt; [15] BiocGenerics_0.51.0        </span></span>
+<span><span class="co">#&gt;  [1] limma_3.61.9                org.Hs.eg.db_3.19.1        </span></span>
+<span><span class="co">#&gt;  [3] GSVA_1.53.16                SummarizedExperiment_1.35.1</span></span>
+<span><span class="co">#&gt;  [5] GenomicRanges_1.57.1        GenomeInfoDb_1.41.1        </span></span>
+<span><span class="co">#&gt;  [7] MatrixGenerics_1.17.0       matrixStats_1.3.0          </span></span>
+<span><span class="co">#&gt;  [9] GSEABase_1.67.0             graph_1.83.0               </span></span>
+<span><span class="co">#&gt; [11] annotate_1.83.0             XML_3.99-0.17              </span></span>
+<span><span class="co">#&gt; [13] AnnotationDbi_1.67.0        IRanges_2.39.2             </span></span>
+<span><span class="co">#&gt; [15] S4Vectors_0.43.2            Biobase_2.65.1             </span></span>
+<span><span class="co">#&gt; [17] BiocGenerics_0.51.0        </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; loaded via a namespace (and not attached):</span></span>
 <span><span class="co">#&gt;  [1] KEGGREST_1.45.1             rjson_0.2.22               </span></span>
@@ -227,35 +291,36 @@ object<a class="anchor" aria-label="anchor" href="#importing-bulk-rna-seq-data-i
 <span><span class="co">#&gt;  [7] lattice_0.22-6              rhdf5filters_1.17.0        </span></span>
 <span><span class="co">#&gt;  [9] vctrs_0.6.5                 tools_4.4.1                </span></span>
 <span><span class="co">#&gt; [11] parallel_4.4.1              RSQLite_2.3.7              </span></span>
-<span><span class="co">#&gt; [13] blob_1.2.4                  Matrix_1.7-0               </span></span>
-<span><span class="co">#&gt; [15] sparseMatrixStats_1.17.2    desc_1.4.3                 </span></span>
-<span><span class="co">#&gt; [17] lifecycle_1.0.4             GenomeInfoDbData_1.2.12    </span></span>
-<span><span class="co">#&gt; [19] compiler_4.4.1              textshaping_0.4.0          </span></span>
-<span><span class="co">#&gt; [21] Biostrings_2.73.1           codetools_0.2-20           </span></span>
-<span><span class="co">#&gt; [23] htmltools_0.5.8.1           sass_0.4.9                 </span></span>
-<span><span class="co">#&gt; [25] yaml_2.3.10                 pkgdown_2.1.0              </span></span>
-<span><span class="co">#&gt; [27] crayon_1.5.3                jquerylib_0.1.4            </span></span>
-<span><span class="co">#&gt; [29] SingleCellExperiment_1.27.2 BiocParallel_1.39.0        </span></span>
-<span><span class="co">#&gt; [31] cachem_1.1.0                DelayedArray_0.31.11       </span></span>
-<span><span class="co">#&gt; [33] magick_2.8.4                abind_1.4-5                </span></span>
-<span><span class="co">#&gt; [35] rsvd_1.0.5                  digest_0.6.37              </span></span>
-<span><span class="co">#&gt; [37] BiocSingular_1.21.2         fastmap_1.2.0              </span></span>
-<span><span class="co">#&gt; [39] grid_4.4.1                  cli_3.6.3                  </span></span>
-<span><span class="co">#&gt; [41] SparseArray_1.5.31          magrittr_2.0.3             </span></span>
-<span><span class="co">#&gt; [43] S4Arrays_1.5.7              UCSC.utils_1.1.0           </span></span>
-<span><span class="co">#&gt; [45] bit64_4.0.5                 rmarkdown_2.28             </span></span>
-<span><span class="co">#&gt; [47] XVector_0.45.0              httr_1.4.7                 </span></span>
-<span><span class="co">#&gt; [49] bit_4.0.5                   ragg_1.3.2                 </span></span>
-<span><span class="co">#&gt; [51] png_0.1-8                   SpatialExperiment_1.15.1   </span></span>
-<span><span class="co">#&gt; [53] beachmat_2.21.5             ScaledMatrix_1.13.0        </span></span>
-<span><span class="co">#&gt; [55] HDF5Array_1.33.6            memoise_2.0.1              </span></span>
-<span><span class="co">#&gt; [57] evaluate_0.24.0             knitr_1.48                 </span></span>
-<span><span class="co">#&gt; [59] irlba_2.3.5.1               rlang_1.1.4                </span></span>
-<span><span class="co">#&gt; [61] Rcpp_1.0.13                 xtable_1.8-4               </span></span>
-<span><span class="co">#&gt; [63] DBI_1.2.3                   jsonlite_1.8.8             </span></span>
-<span><span class="co">#&gt; [65] Rhdf5lib_1.27.0             R6_2.5.1                   </span></span>
-<span><span class="co">#&gt; [67] systemfonts_1.1.0           fs_1.6.4                   </span></span>
-<span><span class="co">#&gt; [69] zlibbioc_1.51.1</span></span></code></pre></div>
+<span><span class="co">#&gt; [13] blob_1.2.4                  pkgconfig_2.0.3            </span></span>
+<span><span class="co">#&gt; [15] Matrix_1.7-0                sparseMatrixStats_1.17.2   </span></span>
+<span><span class="co">#&gt; [17] desc_1.4.3                  lifecycle_1.0.4            </span></span>
+<span><span class="co">#&gt; [19] GenomeInfoDbData_1.2.12     compiler_4.4.1             </span></span>
+<span><span class="co">#&gt; [21] textshaping_0.4.0           Biostrings_2.73.1          </span></span>
+<span><span class="co">#&gt; [23] statmod_1.5.0               codetools_0.2-20           </span></span>
+<span><span class="co">#&gt; [25] htmltools_0.5.8.1           sass_0.4.9                 </span></span>
+<span><span class="co">#&gt; [27] yaml_2.3.10                 pkgdown_2.1.0              </span></span>
+<span><span class="co">#&gt; [29] crayon_1.5.3                jquerylib_0.1.4            </span></span>
+<span><span class="co">#&gt; [31] SingleCellExperiment_1.27.2 BiocParallel_1.39.0        </span></span>
+<span><span class="co">#&gt; [33] cachem_1.1.0                DelayedArray_0.31.11       </span></span>
+<span><span class="co">#&gt; [35] magick_2.8.4                abind_1.4-5                </span></span>
+<span><span class="co">#&gt; [37] rsvd_1.0.5                  digest_0.6.37              </span></span>
+<span><span class="co">#&gt; [39] BiocSingular_1.21.2         fastmap_1.2.0              </span></span>
+<span><span class="co">#&gt; [41] grid_4.4.1                  cli_3.6.3                  </span></span>
+<span><span class="co">#&gt; [43] SparseArray_1.5.31          magrittr_2.0.3             </span></span>
+<span><span class="co">#&gt; [45] S4Arrays_1.5.7              UCSC.utils_1.1.0           </span></span>
+<span><span class="co">#&gt; [47] bit64_4.0.5                 rmarkdown_2.28             </span></span>
+<span><span class="co">#&gt; [49] XVector_0.45.0              httr_1.4.7                 </span></span>
+<span><span class="co">#&gt; [51] bit_4.0.5                   ragg_1.3.2                 </span></span>
+<span><span class="co">#&gt; [53] png_0.1-8                   SpatialExperiment_1.15.1   </span></span>
+<span><span class="co">#&gt; [55] beachmat_2.21.5             ScaledMatrix_1.13.0        </span></span>
+<span><span class="co">#&gt; [57] HDF5Array_1.33.6            memoise_2.0.1              </span></span>
+<span><span class="co">#&gt; [59] evaluate_0.24.0             knitr_1.48                 </span></span>
+<span><span class="co">#&gt; [61] irlba_2.3.5.1               rlang_1.1.4                </span></span>
+<span><span class="co">#&gt; [63] Rcpp_1.0.13                 xtable_1.8-4               </span></span>
+<span><span class="co">#&gt; [65] DBI_1.2.3                   jsonlite_1.8.8             </span></span>
+<span><span class="co">#&gt; [67] Rhdf5lib_1.27.0             R6_2.5.1                   </span></span>
+<span><span class="co">#&gt; [69] systemfonts_1.1.0           fs_1.6.4                   </span></span>
+<span><span class="co">#&gt; [71] zlibbioc_1.51.1</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 class="unnumbered" id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>

@@ -32,7 +32,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">GSVAEuroBioC2024</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.0.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.0.2</span>
       </span>
     </div>
 
@@ -141,11 +141,140 @@ the GSVA package.</p>
 <span><span class="co">#&gt;   types in collection:</span></span>
 <span><span class="co">#&gt;     geneIdType: SymbolIdentifier (1 total)</span></span>
 <span><span class="co">#&gt;     collectionType: NullCollection (1 total)</span></span></code></pre></div>
+<div class="section level3">
+<h3 id="differences-between-readgmt-and-getgmt">Differences between <code>readGMT()</code> and
+<code>getGmt()</code><a class="anchor" aria-label="anchor" href="#differences-between-readgmt-and-getgmt"></a>
+</h3>
+<p>Function <code><a href="https://rdrr.io/pkg/GSVA/man/readGMT.html" class="external-link">readGMT()</a></code> from package GSVA is based on the
+<code><a href="https://rdrr.io/pkg/GSEABase/man/getObjects.html" class="external-link">getGmt()</a></code> function from package GSEABase and behaves almost
+the same. It has, however, two extensions that may prove useful in
+certain cases.</p>
+<div class="section level4">
+<h4 id="gmt-files-with-duplicated-gene-set-identifiers">GMT files with duplicated gene set identifiers<a class="anchor" aria-label="anchor" href="#gmt-files-with-duplicated-gene-set-identifiers"></a>
+</h4>
+<p>When responding to a user issue, we discovered that some GMT files
+contain duplicated gene set identifiers, although this is forbidden by
+the file format’s definition, and, consequently, <code><a href="https://rdrr.io/pkg/GSEABase/man/getObjects.html" class="external-link">getGmt()</a></code>
+refuses to read them.</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">URL</span> <span class="op">&lt;-</span> <span class="st">"https://data.broadinstitute.org/gsea-msigdb/msigdb/release/7.5/c2.all.v7.5.symbols.gmt"</span></span>
+<span><span class="va">genesets</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/GSEABase/man/getObjects.html" class="external-link">getGmt</a></span><span class="op">(</span><span class="va">URL</span>, geneIdType<span class="op">=</span><span class="fu"><a href="https://rdrr.io/pkg/GSEABase/man/GeneIdentifierType-constructors.html" class="external-link">SymbolIdentifier</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Error in validObject(.Object): invalid class "GeneSetCollection" object: each setName must be distinct</span></span></code></pre></div>
+<p>In such a case, <code><a href="https://rdrr.io/pkg/GSVA/man/readGMT.html" class="external-link">readGMT()</a></code> will rather warn about the
+problem and resolve it using one of a range of strategies that are
+described in more detail on its help page (see
+<code><a href="https://rdrr.io/pkg/GSVA/man/readGMT.html" class="external-link">?readGMT</a></code>).</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">URL</span> <span class="op">&lt;-</span> <span class="st">"https://data.broadinstitute.org/gsea-msigdb/msigdb/release/7.5/c2.all.v7.5.symbols.gmt"</span></span>
+<span><span class="va">genesets</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/GSVA/man/readGMT.html" class="external-link">readGMT</a></span><span class="op">(</span><span class="va">URL</span>, geneIdType<span class="op">=</span><span class="fu"><a href="https://rdrr.io/pkg/GSEABase/man/GeneIdentifierType-constructors.html" class="external-link">SymbolIdentifier</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Warning in deduplicateGmtLines(lines, deduplUse): GMT contains duplicated gene</span></span>
+<span><span class="co">#&gt; set names; deduplicated using method: first</span></span>
+<span><span class="va">genesets</span></span>
+<span><span class="co">#&gt; GeneSetCollection</span></span>
+<span><span class="co">#&gt;   names: CORONEL_RFX7_DIRECT_TARGETS_UP, FOROUTAN_TGFB_EMT_UP, ..., SA_TRKA_RECEPTOR (6363 total)</span></span>
+<span><span class="co">#&gt;   unique identifiers: ABAT, DIP2A, ..., IGHG3 (21728 total)</span></span>
+<span><span class="co">#&gt;   types in collection:</span></span>
+<span><span class="co">#&gt;     geneIdType: SymbolIdentifier (1 total)</span></span>
+<span><span class="co">#&gt;     collectionType: NullCollection (1 total)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/args.html" class="external-link">args</a></span><span class="op">(</span><span class="va">readGMT</span><span class="op">)</span></span>
+<span><span class="co">#&gt; function (con, sep = "\t", geneIdType = NullIdentifier(), collectionType = NullCollection(), </span></span>
+<span><span class="co">#&gt;     valueType = c("GeneSetCollection", "list"), deduplUse = c("first", </span></span>
+<span><span class="co">#&gt;         "drop", "union", "smallest", "largest"), ...) </span></span>
+<span><span class="co">#&gt; NULL</span></span></code></pre></div>
+</div>
+<div class="section level4">
+<h4 id="return-a-list-instead-of-a-genesetcollection">Return a <code>list</code> instead of a
+<code>GeneSetCollection</code><a class="anchor" aria-label="anchor" href="#return-a-list-instead-of-a-genesetcollection"></a>
+</h4>
+<p>Using gene sets in a <code>GeneSetCollection</code> object offers a
+number of advantages inluding automatic gene identifier mapping and
+therefore <code><a href="https://rdrr.io/pkg/GSVA/man/readGMT.html" class="external-link">readGMT()</a></code> returns such an object by default. If,
+however, a user prefers using gene sets represented as a
+<code>list</code> of <code>character</code> vectors, this is possible
+without multiple conversions by setting argument
+<code>valueType="list"</code>.</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">URL</span> <span class="op">&lt;-</span> <span class="st">"https://data.broadinstitute.org/gsea-msigdb/msigdb/release/2023.2.Hs/c7.immunesigdb.v2023.2.Hs.symbols.gmt"</span></span>
+<span><span class="va">genesets</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/GSVA/man/readGMT.html" class="external-link">readGMT</a></span><span class="op">(</span><span class="va">URL</span>, valueType<span class="op">=</span><span class="st">"list"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">genesets</span>, <span class="fl">2</span><span class="op">)</span></span>
+<span><span class="co">#&gt; $GOLDRATH_EFF_VS_MEMORY_CD8_TCELL_DN</span></span>
+<span><span class="co">#&gt;   [1] "ABCA2"    "ABCC5"    "ABHD14A"  "ACADM"    "ACP5"     "ACP6"    </span></span>
+<span><span class="co">#&gt;   [7] "ADAM22"   "ADCY7"    "ADGRG3"   "AKAP9"    "ANKRD10"  "ARL4C"   </span></span>
+<span><span class="co">#&gt;  [13] "ASH1L"    "B3GALT6"  "BCKDHB"   "BCL2"     "BCL2L11"  "BRD3"    </span></span>
+<span><span class="co">#&gt;  [19] "C12orf57" "C6orf136" "CA12"     "CANT1"    "CCND2"    "CCNL2"   </span></span>
+<span><span class="co">#&gt;  [25] "CCR7"     "CD7"      "CD96"     "CHCHD7"   "CIPC"     "COQ9"    </span></span>
+<span><span class="co">#&gt;  [31] "COX7A2L"  "CRLF3"    "CST7"     "CTSW"     "CYP4V2"   "DALRD3"  </span></span>
+<span><span class="co">#&gt;  [37] "DBNDD2"   "DBP"      "DDIT3"    "DDX51"    "DGKA"     "DIAPH2"  </span></span>
+<span><span class="co">#&gt;  [43] "DNAAF10"  "DPH5"     "DUSP12"   "EIF2AK4"  "ELP3"     "EMB"     </span></span>
+<span><span class="co">#&gt;  [49] "EML5"     "ENTREP3"  "EOMES"    "EPS15L1"  "EVL"      "EZH1"    </span></span>
+<span><span class="co">#&gt;  [55] "FAM8A1"   "GALNT11"  "GBE1"     "GMIP"     "GNL2"     "GSTK1"   </span></span>
+<span><span class="co">#&gt;  [61] "GTF2I"    "H2AJ"     "HSD17B11" "HSD17B8"  "HSF1"     "IAPP"    </span></span>
+<span><span class="co">#&gt;  [67] "ICE1"     "IFITM10"  "IL4R"     "IL6R"     "IL6ST"    "IL7R"    </span></span>
+<span><span class="co">#&gt;  [73] "ITM2C"    "ITPR2"    "JUN"      "KCNJ8"    "KLF17"    "KLF2"    </span></span>
+<span><span class="co">#&gt;  [79] "LAMP1"    "LTB"      "LYSMD1"   "LYSMD2"   "MAN2C1"   "MAP4K3"  </span></span>
+<span><span class="co">#&gt;  [85] "MBP"      "MCOLN2"   "MECP2"    "METTL3"   "MFNG"     "MLYCD"   </span></span>
+<span><span class="co">#&gt;  [91] "MRPL23"   "MTFR1L"   "NACC2"    "NCKAP1"   "NDUFA7"   "NECAP1"  </span></span>
+<span><span class="co">#&gt;  [97] "NEDD4"    "NEDD4L"   "NOTCH4"   "NSG2"     "PAQR7"    "PDGFB"   </span></span>
+<span><span class="co">#&gt; [103] "PDK1"     "PDRG1"    "PHLDB1"   "PISD"     "PLEKHA1"  "PLEKHA5" </span></span>
+<span><span class="co">#&gt; [109] "POLR1B"   "POLR3A"   "PPOX"     "PPP1R14B" "PRKACB"   "PRMT3"   </span></span>
+<span><span class="co">#&gt; [115] "PRSS12"   "PSME2"    "PTPN22"   "PURA"     "QDPR"     "RABAC1"  </span></span>
+<span><span class="co">#&gt; [121] "RAD52"    "RASA4"    "RASSF5"   "RERE"     "RFLNB"    "RGS10"   </span></span>
+<span><span class="co">#&gt; [127] "RIMOC1"   "RNASE4"   "RPL14"    "RPL19"    "RPL39"    "RPLP0"   </span></span>
+<span><span class="co">#&gt; [133] "RPLP1"    "RPP14"    "RPS16"    "RPS18"    "RPS19"    "RPS23"   </span></span>
+<span><span class="co">#&gt; [139] "RPS7"     "RPS8"     "RRP1B"    "RTKN"     "RTTN"     "SBDS"    </span></span>
+<span><span class="co">#&gt; [145] "SELL"     "SEMA4B"   "SESN1"    "SETD4"    "SH3BP5"   "SHISA5"  </span></span>
+<span><span class="co">#&gt; [151] "SIAH1"    "SIPA1L2"  "SIT1"     "SIX6"     "SLC11A2"  "SLC12A7" </span></span>
+<span><span class="co">#&gt; [157] "SLC26A2"  "SLTM"     "SNRK"     "SPICE1"   "STAT4"    "SUPT6H"  </span></span>
+<span><span class="co">#&gt; [163] "SURF2"    "SUSD6"    "TAF1A"    "TAF1C"    "TCF7"     "TDRP"    </span></span>
+<span><span class="co">#&gt; [169] "TESK1"    "TK2"      "TLK2"     "TMC6"     "TMED4"    "TNIP1"   </span></span>
+<span><span class="co">#&gt; [175] "TRAF1"    "TRAF3IP2" "TRAF5"    "TRMT1"    "TSEN34"   "TSR1"    </span></span>
+<span><span class="co">#&gt; [181] "TTC14"    "TTC27"    "TTC3"     "TXK"      "UBLCP1"   "USP18"   </span></span>
+<span><span class="co">#&gt; [187] "VKORC1"   "WDR13"    "WDR43"    "WDR75"    "XPC"      "XRCC5"   </span></span>
+<span><span class="co">#&gt; [193] "YPEL3"    "ZBTB20"   "ZEB1"     "ZFP1"     "ZFP90"    "ZKSCAN3" </span></span>
+<span><span class="co">#&gt; [199] "ZNF274"   "ZNF692"  </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $GOLDRATH_EFF_VS_MEMORY_CD8_TCELL_UP</span></span>
+<span><span class="co">#&gt;   [1] "ADAM8"     "AK3"       "ANLN"      "ANXA1"     "ANXA2"     "ANXA4"    </span></span>
+<span><span class="co">#&gt;   [7] "ASF1B"     "ASPM"      "ATP5IF1"   "ATP6V1A"   "AURKA"     "AURKB"    </span></span>
+<span><span class="co">#&gt;  [13] "BATF3"     "BHLHE40"   "BIRC5"     "BRCA1"     "BUB1"      "C3"       </span></span>
+<span><span class="co">#&gt;  [19] "CA2"       "CAPG"      "CASP3"     "CBX1"      "CCNA2"     "CCNB2"    </span></span>
+<span><span class="co">#&gt;  [25] "CCNF"      "CCR2"      "CD244"     "CD99"      "CDC20"     "CDC25C"   </span></span>
+<span><span class="co">#&gt;  [31] "CDC45"     "CDC6"      "CDCA3"     "CDCA8"     "CDK1"      "CDKN2C"   </span></span>
+<span><span class="co">#&gt;  [37] "CDKN3"     "CENPA"     "CHAF1A"    "CHEK1"     "CIP2A"     "CISD1"    </span></span>
+<span><span class="co">#&gt;  [43] "CKAP5"     "CKS1B"     "CKS2"      "CLCN5"     "CMC2"      "CRMP1"    </span></span>
+<span><span class="co">#&gt;  [49] "DBI"       "DCK"       "DEGS1"     "DHFR"      "DHRS1"     "DLGAP5"   </span></span>
+<span><span class="co">#&gt;  [55] "DNA2"      "DNAJC1"    "DOCK5"     "DTL"       "DUSP2"     "E2F8"     </span></span>
+<span><span class="co">#&gt;  [61] "ECT2"      "EGR1"      "EMP1"      "EMP3"      "EZH2"      "F2RL3"    </span></span>
+<span><span class="co">#&gt;  [67] "FANCM"     "FDFT1"     "FGL2"      "FKBP5"     "FPR2"      "GABARAPL1"</span></span>
+<span><span class="co">#&gt;  [73] "GALNT3"    "GEM"       "GGH"       "GMNN"      "GTF2B"     "GZMA"     </span></span>
+<span><span class="co">#&gt;  [79] "GZMB"      "GZMK"      "H1-0"      "H2AX"      "H2AZ1"     "H3-4"     </span></span>
+<span><span class="co">#&gt;  [85] "HMGB3"     "HP"        "IDI1"      "IFI27L2"   "IFITM3"    "IFNG"     </span></span>
+<span><span class="co">#&gt;  [91] "INCENP"    "IQGAP3"    "IRF4"      "IRF8"      "ISG20"     "ITGAX"    </span></span>
+<span><span class="co">#&gt;  [97] "KIF11"     "KIF20A"    "KIF22"     "KIF23"     "KIF2C"     "KIF4A"    </span></span>
+<span><span class="co">#&gt; [103] "KLRG1"     "KPNA2"     "LAG3"      "LGALS1"    "LGALS3"    "LIG1"     </span></span>
+<span><span class="co">#&gt; [109] "LITAF"     "LMNB1"     "LSP1"      "LXN"       "LYN"       "MAD2L1"   </span></span>
+<span><span class="co">#&gt; [115] "MAPK6"     "MCM10"     "MIS18BP1"  "MKI67"     "MPEG1"     "MRPL18"   </span></span>
+<span><span class="co">#&gt; [121] "MT1E"      "MT2A"      "MTM1"      "MYADM"     "NCAPH"     "NDRG1"    </span></span>
+<span><span class="co">#&gt; [127] "NEK2"      "NFYB"      "NR4A1"     "NRP1"      "NUDT4"     "NUP62"    </span></span>
+<span><span class="co">#&gt; [133] "NUSAP1"    "PCLAF"     "PDCD1"     "PDK3"      "PERP"      "PLAC8"    </span></span>
+<span><span class="co">#&gt; [139] "PLK4"      "POLA1"     "POLE2"     "PRC1"      "PRDX4"     "PRIM1"    </span></span>
+<span><span class="co">#&gt; [145] "PSMA5"     "RAD51"     "RAD51AP1"  "RAN"       "RBL1"      "RFC5"     </span></span>
+<span><span class="co">#&gt; [151] "RHD"       "RNASEH2B"  "ROM1"      "RRM1"      "RRM2"      "S100A10"  </span></span>
+<span><span class="co">#&gt; [157] "S100A4"    "S100A8"    "SERPINB9"  "SIVA1"     "SMARCC1"   "SMC2"     </span></span>
+<span><span class="co">#&gt; [163] "SNX10"     "SNX3"      "SPDL1"     "SQLE"      "STMN1"     "STT3B"    </span></span>
+<span><span class="co">#&gt; [169] "SUN1"      "SUZ12"     "SYCE2"     "SYPL1"     "TACC3"     "TAGLN2"   </span></span>
+<span><span class="co">#&gt; [175] "TCF19"     "TIPIN"     "TK1"       "TKTL1"     "TMEM14C"   "TMEM50B"  </span></span>
+<span><span class="co">#&gt; [181] "TMEM97"    "TMPO"      "TOP2A"     "TSPAN32"   "TTK"       "TUBA1A"   </span></span>
+<span><span class="co">#&gt; [187] "TUBA1B"    "TUBA1C"    "TUBB3"     "TXN"       "TYMS"      "TYROBP"   </span></span>
+<span><span class="co">#&gt; [193] "UBE2N"     "UBE2T"     "UCHL5"     "UCK2"      "VPS45"     "WEE1"     </span></span>
+<span><span class="co">#&gt; [199] "XBP1"      "YBX3"</span></span></code></pre></div>
+</div>
+</div>
 </div>
 <div class="section level2">
 <h2 id="session-information">Session information<a class="anchor" aria-label="anchor" href="#session-information"></a>
 </h2>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/sessionInfo.html" class="external-link">sessionInfo</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt; R version 4.4.1 (2024-06-14)</span></span>
 <span><span class="co">#&gt; Platform: x86_64-pc-linux-gnu</span></span>
@@ -171,9 +300,9 @@ the GSVA package.</p>
 <span><span class="co">#&gt; [8] base     </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; other attached packages:</span></span>
-<span><span class="co">#&gt;  [1] GSVA_1.53.15         GSEABase_1.67.0      graph_1.83.0        </span></span>
+<span><span class="co">#&gt;  [1] GSVA_1.53.16         GSEABase_1.67.0      graph_1.83.0        </span></span>
 <span><span class="co">#&gt;  [4] annotate_1.83.0      XML_3.99-0.17        AnnotationDbi_1.67.0</span></span>
-<span><span class="co">#&gt;  [7] IRanges_2.39.2       S4Vectors_0.43.2     Biobase_2.65.0      </span></span>
+<span><span class="co">#&gt;  [7] IRanges_2.39.2       S4Vectors_0.43.2     Biobase_2.65.1      </span></span>
 <span><span class="co">#&gt; [10] BiocGenerics_0.51.0 </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; loaded via a namespace (and not attached):</span></span>
