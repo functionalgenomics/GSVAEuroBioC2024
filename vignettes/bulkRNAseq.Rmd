@@ -48,6 +48,7 @@ Build a `SummarizedExperiment` object.
 ```{r, message=FALSE}
 library(GSEABase)
 library(SummarizedExperiment)
+library(GSVA)
 
 stopifnot(all(colnames(expr) == rownames(pdat))) ## QC
 se <- SummarizedExperiment(assay=list(logCPM=as.matrix(expr)),
