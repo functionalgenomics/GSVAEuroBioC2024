@@ -84,9 +84,9 @@ es
 library(limma)
 
 mod <- model.matrix(~ FIR + Sex, colData(es))
-fit <- lmFit(es, mod)
+fit <- lmFit(assay(es), mod)
 fit <- eBayes(fit)
-fit <- decideTests(fit)
+res <- decideTests(fit)
 summary(res)
 ```
 
