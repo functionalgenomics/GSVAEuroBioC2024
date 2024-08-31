@@ -1,17 +1,25 @@
+title: GSVAEuroBioC2024
+
 url: https://functionalgenomics.github.io/GSVAEuroBioC2024
 
 template:
   params:
     bootswatch: flatly
-    #ganalytics: UA-99999999-9
-
-home:
-  title: "GSVAEuroBioC2024"
-  type: inverse
 
 navbar:
+  title: ~
+  type: default
+  left:
+    - text: Vignettes
+      menu:
+        - text: Import gene sets from GMT files
+          href: articles/importGMTfiles.html
+        - text: Analysis of bulk RNA-seq data
+          href: articles/bulkRNAseq.html
+        - text: Analysis of single-cell RNA-seq data
+          href: articles/scRNA-seq.html
+        - text: Analysis of spatial omics data
+          href: articles/spatia.html
   right:
-   - icon: fa-github
-     href: https://github.com/functionalgenomics/GSVAEuroBioC2024
-     
-
+    - icon: fa-github
+      href: https://github.com/functionalgenomics/GSVAEuroBioC2024
