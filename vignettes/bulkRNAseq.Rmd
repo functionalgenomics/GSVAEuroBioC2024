@@ -7,11 +7,15 @@ author:
   - name: Robert Castelo
     affiliation: Dept. of Medicine and Life Sciences, Universitat Pompeu Fabra, Barcelona
     email: robert.castelo@upf.edu
-output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Analysis of bulk RNA-seq data}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
+output:
+  html_document:
+    toc: true
+    number_sections: true
+    fig_captions: yes
 bibliography: GSVAEuroBioC2024.bib
 ---
 
@@ -97,7 +101,7 @@ se <- SummarizedExperiment(assay=list(logCPM=as.matrix(expr)),
                            colData=pdat)
 se
 ```
-To facilitate later one the automatic mapping of gene identifiers between
+To facilitate later on the automatic mapping of gene identifiers between
 gene sets and RNA-seq data, we should add annotation metadata to the
 `SummarizedExperiment` object as follows.
 
