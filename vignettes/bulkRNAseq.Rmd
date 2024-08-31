@@ -8,15 +8,19 @@ author:
     affiliation: Dept. of Medicine and Life Sciences, Universitat Pompeu Fabra, Barcelona
     email: robert.castelo@upf.edu
 output:
-  BiocStyle::html_document:
+  bookdown::html_document2:
+    base_format: rmarkdown::html_vignette
+    fig_caption: yes
     toc: true
-    toc_float: true
-    fig_captions: yes
+    toc_depth: 2
+pkgdown:
+  as_is: true
 vignette: >
   %\VignetteIndexEntry{Analysis of bulk RNA-seq data}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 bibliography: GSVAEuroBioC2024.bib
+link-citations: yes
 ---
 
 
