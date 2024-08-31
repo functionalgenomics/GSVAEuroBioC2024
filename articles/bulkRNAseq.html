@@ -86,14 +86,11 @@
       <h1 data-toc-skip>Analysis of bulk RNA-seq data</h1>
                         <h4 data-toc-skip class="author">Axel Klenk</h4>
             <address class="author_afil">
-      Dept. of Medicine and Life Sciences, Universitat Pompeu Fabra,
-Barcelona<br><a class="author_email" href="mailto:#"></a><a href="mailto:axelvolker.klenk@upf.edu" class="email">axelvolker.klenk@upf.edu</a>
+      Dept. of Medicine and Life Sciences, Universitat Pompeu Fabra, Barcelona<br><a class="author_email" href="mailto:#"></a><a href="mailto:axelvolker.klenk@upf.edu" class="email">axelvolker.klenk@upf.edu</a>
       </address>
-                              <h4 data-toc-skip class="author">Robert
-Castelo</h4>
+                              <h4 data-toc-skip class="author">Robert Castelo</h4>
             <address class="author_afil">
-      Dept. of Medicine and Life Sciences, Universitat Pompeu Fabra,
-Barcelona<br><a class="author_email" href="mailto:#"></a><a href="mailto:robert.castelo@upf.edu" class="email">robert.castelo@upf.edu</a>
+      Dept. of Medicine and Life Sciences, Universitat Pompeu Fabra, Barcelona<br><a class="author_email" href="mailto:#"></a><a href="mailto:robert.castelo@upf.edu" class="email">robert.castelo@upf.edu</a>
       </address>
                   
       
@@ -104,23 +101,23 @@ Barcelona<br><a class="author_email" href="mailto:#"></a><a href="mailto:robert.
 
     
     
-<div class="section level2">
-<h2 id="importing-bulk-rna-seq-data-into-a-summarizedexperiment-object">Importing bulk RNA-seq data into a <code>SummarizedExperiment</code>
-object<a class="anchor" aria-label="anchor" href="#importing-bulk-rna-seq-data-into-a-summarizedexperiment-object"></a>
+<div class="section level2" number="1">
+<h2 id="importing-bulk-rna-seq-data-into-a-summarizedexperiment-object">
+<span class="header-section-number">1</span> Importing bulk RNA-seq data into a <code>SummarizedExperiment</code> object<a class="anchor" aria-label="anchor" href="#importing-bulk-rna-seq-data-into-a-summarizedexperiment-object"></a>
 </h2>
 <p>We will illustrate how to use GSVA with the bulk RNA-seq data from
-<span class="citation">(Costa et al. 2021)</span>. This dataset consists
-of stranded 2x75nt paired-end reads sequenced from whole blood stored in
-<a href="https://en.wikipedia.org/wiki/Dried_blood_spot" class="external-link">dried blood
-spots (DBS)</a>. <span class="citation">Costa et al. (2021)</span>
-generated these data from 21 DBS samples of extremely preterm newborns
-(neonates born before the 28th week of gestation), where 10 of them had
-been exposed to a fetal inflammatory response (FIR) before birth.</p>
-<p>We start by building a <a href="https://bioconductor.org/packages/SummarizedExperiment" class="external-link">SummarizedExperiment</a>
-object from these RNA-seq data. A corresponding matrix of normalized
-log-CPM units of expression is stored as part of this workshop package,
-where lowly-expressed genes have been already filtered out. We should
-load these data as follows.</p>
+<span class="citation">(<a href="#ref-costa2021genome">Costa et al. 2021</a>)</span>. This dataset consists of stranded 2x75nt paired-end
+reads sequenced from whole blood stored in
+<a href="https://en.wikipedia.org/wiki/Dried_blood_spot" class="external-link">dried blood spots (DBS)</a>.
+<span class="citation">Costa et al. (<a href="#ref-costa2021genome">2021</a>)</span> generated these data from 21 DBS samples of extremely
+preterm newborns (neonates born before the 28th week of gestation), where 10 of
+them had been exposed to a fetal inflammatory response (FIR) before birth.</p>
+<p>We start by building a
+<a href="https://bioconductor.org/packages/SummarizedExperiment" class="external-link">SummarizedExperiment</a>
+object from these RNA-seq data. A corresponding matrix of normalized log-CPM
+units of expression is stored as part of this workshop package, where
+lowly-expressed genes have been already filtered out. We should load these data
+as follows.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">fname</span> <span class="op">&lt;-</span> <span class="st">"CostaEtAl2021_FIRDBS_bulkRNAseq_data_ENTREZID.csv.gz"</span></span>
 <span><span class="va">fname</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="va">fname</span><span class="op">)</span>,</span>
@@ -135,10 +132,11 @@ load these data as follows.</p>
 <span><span class="co">#&gt; 100008587 6.388405 7.167047 4.472078 6.851124 6.868794 4.531868 5.141607</span></span>
 <span><span class="co">#&gt; 100009676 1.849203 1.467252 1.928039 1.266955 2.033022 1.369181 2.742960</span></span>
 <span><span class="co">#&gt; 10001     4.463245 4.288214 4.075431 4.294054 4.220348 4.095428 4.033399</span></span></code></pre></div>
-<p>Note that gene (row) identifiers correspond to <a href="https://www.ncbi.nlm.nih.gov/gene" class="external-link">NCBI Entrez gene
-identifiers</a>, while sample (column) identifiers correspond to
-anonymized neonates. This workshop package also stores phenotype data
-describing the exposure to FIR and the sex of the neonate.</p>
+<p>Note that gene (row) identifiers correspond to
+<a href="https://www.ncbi.nlm.nih.gov/gene" class="external-link">NCBI Entrez gene identifiers</a>, while sample
+(column) identifiers correspond to anonymized neonates. This workshop package
+also stores phenotype data describing the exposure to FIR and the sex of the
+neonate.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">fname</span> <span class="op">&lt;-</span> <span class="st">"CostaEtAl2021_FIRDBS_phenotype_data.csv.gz"</span></span>
 <span><span class="va">fname</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="va">fname</span><span class="op">)</span>,</span>
@@ -162,13 +160,14 @@ combinations of FIR exposure and sex.</p>
 <span><span class="co">#&gt;       female male</span></span>
 <span><span class="co">#&gt;   no       4    7</span></span>
 <span><span class="co">#&gt;   yes      4    6</span></span></code></pre></div>
-<p>We finally build the <code>SummarizedExperiment</code> object using
-the <code><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html" class="external-link">SummarizedExperiment()</a></code> constructor function from the <a href="https://bioconductor.org/packages/SummarizedExperiment" class="external-link">SummarizedExperiment</a>
+<p>We finally build the <code>SummarizedExperiment</code> object using the
+<code><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html" class="external-link">SummarizedExperiment()</a></code> constructor function from the
+<a href="https://bioconductor.org/packages/SummarizedExperiment" class="external-link">SummarizedExperiment</a>
 package. Prior to that call, we make sure that newborn identifiers in
 the columns of the expression data are identical to the row identifiers
 in the phenotype data. If this were not the case, then we must have made
-some mistake when loading the CSV files into the <code>data.frame</code>
-objects <code>expr</code> and <code>pdat</code>.</p>
+some mistake when loading the CSV files into the <code>data.frame</code> objects
+<code>expr</code> and <code>pdat</code>.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://bioconductor.org/packages/SummarizedExperiment" class="external-link">SummarizedExperiment</a></span><span class="op">)</span></span>
 <span></span>
@@ -186,26 +185,28 @@ objects <code>expr</code> and <code>pdat</code>.</p>
 <span><span class="co">#&gt; rowData names(0):</span></span>
 <span><span class="co">#&gt; colnames(21): BS03 BS04 ... BS23 BS24</span></span>
 <span><span class="co">#&gt; colData names(2): FIR Sex</span></span></code></pre></div>
-<p>To facilitate later on the automatic mapping of gene identifiers
-between gene sets and RNA-seq data, we should add annotation metadata to
-the <code>SummarizedExperiment</code> object as follows.</p>
+<p>To facilitate later on the automatic mapping of gene identifiers between
+gene sets and RNA-seq data, we should add annotation metadata to the
+<code>SummarizedExperiment</code> object as follows.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">GSEABase</span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/rcastelo/GSVA" class="external-link">GSVA</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/GSVA/man/gsvaAnnotation.html" class="external-link">gsvaAnnotation</a></span><span class="op">(</span><span class="va">se</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/GSEABase/man/GeneIdentifierType-constructors.html" class="external-link">EntrezIdentifier</a></span><span class="op">(</span><span class="st">"org.Hs.eg.db"</span><span class="op">)</span></span></code></pre></div>
 </div>
-<div class="section level2">
-<h2 id="data-exploration-at-gene-level">Data exploration at gene level<a class="anchor" aria-label="anchor" href="#data-exploration-at-gene-level"></a>
+<div class="section level2" number="2">
+<h2 id="data-exploration-at-gene-level">
+<span class="header-section-number">2</span> Data exploration at gene level<a class="anchor" aria-label="anchor" href="#data-exploration-at-gene-level"></a>
 </h2>
-<p>We do a brief data exploration at gene level, to have a sense of what
-can we expect in our analysis at pathway level. Figure
-@ref(fig:genelevelmds) below shows the projection in two dimensions of
-sample dissmilarity by means of a <a href="https://en.wikipedia.org/wiki/Multidimensional_scaling" class="external-link">multidimensional
-scaling (MDS)</a> plot, produced with the <code><a href="https://rdrr.io/pkg/limma/man/plotMDS.html" class="external-link">plotMDS()</a></code>
-function of the Bioconductor package <a href="https://bioconductor.org/packages/limma" class="external-link">limma</a>. We can observe
-that sample dissimilarity in RNA expression from DBS samples is driven
-by the FIR and sex phenotypes, as shown in Fig. 1C of <span class="citation">Costa et al. (2021)</span>.</p>
+<p>We do a brief data exploration at gene level, to have a sense of what can
+we expect in our analysis at pathway level. Figure <a href="#fig:genelevelmds">2.1</a>
+below shows the projection in two dimensions of sample dissmilarity by means
+of a
+<a href="https://en.wikipedia.org/wiki/Multidimensional_scaling" class="external-link">multidimensional scaling (MDS)</a>
+plot, produced with the <code><a href="https://rdrr.io/pkg/limma/man/plotMDS.html" class="external-link">plotMDS()</a></code> function of the Bioconductor package
+<a href="https://bioconductor.org/packages/limma" class="external-link">limma</a>. We can observe that sample
+dissimilarity in RNA expression from DBS samples is driven by the FIR and sex
+phenotypes, as shown in Fig. 1C of <span class="citation">Costa et al. (<a href="#ref-costa2021genome">2021</a>)</span>.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://bioinf.wehi.edu.au/limma/" class="external-link">limma</a></span><span class="op">)</span></span>
 <span></span>
@@ -213,31 +214,30 @@ by the FIR and sex phenotypes, as shown in Fig. 1C of <span class="citation">Cos
 <span><span class="va">sexpch</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>female<span class="op">=</span><span class="fl">19</span>, male<span class="op">=</span><span class="fl">15</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/limma/man/plotMDS.html" class="external-link">plotMDS</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html" class="external-link">assay</a></span><span class="op">(</span><span class="va">se</span><span class="op">)</span>, col<span class="op">=</span><span class="va">fircolor</span><span class="op">[</span><span class="va">se</span><span class="op">$</span><span class="va">FIR</span><span class="op">]</span>, pch<span class="op">=</span><span class="va">sexpch</span><span class="op">[</span><span class="va">se</span><span class="op">$</span><span class="va">Sex</span><span class="op">]</span><span class="op">)</span></span></code></pre></div>
 <div class="figure" style="text-align: center">
-<img src="bulkRNAseq_files/figure-html/genelevelmds-1.png" alt="Gene-level exploration. Multidimensional scaling (MDS) plot at gene level. Red corresponds to `FIR=yes` and blue to `FIR=no`, while circles and squares correspond, respectively, to female and male neonates." width="400"><p class="caption">
-Gene-level exploration. Multidimensional scaling (MDS) plot at gene
-level. Red corresponds to <code>FIR=yes</code> and blue to
-<code>FIR=no</code>, while circles and squares correspond, respectively,
-to female and male neonates.
+<span style="display:block;" id="fig:genelevelmds"></span>
+<img src="bulkRNAseq_files/figure-html/genelevelmds-1.png" alt="Gene-level exploration. Multidimensional scaling (MDS) plot at gene level. Red corresponds to `FIR=yes` and blue to `FIR=no`, while circles and squares correspond, respectively, to female and male neonates."><p class="caption">
+Figure 2.1: Gene-level exploration. Multidimensional scaling (MDS) plot at gene level. Red corresponds to <code>FIR=yes</code> and blue to <code>FIR=no</code>, while circles and squares correspond, respectively, to female and male neonates.
 </p>
 </div>
 </div>
-<div class="section level2">
-<h2 id="importing-gene-sets">Importing gene sets<a class="anchor" aria-label="anchor" href="#importing-gene-sets"></a>
+<div class="section level2" number="3">
+<h2 id="importing-gene-sets">
+<span class="header-section-number">3</span> Importing gene sets<a class="anchor" aria-label="anchor" href="#importing-gene-sets"></a>
 </h2>
-<p><span class="citation">(<strong>Costa2021?</strong>)</span> genome
-report a postnatal activation of the innate immune system and an
-impairment of the adaptive immunity. For the purpose of exploring these
-results at pathway level, we will download the C7 collection of
-immunologic signature gene sets from <a href="https://www.gsea-msigdb.org/gsea/msigdb/human/collection_details.jsp#C7" class="external-link">MSigDB</a>,
+<p><span class="citation">(<a href="#ref-Costa2021"><strong>Costa2021?</strong></a>)</span> genome report a postnatal activation of the innate immune system
+and an impairment of the adaptive immunity. For the purpose of exploring these
+results at pathway level, we will download the C7 collection of immunologic
+signature gene sets from
+<a href="https://www.gsea-msigdb.org/gsea/msigdb/human/collection_details.jsp#C7" class="external-link">MSigDB</a>,
 concretely the subcollection ImmuneSigDB. Here we use the GSVA function
-<code><a href="https://rdrr.io/pkg/GSVA/man/readGMT.html" class="external-link">readGMT()</a></code>, which allow us to directly download the GMT file
-from the MSigDB database.</p>
+<code><a href="https://rdrr.io/pkg/GSVA/man/readGMT.html" class="external-link">readGMT()</a></code>, which allow us to directly download the GMT file from the MSigDB
+database.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">URL</span> <span class="op">&lt;-</span> <span class="st">"https://data.broadinstitute.org/gsea-msigdb/msigdb/release/2023.2.Hs/c7.immunesigdb.v2023.2.Hs.symbols.gmt"</span></span>
 <span><span class="va">genesets</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/GSVA/man/readGMT.html" class="external-link">readGMT</a></span><span class="op">(</span><span class="va">URL</span>, geneIdType<span class="op">=</span><span class="fu"><a href="https://rdrr.io/pkg/GSEABase/man/GeneIdentifierType-constructors.html" class="external-link">SymbolIdentifier</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p>However, for the purpose of this workshop, if we have problems
-accessing that URL, we can also load a compressed version stored in the
-workshop package, as follows.</p>
+<p>However, for the purpose of this workshop, if we have problems accessing that
+URL, we can also load a compressed version stored in the workshop package, as
+follows.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">fname</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"c7.immunesigdb.v2023.2.Hs.symbols.gmt.gz"</span>,</span>
 <span>                     package<span class="op">=</span><span class="st">"GSVAEuroBioC2024"</span><span class="op">)</span></span>
@@ -251,15 +251,15 @@ workshop package, as follows.</p>
 <span><span class="co">#&gt;     collectionType: NullCollection (1 total)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">genesets</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] 4872</span></span></code></pre></div>
-<p>The argument <code>geneIdType=SymbolIdentifier()</code> adds metadata
-so that the resulting <code>GeneSetCollection</code> object knows that
-the gene identifiers employed in this gene set collection correspond to
+<p>The argument <code>geneIdType=SymbolIdentifier()</code> adds metadata so that the
+resulting <code>GeneSetCollection</code> object knows that the gene identifiers employed
+in this gene set collection correspond to
 <a href="https://www.genenames.org" class="external-link">HUGO symbols</a>.</p>
-<p>To reduce the execution time in this workshop, we are going to select
-a subset of gene sets that are more relevant to our data. Concretely, we
-select gene sets formed by genes upregulated in innate leukocytes and
-adaptive mature lymphocytes, excluding those reported in studies on
-myeloid cells and the lupus autoimmune disease.</p>
+<p>To reduce the execution time in this workshop, we are going to select a subset
+of gene sets that are more relevant to our data. Concretely, we select gene
+sets formed by genes upregulated in innate leukocytes and adaptive mature
+lymphocytes, excluding those reported in studies on myeloid cells and the lupus
+autoimmune disease.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">innatepat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"NKCELL_VS_.+_UP"</span>, <span class="st">"MAST_CELL_VS_.+_UP"</span>,</span>
 <span>               <span class="st">"EOSINOPHIL_VS_.+_UP"</span>, <span class="st">"BASOPHIL_VS_.+_UP"</span>,</span>
@@ -282,17 +282,16 @@ myeloid cells and the lupus autoimmune disease.</p>
 <span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">genesets</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] 150</span></span></code></pre></div>
 </div>
-<div class="section level2">
-<h2 id="how-to-run-gsva">How to run GSVA<a class="anchor" aria-label="anchor" href="#how-to-run-gsva"></a>
+<div class="section level2" number="4">
+<h2 id="how-to-run-gsva">
+<span class="header-section-number">4</span> How to run GSVA<a class="anchor" aria-label="anchor" href="#how-to-run-gsva"></a>
 </h2>
-<p>A GSVA analysis has two main inputs, the molecular data (e.g., gene
-expression), and a collection of gene sets, and we run it in two steps.
-First, we should build a parameter object for the desired methodology.
-Here we use the GSVA algorithm of <span class="citation">Hänzelmann,
-Castelo, and Guinney (2013)</span> by calling the function
-<code><a href="https://rdrr.io/pkg/GSVA/man/gsvaParam-class.html" class="external-link">gsvaParam()</a></code> (see the <a href="https://bioconductor.org/packages/GSVA" class="external-link">GSVA</a> package vignette
-for other functions implementing different pathway analysis
-methods).</p>
+<p>A GSVA analysis has two main inputs, the molecular data (e.g., gene expression),
+and a collection of gene sets, and we run it in two steps. First, we should
+build a parameter object for the desired methodology. Here we use the GSVA
+algorithm of <span class="citation">Hänzelmann, Castelo, and Guinney (<a href="#ref-hanzelmann2013gsva">2013</a>)</span> by calling the function <code><a href="https://rdrr.io/pkg/GSVA/man/gsvaParam-class.html" class="external-link">gsvaParam()</a></code> (see the
+<a href="https://bioconductor.org/packages/GSVA" class="external-link">GSVA</a> package vignette for other
+functions implementing different pathway analysis methods).</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">gsvapar</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/GSVA/man/gsvaParam-class.html" class="external-link">gsvaParam</a></span><span class="op">(</span><span class="va">se</span>, <span class="va">genesets</span>, assay<span class="op">=</span><span class="st">"logCPM"</span>, minSize<span class="op">=</span><span class="fl">5</span>, maxSize<span class="op">=</span><span class="fl">300</span><span class="op">)</span></span>
 <span><span class="va">gsvapar</span></span>
@@ -322,10 +321,10 @@ methods).</p>
 <span><span class="co">#&gt; maxDiff: TRUE</span></span>
 <span><span class="co">#&gt; absRanking: FALSE</span></span>
 <span><span class="co">#&gt; sparse: TRUE</span></span></code></pre></div>
-<p>In the second step, we call the <code><a href="https://rdrr.io/pkg/GSVA/man/gsva.html" class="external-link">gsva()</a></code> function with the
-parameter object as its first argument, other arguments to this function
-control its verbosity and parellel execution through the Bioconductor
-package <a href="https://bioconductor.org/packages/BiocParallel" class="external-link">BiocParallel</a>.</p>
+<p>In the second step, we call the <code><a href="https://rdrr.io/pkg/GSVA/man/gsva.html" class="external-link">gsva()</a></code> function with the parameter object
+as its first argument, other arguments to this function control its verbosity
+and parellel execution through the Bioconductor package
+<a href="https://bioconductor.org/packages/BiocParallel" class="external-link">BiocParallel</a>.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">es</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/GSVA/man/gsva.html" class="external-link">gsva</a></span><span class="op">(</span><span class="va">gsvapar</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Mapping identifiers between gene sets and feature names.</span></span>
@@ -346,12 +345,11 @@ package <a href="https://bioconductor.org/packages/BiocParallel" class="external
 <span><span class="co">#&gt; rowData names(1): gs</span></span>
 <span><span class="co">#&gt; colnames(21): BS03 BS04 ... BS23 BS24</span></span>
 <span><span class="co">#&gt; colData names(2): FIR Sex</span></span></code></pre></div>
-<p>Because the input expression data was provided in a
-<code>SummmarizedExperiment</code> object, the output of
-<code><a href="https://rdrr.io/pkg/GSVA/man/gsva.html" class="external-link">gsva()</a></code> is an identical <code>SummarizedExperiment</code>
-object, with the exception that the one or more matrices of molecular
-data in the assay slot of the object have been replaced by a single
-matrix of GSVA enrichment scores.</p>
+<p>Because the input expression data was provided in a <code>SummmarizedExperiment</code>
+object, the output of <code><a href="https://rdrr.io/pkg/GSVA/man/gsva.html" class="external-link">gsva()</a></code> is an identical <code>SummarizedExperiment</code> object,
+with the exception that the one or more matrices of molecular data in the
+assay slot of the object have been replaced by a single matrix of GSVA
+enrichment scores.</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html" class="external-link">assayNames</a></span><span class="op">(</span><span class="va">se</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] "logCPM"</span></span>
@@ -371,34 +369,34 @@ matrix of GSVA enrichment scores.</p>
 <span><span class="co">#&gt; GSE18804_SPLEEN_MACROPHAGE_VS_COLON_TUMORAL_MACROPHAGE_UP -0.08684864</span></span>
 <span><span class="co">#&gt; GSE18804_SPLEEN_MACROPHAGE_VS_TUMORAL_MACROPHAGE_UP       -0.17536163</span></span></code></pre></div>
 </div>
-<div class="section level2">
-<h2 id="data-exploration-at-pathway-level">Data exploration at pathway level<a class="anchor" aria-label="anchor" href="#data-exploration-at-pathway-level"></a>
+<div class="section level2" number="5">
+<h2 id="data-exploration-at-pathway-level">
+<span class="header-section-number">5</span> Data exploration at pathway level<a class="anchor" aria-label="anchor" href="#data-exploration-at-pathway-level"></a>
 </h2>
 <p>We do again a data exploration, this time at pathway level. Figure
-@ref(fig:pathwaylevelmds) below, shows an MDS plot of GSVA enrichment
-scores. We can see again that most variability is driven by the FIR
-phenotype, but this time the sex phenotype does not seem to affect
-sample dissimilarity at pathway level, probably because the collection
-of gene sets we have used does not include gene sets formed by genes
-with sex-specific expression.</p>
+<a href="#fig:pathwaylevelmds">5.1</a> below, shows an MDS plot of GSVA enrichment scores.
+We can see again that most variability is driven by the FIR phenotype, but this
+time the sex phenotype does not seem to affect sample dissimilarity at pathway
+level, probably because the collection of gene sets we have used does not
+include gene sets formed by genes with sex-specific expression.</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/limma/man/plotMDS.html" class="external-link">plotMDS</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html" class="external-link">assay</a></span><span class="op">(</span><span class="va">es</span><span class="op">)</span>, col<span class="op">=</span><span class="va">fircolor</span><span class="op">[</span><span class="va">es</span><span class="op">$</span><span class="va">FIR</span><span class="op">]</span>, pch<span class="op">=</span><span class="va">sexpch</span><span class="op">[</span><span class="va">es</span><span class="op">$</span><span class="va">Sex</span><span class="op">]</span><span class="op">)</span></span></code></pre></div>
 <div class="figure" style="text-align: center">
-<img src="bulkRNAseq_files/figure-html/pathwaylevelmds-1.png" alt="Pathway-level exploration. Multidimensional scaling (MDS) plot at pathway level. Red corresponds to `FIR=yes` and blue to `FIR=no`, while circles and squares correspond, respectively, to female and male neonates." width="400"><p class="caption">
-Pathway-level exploration. Multidimensional scaling (MDS) plot at
-pathway level. Red corresponds to <code>FIR=yes</code> and blue to
-<code>FIR=no</code>, while circles and squares correspond, respectively,
-to female and male neonates.
+<span style="display:block;" id="fig:pathwaylevelmds"></span>
+<img src="bulkRNAseq_files/figure-html/pathwaylevelmds-1.png" alt="Pathway-level exploration. Multidimensional scaling (MDS) plot at pathway level. Red corresponds to `FIR=yes` and blue to `FIR=no`, while circles and squares correspond, respectively, to female and male neonates."><p class="caption">
+Figure 5.1: Pathway-level exploration. Multidimensional scaling (MDS) plot at pathway level. Red corresponds to <code>FIR=yes</code> and blue to <code>FIR=no</code>, while circles and squares correspond, respectively, to female and male neonates.
 </p>
 </div>
 </div>
-<div class="section level2">
-<h2 id="differential-expression-at-pathway-level">Differential expression at pathway level<a class="anchor" aria-label="anchor" href="#differential-expression-at-pathway-level"></a>
+<div class="section level2" number="6">
+<h2 id="differential-expression-at-pathway-level">
+<span class="header-section-number">6</span> Differential expression at pathway level<a class="anchor" aria-label="anchor" href="#differential-expression-at-pathway-level"></a>
 </h2>
-<p>One of the most common pathway-centric analyses is a differential
-expression analysis at pathway level. We conduct such an analysis using
-the Bioconductor packages <a href="https://bioconductor.org/packages/limma" class="external-link">limma</a> and <a href="https://bioconductor.org/packages/sva" class="external-link">sva</a>, the latter to
-adjust for sample heterogeneity using surrogate variable analysis <span class="citation">(Leek and Storey 2007)</span>.</p>
+<p>One of the most common pathway-centric analyses is a differential expression
+analysis at pathway level. We conduct such an analysis using the Bioconductor
+packages <a href="https://bioconductor.org/packages/limma" class="external-link">limma</a> and
+<a href="https://bioconductor.org/packages/sva" class="external-link">sva</a>, the latter to adjust for sample
+heterogeneity using surrogate variable analysis <span class="citation">(<a href="#ref-leek2007capturing">Leek and Storey 2007</a>)</span>.</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">sva</span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://bioinf.wehi.edu.au/limma/" class="external-link">limma</a></span><span class="op">)</span></span>
@@ -424,34 +422,30 @@ adjust for sample heterogeneity using surrogate variable analysis <span class="c
 <span><span class="co">#&gt; Down            24     12  38  40  33  54</span></span>
 <span><span class="co">#&gt; NotSig         118     99  65  78  70  93</span></span>
 <span><span class="co">#&gt; Up               8     39  47  32  47   3</span></span></code></pre></div>
-<p>As shown in Figure @ref(fig:esstdevxgssize) below, we may observe
-that GSVA scores have higher precision for larger gene sets. GSVA scores
-derived from gene sets that include small sizes (our smallest gene set
-here is about 100 genes), and from less heterogenous expression data,
-show such a trend more clearly.</p>
+<p>As shown in Figure <a href="#fig:esstdevxgssize">6.1</a> below, we may observe that GSVA
+scores have higher precision for larger gene sets. GSVA scores derived from
+gene sets that include small sizes (our smallest gene set here is about
+100 genes), and from less heterogenous expression data, show such a trend
+more clearly.</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">gssizes</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/GSVA/man/geneSets.html" class="external-link">geneSetSizes</a></span><span class="op">(</span><span class="va">es</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="va">gssizes</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="va">fit.eb</span><span class="op">$</span><span class="va">sigma</span><span class="op">)</span>, xlab<span class="op">=</span><span class="st">"Sqrt(gene sets sizes)"</span>,</span>
 <span>          ylab<span class="op">=</span><span class="st">"Sqrt(standard deviation)"</span>, las<span class="op">=</span><span class="fl">1</span>, pch<span class="op">=</span><span class="st">"."</span>, cex<span class="op">=</span><span class="fl">4</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/lines.html" class="external-link">lines</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/lowess.html" class="external-link">lowess</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="va">gssizes</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="va">fit.eb</span><span class="op">$</span><span class="va">sigma</span><span class="op">)</span><span class="op">)</span>, col<span class="op">=</span><span class="st">"red"</span>, lwd<span class="op">=</span><span class="fl">2</span><span class="op">)</span></span></code></pre></div>
 <div class="figure" style="text-align: center">
-<img src="bulkRNAseq_files/figure-html/esstdevxgssize-1.png" alt="Pathway-level differential expression analysis. Residual standard deviation of GSVA scores as a function of gene set size. Larger gene sets tend to have higher precision." width="400"><p class="caption">
-Pathway-level differential expression analysis. Residual standard
-deviation of GSVA scores as a function of gene set size. Larger gene
-sets tend to have higher precision.
+<span style="display:block;" id="fig:esstdevxgssize"></span>
+<img src="bulkRNAseq_files/figure-html/esstdevxgssize-1.png" alt="Pathway-level differential expression analysis. Residual standard deviation of GSVA scores as a function of gene set size. Larger gene sets tend to have higher precision."><p class="caption">
+Figure 6.1: Pathway-level differential expression analysis. Residual standard deviation of GSVA scores as a function of gene set size. Larger gene sets tend to have higher precision.
 </p>
 </div>
-<p>When this trend is present, we can use improve the statistical power
-to detect differentially expressed (DE) pathways by using the
-limma-trend pipeline. More concretely, we should call the
-<code><a href="https://rdrr.io/pkg/limma/man/ebayes.html" class="external-link">eBayes()</a></code> function with the argument <code>trend=x</code>,
-where <code>x</code> is a vector of values corresponding to the sizes of
-the gene sets. As we can see in the previous code chunk, these size
-values can be easily obtained using GSVA’s function
-<code><a href="https://rdrr.io/pkg/GSVA/man/geneSets.html" class="external-link">geneSetSizes()</a></code> on the output of the <code><a href="https://rdrr.io/pkg/GSVA/man/gsva.html" class="external-link">gsva()</a></code>
-function. Here below, we call again <code><a href="https://rdrr.io/pkg/limma/man/ebayes.html" class="external-link">eBayes()</a></code> using the
-<code>trend</code> parameter. In this case, however, the change in the
-number of DE pathway is negligible.</p>
+<p>When this trend is present, we can use improve the statistical power to detect
+differentially expressed (DE) pathways by using the limma-trend pipeline. More
+concretely, we should call the <code><a href="https://rdrr.io/pkg/limma/man/ebayes.html" class="external-link">eBayes()</a></code> function with the argument <code>trend=x</code>,
+where <code>x</code> is a vector of values corresponding to the sizes of the gene sets.
+As we can see in the previous code chunk, these size values can be easily
+obtained using GSVA’s function <code><a href="https://rdrr.io/pkg/GSVA/man/geneSets.html" class="external-link">geneSetSizes()</a></code> on the output of the <code><a href="https://rdrr.io/pkg/GSVA/man/gsva.html" class="external-link">gsva()</a></code>
+function. Here below, we call again <code><a href="https://rdrr.io/pkg/limma/man/ebayes.html" class="external-link">eBayes()</a></code> using the <code>trend</code> parameter. In
+this case, however, the change in the number of DE pathway is negligible.</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">fit.eb.trend</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/limma/man/ebayes.html" class="external-link">eBayes</a></span><span class="op">(</span><span class="va">fit</span>, trend<span class="op">=</span><span class="va">gssizes</span><span class="op">)</span></span>
 <span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/limma/man/decideTests.html" class="external-link">decideTests</a></span><span class="op">(</span><span class="va">fit.eb.trend</span><span class="op">)</span></span>
@@ -473,13 +467,13 @@ number of DE pathway is negligible.</p>
 <span><span class="co">#&gt; [4] "GSE36392_EOSINOPHIL_VS_NEUTROPHIL_IL25_TREATED_LUNG_UP"</span></span>
 <span><span class="co">#&gt; [5] "GSE3982_NEUTROPHIL_VS_TH2_UP"                          </span></span>
 <span><span class="co">#&gt; [6] "GSE22886_NEUTROPHIL_VS_DC_UP"</span></span></code></pre></div>
-<p>Figure @ref(fig:heatmapdepwys) below shows a heatmap of the GSVA
-enrichment scores of the subset of the 51 DE pathways, clustered by
-pathway and sample. We may observe that, consistently with the findings
-of <span class="citation">Costa et al. (2021)</span>, FIR-affected
-neonates display an enrichment of upregulated pathways associated with
-innate immunity, and an enrichment of downregulated pathways associated
-with adaptive immunity, with respect to FIR-unaffected neonates.</p>
+<p>Figure <a href="#fig:heatmapdepwys">6.2</a> below shows a heatmap of the GSVA enrichment
+scores of the subset of the 51 DE pathways, clustered by
+pathway and sample. We may observe that, consistently with the findings of
+<span class="citation">Costa et al. (<a href="#ref-costa2021genome">2021</a>)</span>, FIR-affected neonates display an enrichment of upregulated
+pathways associated with innate immunity, and an enrichment of downregulated
+pathways associated with adaptive immunity, with respect to
+FIR-unaffected neonates.</p>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">DEpwys_es</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html" class="external-link">assay</a></span><span class="op">(</span><span class="va">es</span><span class="op">[</span><span class="va">DEpwys</span>, <span class="op">]</span><span class="op">)</span></span>
 <span><span class="va">sam_col_map</span> <span class="op">&lt;-</span> <span class="va">fircolor</span><span class="op">[</span><span class="va">es</span><span class="op">$</span><span class="va">FIR</span><span class="op">]</span></span>
@@ -499,15 +493,15 @@ with adaptive immunity, with respect to FIR-unaffected neonates.</p>
 <span>        scale<span class="op">=</span><span class="st">"row"</span>, Colv<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/stats/dendrogram.html" class="external-link">as.dendrogram</a></span><span class="op">(</span><span class="va">sampleClust</span><span class="op">)</span>,</span>
 <span>        Rowv<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/stats/dendrogram.html" class="external-link">as.dendrogram</a></span><span class="op">(</span><span class="va">gsetClust</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <div class="figure" style="text-align: center">
-<img src="bulkRNAseq_files/figure-html/heatmapdepwys-1.png" alt="Pathway-level signature of FIR. Heatmap of GSVA enrichment scores from pathways being called DE with 5% FDR between FIR-affected and unaffected neonates." width="1000"><p class="caption">
-Pathway-level signature of FIR. Heatmap of GSVA enrichment scores from
-pathways being called DE with 5% FDR between FIR-affected and unaffected
-neonates.
+<span style="display:block;" id="fig:heatmapdepwys"></span>
+<img src="bulkRNAseq_files/figure-html/heatmapdepwys-1.png" alt="Pathway-level signature of FIR. Heatmap of GSVA enrichment scores from pathways being called DE with 5% FDR between FIR-affected and unaffected neonates."><p class="caption">
+Figure 6.2: Pathway-level signature of FIR. Heatmap of GSVA enrichment scores from pathways being called DE with 5% FDR between FIR-affected and unaffected neonates.
 </p>
 </div>
 </div>
-<div class="section level2">
-<h2 id="session-information">Session information<a class="anchor" aria-label="anchor" href="#session-information"></a>
+<div class="section level2" number="7">
+<h2 id="session-information">
+<span class="header-section-number">7</span> Session information<a class="anchor" aria-label="anchor" href="#session-information"></a>
 </h2>
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/sessionInfo.html" class="external-link">sessionInfo</a></span><span class="op">(</span><span class="op">)</span></span>
@@ -546,7 +540,6 @@ neonates.
 <span><span class="co">#&gt; [17] GenomeInfoDb_1.41.1         IRanges_2.39.2             </span></span>
 <span><span class="co">#&gt; [19] S4Vectors_0.43.2            BiocGenerics_0.51.0        </span></span>
 <span><span class="co">#&gt; [21] MatrixGenerics_1.17.0       matrixStats_1.3.0          </span></span>
-<span><span class="co">#&gt; [23] BiocStyle_2.33.1           </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; loaded via a namespace (and not attached):</span></span>
 <span><span class="co">#&gt;  [1] blob_1.2.4                  Biostrings_2.73.1          </span></span>
@@ -561,54 +554,42 @@ neonates.
 <span><span class="co">#&gt; [19] S4Arrays_1.5.7              htmlwidgets_1.6.4          </span></span>
 <span><span class="co">#&gt; [21] bit_4.0.5                   DelayedArray_0.31.11       </span></span>
 <span><span class="co">#&gt; [23] abind_1.4-5                 HDF5Array_1.33.6           </span></span>
-<span><span class="co">#&gt; [25] desc_1.4.3                  grid_4.4.1                 </span></span>
-<span><span class="co">#&gt; [27] beachmat_2.21.5             xtable_1.8-4               </span></span>
-<span><span class="co">#&gt; [29] edgeR_4.3.13                Rhdf5lib_1.27.0            </span></span>
-<span><span class="co">#&gt; [31] cli_3.6.3                   rmarkdown_2.28             </span></span>
-<span><span class="co">#&gt; [33] crayon_1.5.3                ragg_1.3.2                 </span></span>
-<span><span class="co">#&gt; [35] httr_1.4.7                  rjson_0.2.22               </span></span>
-<span><span class="co">#&gt; [37] DBI_1.2.3                   cachem_1.1.0               </span></span>
-<span><span class="co">#&gt; [39] rhdf5_2.49.0                splines_4.4.1              </span></span>
-<span><span class="co">#&gt; [41] zlibbioc_1.51.1             parallel_4.4.1             </span></span>
-<span><span class="co">#&gt; [43] BiocManager_1.30.25         XVector_0.45.0             </span></span>
-<span><span class="co">#&gt; [45] vctrs_0.6.5                 Matrix_1.7-0               </span></span>
-<span><span class="co">#&gt; [47] jsonlite_1.8.8              bookdown_0.40              </span></span>
-<span><span class="co">#&gt; [49] BiocSingular_1.21.2         bit64_4.0.5                </span></span>
-<span><span class="co">#&gt; [51] irlba_2.3.5.1               systemfonts_1.1.0          </span></span>
-<span><span class="co">#&gt; [53] magick_2.8.4                locfit_1.5-9.10            </span></span>
-<span><span class="co">#&gt; [55] jquerylib_0.1.4             pkgdown_2.1.0              </span></span>
-<span><span class="co">#&gt; [57] codetools_0.2-20            UCSC.utils_1.1.0           </span></span>
-<span><span class="co">#&gt; [59] ScaledMatrix_1.13.0         htmltools_0.5.8.1          </span></span>
-<span><span class="co">#&gt; [61] rhdf5filters_1.17.0         GenomeInfoDbData_1.2.12    </span></span>
-<span><span class="co">#&gt; [63] R6_2.5.1                    textshaping_0.4.0          </span></span>
-<span><span class="co">#&gt; [65] sparseMatrixStats_1.17.2    evaluate_0.24.0            </span></span>
-<span><span class="co">#&gt; [67] lattice_0.22-6              highr_0.11                 </span></span>
-<span><span class="co">#&gt; [69] png_0.1-8                   SpatialExperiment_1.15.1   </span></span>
-<span><span class="co">#&gt; [71] memoise_2.0.1               bslib_0.8.0                </span></span>
-<span><span class="co">#&gt; [73] Rcpp_1.0.13                 SparseArray_1.5.31         </span></span>
-<span><span class="co">#&gt; [75] xfun_0.47                   pkgconfig_2.0.3            </span></span>
-<span><span class="co">#&gt; [77] fs_1.6.4</span></span></code></pre></div>
+<span><span class="co">#&gt; [25] grid_4.4.1                  beachmat_2.21.5            </span></span>
+<span><span class="co">#&gt; [27] xtable_1.8-4                edgeR_4.3.13               </span></span>
+<span><span class="co">#&gt; [29] Rhdf5lib_1.27.0             cli_3.6.3                  </span></span>
+<span><span class="co">#&gt; [31] rmarkdown_2.28              crayon_1.5.3               </span></span>
+<span><span class="co">#&gt; [33] httr_1.4.7                  rjson_0.2.22               </span></span>
+<span><span class="co">#&gt; [35] DBI_1.2.3                   cachem_1.1.0               </span></span>
+<span><span class="co">#&gt; [37] rhdf5_2.49.0                zlibbioc_1.51.1            </span></span>
+<span><span class="co">#&gt; [39] splines_4.4.1               parallel_4.4.1             </span></span>
+<span><span class="co">#&gt; [41] XVector_0.45.0              vctrs_0.6.5                </span></span>
+<span><span class="co">#&gt; [43] Matrix_1.7-0                jsonlite_1.8.8             </span></span>
+<span><span class="co">#&gt; [45] bookdown_0.40               BiocSingular_1.21.2        </span></span>
+<span><span class="co">#&gt; [47] bit64_4.0.5                 irlba_2.3.5.1              </span></span>
+<span><span class="co">#&gt; [49] magick_2.8.4                locfit_1.5-9.10            </span></span>
+<span><span class="co">#&gt; [51] jquerylib_0.1.4             codetools_0.2-20           </span></span>
+<span><span class="co">#&gt; [53] UCSC.utils_1.1.0            ScaledMatrix_1.13.0        </span></span>
+<span><span class="co">#&gt; [55] htmltools_0.5.8.1           rhdf5filters_1.17.0        </span></span>
+<span><span class="co">#&gt; [57] GenomeInfoDbData_1.2.12     R6_2.5.1                   </span></span>
+<span><span class="co">#&gt; [59] sparseMatrixStats_1.17.2    evaluate_0.24.0            </span></span>
+<span><span class="co">#&gt; [61] lattice_0.22-6              highr_0.11                 </span></span>
+<span><span class="co">#&gt; [63] png_0.1-8                   SpatialExperiment_1.15.1   </span></span>
+<span><span class="co">#&gt; [65] memoise_2.0.1               bslib_0.8.0                </span></span>
+<span><span class="co">#&gt; [67] Rcpp_1.0.13                 SparseArray_1.5.31         </span></span>
+<span><span class="co">#&gt; [69] xfun_0.47                   pkgconfig_2.0.3</span></span></code></pre></div>
 </div>
 <div class="section level2">
-<h2 class="unnumbered" id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
+<h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
 </h2>
 <div id="refs" class="references csl-bib-body hanging-indent" entry-spacing="0">
 <div id="ref-costa2021genome" class="csl-entry">
-Costa, Daniel, Núria Bonet, Amanda Solé, José Manuel González de
-Aledo-Castillo, Eduard Sabidó, Ferran Casals, Carlota Rovira, et al.
-2021. <span>“Genome-Wide Postnatal Changes in Immunity Following Fetal
-Inflammatory Response.”</span> <em>The FEBS Journal</em> 288 (7):
-2311–31. <a href="https://doi.org/10.1111/febs.15578" class="external-link">https://doi.org/10.1111/febs.15578</a>.
+Costa, Daniel, Núria Bonet, Amanda Solé, José Manuel González de Aledo-Castillo, Eduard Sabidó, Ferran Casals, Carlota Rovira, et al. 2021. <span>“Genome-Wide Postnatal Changes in Immunity Following Fetal Inflammatory Response.”</span> <em>The FEBS Journal</em> 288 (7): 2311–31. <a href="https://doi.org/10.1111/febs.15578" class="external-link">https://doi.org/10.1111/febs.15578</a>.
 </div>
 <div id="ref-hanzelmann2013gsva" class="csl-entry">
-Hänzelmann, Sonja, Robert Castelo, and Justin Guinney. 2013.
-<span>“GSVA: Gene Set Variation Analysis for Microarray and RNA-Seq
-Data.”</span> <em>BMC Bioinformatics</em> 14: 1–15. <a href="https://doi.org/10.1186/1471-2105-14-7" class="external-link">https://doi.org/10.1186/1471-2105-14-7</a>.
+Hänzelmann, Sonja, Robert Castelo, and Justin Guinney. 2013. <span>“GSVA: Gene Set Variation Analysis for Microarray and RNA-Seq Data.”</span> <em>BMC Bioinformatics</em> 14: 1–15. <a href="https://doi.org/10.1186/1471-2105-14-7" class="external-link">https://doi.org/10.1186/1471-2105-14-7</a>.
 </div>
 <div id="ref-leek2007capturing" class="csl-entry">
-Leek, Jeffrey T, and John D Storey. 2007. <span>“Capturing Heterogeneity
-in Gene Expression Studies by Surrogate Variable Analysis.”</span>
-<em>PLoS Genetics</em> 3 (9): e161. <a href="https://doi.org/10.1371/journal.pgen.0030161" class="external-link">https://doi.org/10.1371/journal.pgen.0030161</a>.
+Leek, Jeffrey T, and John D Storey. 2007. <span>“Capturing Heterogeneity in Gene Expression Studies by Surrogate Variable Analysis.”</span> <em>PLoS Genetics</em> 3 (9): e161. <a href="https://doi.org/10.1371/journal.pgen.0030161" class="external-link">https://doi.org/10.1371/journal.pgen.0030161</a>.
 </div>
 </div>
 </div>
@@ -616,7 +597,9 @@ in Gene Expression Studies by Surrogate Variable Analysis.”</span>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
 
-      </div>
+        <nav id="toc" data-toggle="toc"><h2 data-toc-skip>Contents</h2>
+    </nav>
+</div>
 
 </div>
 
