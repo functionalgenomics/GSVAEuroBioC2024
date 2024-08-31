@@ -19,13 +19,36 @@ bibliography: GSVAEuroBioC2024.bib
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
-  comment = "#>"
+  comment = "#>",
+  fig.align="center",
+  fig.wide=TRUE
 )
+
+## from http://yihui.name/knitr/hooks#chunk_hooks
+knitr::knit_hooks$set(small.mar=function(before, options, envir) {
+                                  ## smaller margin on top and right
+                                  if (before)
+                                    par(mar=c(4, 5, 1, 1))
+})
 ```
+
 
 # Importing bulk RNA-seq data into a `SummarizedExperiment` object
 
-Here we will use the bulk RNA-seq data from [@costa2021genome].
+We will illustrate how to use GSVA with the bulk RNA-seq data from
+[@costa2021genome]. This dataset consists of stranded 2x75nt paired-end
+reads sequenced from whole blood stored in
+[dried blood spots (DBS)](https://en.wikipedia.org/wiki/Dried_blood_spot).
+@costa2021genome generated these data from 21 DBS samples of extremely
+preterm newborns (neonates born before the 28th week of gestation), where 10 of
+them had been exposed to a fetal inflammatory response (FIR) before birth.
+
+We start by building a
+[SummarizedExperiment](https://bioconductor.org/packages/SummarizedExperiment)
+object from these RNA-seq data. A corresponding matrix of normalized log-CPM
+units of expression is stored as part of this workshop package, where
+lowly-expressed genes have been already filtered out. We should load these data
+as follows.
 
 ```{r}
 fname <- "CostaEtAl2021_FIRDBS_bulkRNAseq_data_ENTREZID.csv.gz"
@@ -34,60 +57,270 @@ fname <- system.file(file.path("extdata", fname),
 expr <- read.csv(fname, row.names=1)
 dim(expr)
 expr[1:5, 1:7]
+```
+Note that gene (row) identifiers correspond to
+[NCBI Entrez gene identifiers](https://www.ncbi.nlm.nih.gov/gene), while sample
+(column) identifiers correspond to anonymized neonates. This workshop package
+also stores phenotype data describing the exposure to FIR and the sex of the
+neonate.
+
+```{r}
 fname <- "CostaEtAl2021_FIRDBS_phenotype_data.csv.gz"
 fname <- system.file(file.path("extdata", fname),
                      package="GSVAEuroBioC2024")
 pdat <- read.csv(fname, row.names=1, stringsAsFactors=TRUE)
 dim(pdat)
 head(pdat)
+```
+We can observe that we have expression profiles for all four possible
+combinations of FIR exposure and sex.
+
+```{r}
 table(pdat$FIR, pdat$Sex)
 ```
+We finally build the `SummarizedExperiment` object using the
+`SummarizedExperiment()` constructor function from the
+[SummarizedExperiment](https://bioconductor.org/packages/SummarizedExperiment)
+package. Prior to that call, we make sure that newborn identifiers in
+the columns of the expression data are identical to the row identifiers
+in the phenotype data. If this were not the case, then we must have made
+some mistake when loading the CSV files into the `data.frame` objects
+`expr` and `pdat`.
 
-Build a `SummarizedExperiment` object.
-
-```{r, message=FALSE}
-library(GSEABase)
+```{r, message=FALSE, warning=FALSE}
 library(SummarizedExperiment)
-library(GSVA)
 
-stopifnot(all(colnames(expr) == rownames(pdat))) ## QC
+## QC, make sure this line gives no error
+stopifnot(all(colnames(expr) == rownames(pdat)))
+
 se <- SummarizedExperiment(assay=list(logCPM=as.matrix(expr)),
                            colData=pdat)
-gsvaAnnotation(se) <- EntrezIdentifier("org.Hs.eg.db")
-
 se
+```
+To facilitate later one the automatic mapping of gene identifiers between
+gene sets and RNA-seq data, we should add annotation metadata to the
+`SummarizedExperiment` object as follows.
+
+
+```{r, message=FALSE, warning=FALSE}
+library(GSEABase)
+library(GSVA)
+
+gsvaAnnotation(se) <- EntrezIdentifier("org.Hs.eg.db")
+```
+
+# Data exploration at gene level
+
+We do a brief data exploration at gene level, to have a sense of what can
+we expect in our analysis at pathway level. Figure \@ref(fig:genelevelmds)
+below shows the projection in two dimensions of sample dissmilarity by means
+of a
+[multidimensional scaling (MDS)](https://en.wikipedia.org/wiki/Multidimensional_scaling)
+plot, produced with the `plotMDS()` function of the Bioconductor package
+[limma](https://bioconductor.org/packages/limma). We can observe that sample
+dissimilarity in RNA expression from DBS samples is driven by the FIR and sex
+phenotypes, as shown in Fig. 1C of @costa2021genome.
+
+```{r genelevelmds, message=FALSE, warning=FALSE, echo=TRUE, small.mar=TRUE, fig.height=4, fig.width=4, dpi=100, fig.cap="Gene-level exploration. Multidimensional scaling (MDS) plot at gene level. Red corresponds to `FIR=yes` and blue to `FIR=no`, while circles and squares correspond, respectively, to female and male neonates."}
+library(limma)
+
+fircolor <- c(no="skyblue", yes="darkred")
+sexpch <- c(female=19, male=15)
+plotMDS(assay(se), col=fircolor[se$FIR], pch=sexpch[se$Sex])
 ```
 
 # Importing gene sets
 
-```{r, message=FALSE}
+@Costa2021 genome report a postnatal activation of the innate immune system
+and an impairment of the adaptive immunity. For the purpose of exploring these
+results at pathway level, we will download the C7 collection of immunologic
+signature gene sets from
+[MSigDB](https://www.gsea-msigdb.org/gsea/msigdb/human/collection_details.jsp#C7),
+concretely the subcollection ImmuneSigDB. Here we use the GSVA function
+`readGMT()`, which allow us to directly download the GMT file from the MSigDB
+database.
+
+```{r, eval=FALSE, message=FALSE}
 URL <- "https://data.broadinstitute.org/gsea-msigdb/msigdb/release/2023.2.Hs/c7.immunesigdb.v2023.2.Hs.symbols.gmt"
 genesets <- readGMT(URL, geneIdType=SymbolIdentifier())
+```
+However, for the purpose of this workshop, if we have problems accessing that
+URL, we can also load a compressed version stored in the workshop package, as
+follows.
+
+```{r}
+fname <- system.file("extdata", "c7.immunesigdb.v2023.2.Hs.symbols.gmt.gz",
+                     package="GSVAEuroBioC2024")
+genesets <- readGMT(fname, geneIdType=SymbolIdentifier())
 genesets
+length(genesets)
+```
+The argument `geneIdType=SymbolIdentifier()` adds metadata so that the
+resulting `GeneSetCollection` object knows that the gene identifiers employed
+in this gene set collection correspond to
+[HUGO symbols](https://www.genenames.org).
+
+To reduce the execution time in this workshop, we are going to select a subset
+of gene sets that are more relevant to our data. Concretely, we select gene
+sets formed by genes upregulated in innate leukocytes and adaptive mature
+lymphocytes, excluding those reported in studies on myeloid cells and the lupus
+autoimmune disease.
+
+```{r}
+innatepat <- c("NKCELL_VS_.+_UP", "MAST_CELL_VS_.+_UP",
+               "EOSINOPHIL_VS_.+_UP", "BASOPHIL_VS_.+_UP",
+               "MACROPHAGE_VS_.+_UP", "NEUTROPHIL_VS_.+_UP")
+innatepat <- paste(innatepat, collapse="|")
+innategsets <- names(genesets)[grep(innatepat, names(genesets))]
+length(innategsets)
+
+adaptivepat <- c("CD4_TCELL_VS_.+_UP", "CD8_TCELL_VS_.+_UP", "BCELL_VS_.+_UP")
+adaptivepat <- paste(adaptivepat, collapse="|")
+adaptivegsets <- names(genesets)[grep(adaptivepat, names(genesets))]
+excludepat <- c("NAIVE", "LUPUS", "MYELOID")
+excludepat <- paste(excludepat, collapse="|")
+adaptivegsets <- adaptivegsets[-grep(excludepat, adaptivegsets)]
+length(adaptivegsets)
+
+genesets <- genesets[c(innategsets, adaptivegsets)]
+length(genesets)
 ```
 
 # How to run GSVA
+
+A GSVA analysis has two main inputs, the molecular data (e.g., gene expression),
+and a collection of gene sets, and we run it in two steps. First, we should
+build a parameter object for the desired methodology. Here we use the GSVA
+algorithm of @hanzelmann2013gsva by calling the function `gsvaParam()` (see the
+[GSVA](https://bioconductor.org/packages/GSVA) package vignette for other
+functions implementing different pathway analysis methods).
 
 ```{r}
 gsvapar <- gsvaParam(se, genesets, assay="logCPM", minSize=5, maxSize=300)
 gsvapar
 ```
+In the second step, we call the `gsva()` function with the parameter object
+as its first argument, other arguments to this function control its verbosity
+and parellel execution through the Bioconductor package
+[BiocParallel](https://bioconductor.org/packages/BiocParallel).
 
-```{r}
+```{r, message=FALSE}
 es <- gsva(gsvapar)
 es
+```
+Because the input expression data was provided in a `SummmarizedExperiment`
+object, the output of `gsva()` is an identical `SummarizedExperiment` object,
+with the exception that the one or more matrices of molecular data in the
+assay slot of the object have been replaced by a single matrix of GSVA
+enrichment scores.
+
+```{r}
+assayNames(se)
+assayNames(es)
+assay(es)[1:3, 1:3]
+```
+
+# Data exploration at pathway level
+
+We do again a data exploration, this time at pathway level. Figure
+\@ref(fig:pathwaylevelmds) below, shows an MDS plot of GSVA enrichment scores.
+We can see again that most variability is driven by the FIR phenotype, but this
+time the sex phenotype does not seem to affect sample dissimilarity at pathway
+level, probably because the collection of gene sets we have used does not
+include gene sets formed by genes with sex-specific expression.
+
+```{r pathwaylevelmds, message=FALSE, warning=FALSE, echo=TRUE, small.mar=TRUE, fig.height=4, fig.width=4, dpi=100, fig.cap="Pathway-level exploration. Multidimensional scaling (MDS) plot at pathway level. Red corresponds to `FIR=yes` and blue to `FIR=no`, while circles and squares correspond, respectively, to female and male neonates."}
+plotMDS(assay(es), col=fircolor[es$FIR], pch=sexpch[es$Sex])
 ```
 
 # Differential expression at pathway level
 
-```{r, message=FALSE}
+One of the most common pathway-centric analyses is a differential expression
+analysis at pathway level. We conduct such an analysis using the Bioconductor
+packages [limma](https://bioconductor.org/packages/limma) and
+[sva](https://bioconductor.org/packages/sva), the latter to adjust for sample
+heterogeneity using surrogate variable analysis [@leek2007capturing].
+
+```{r, message=FALSE, warning=FALSE}
+library(sva)
 library(limma)
 
-mod <- model.matrix(~ FIR + Sex, colData(es))
+## build design matrix of the model to which we fit the data
+mod <- model.matrix(~ FIR, colData(es))
+## build design matrix of the corresponding null model
+mod0 <- model.matrix(~ 1, colData(es))
+## estimate surrogate variables (SVs) with SVA
+sv <- sva(assay(es), mod, mod0)
+## add SVs to the design matrix of the model of interest
+mod <- cbind(mod, sv$sv)
+## fit linear models
 fit <- lmFit(assay(es), mod)
-fit <- eBayes(fit)
-res <- decideTests(fit)
+## calculate moderated t-statistics using the robust regime
+fit.eb <- eBayes(fit)
+## summarize the extent of differential expression at 5% FDR
+res <- decideTests(fit.eb)
 summary(res)
+```
+As shown in Figure \@ref(fig:esstdevxgssize) below, we may observe that GSVA
+scores have higher precision for larger gene sets. GSVA scores derived from
+gene sets that include small sizes (our smallest gene set here is about
+100 genes), and from less heterogenous expression data, show such a trend
+more clearly.
+
+```{r esstdevxgssize, message=FALSE, warning=FALSE, echo=TRUE, small.mar=TRUE, fig.height=4, fig.width=4, dpi=100, fig.cap="Pathway-level differential expression analysis. Residual standard deviation of GSVA scores as a function of gene set size. Larger gene sets tend to have higher precision."}
+gssizes <- geneSetSizes(es)
+plot(sqrt(gssizes), sqrt(fit.eb$sigma), xlab="Sqrt(gene sets sizes)",
+          ylab="Sqrt(standard deviation)", las=1, pch=".", cex=4)
+lines(lowess(sqrt(gssizes), sqrt(fit.eb$sigma)), col="red", lwd=2)
+```
+When this trend is present, we can use improve the statistical power to detect
+differentially expressed (DE) pathways by using the limma-trend pipeline. More
+concretely, we should call the `eBayes()` function with the argument `trend=x`,
+where `x` is a vector of values corresponding to the sizes of the gene sets.
+As we can see in the previous code chunk, these size values can be easily
+obtained using GSVA's function `geneSetSizes()` on the output of the `gsva()`
+function. Here below, we call again `eBayes()` using the `trend` parameter. In
+this case, however, the change in the number of DE pathway is negligible.
+
+```{r}
+fit.eb.trend <- eBayes(fit, trend=gssizes)
+res <- decideTests(fit.eb.trend)
+summary(res)
+```
+We can select DE pathways with FDR < 5% as follows.
+
+```{r}
+tt <- topTable(fit.eb.trend, coef=2, n=Inf)
+DEpwys <- rownames(tt)[tt$adj.P.Val <= 0.05]
+length(DEpwys)
+head(DEpwys)
+```
+Figure \@ref(fig:heatmapdepwys) below shows a heatmap of the GSVA enrichment
+scores of the subset of the `r length(DEpwys)` DE pathways, clustered by
+pathway and sample. We may observe that, consistently with the findings of
+@costa2021genome, FIR-affected neonates display an enrichment of upregulated
+pathways associated with innate immunity, and an enrichment of downregulated
+pathways associated with adaptive immunity, with respect to
+FIR-unaffected neonates.
+
+```{r heatmapdepwys, message=FALSE, warning=FALSE, echo=TRUE, fig.height=8, fig.width=10, dpi=100, fig.cap="Pathway-level signature of FIR. Heatmap of GSVA enrichment scores from pathways being called DE with 5% FDR between FIR-affected and unaffected neonates."}
+DEpwys_es <- assay(es[DEpwys, ])
+sam_col_map <- fircolor[es$FIR]
+names(sam_col_map) <- colnames(DEpwys_es)
+sampleClust <- hclust(as.dist(1-cor(DEpwys_es, method="spearman")),
+                      method="complete")
+gsetClust <- hclust(as.dist(1-cor(t(DEpwys_es), method="pearson")),
+                    method="complete")
+labrow <- rownames(DEpwys_es)
+mask <- rownames(DEpwys_es) %in% innategsets
+labrow[mask] <- paste("(INNATE)", labrow[mask], sep="_")
+mask <- rownames(DEpwys_es) %in% adaptivegsets
+labrow[mask] <- paste("(ADAPTIVE)", labrow[mask], sep="_")
+labrow <- gsub("_", " ", gsub("GSE[0-9]+_", "", labrow))
+heatmap(DEpwys_es, ColSideColors=fircolor[es$FIR], xlab="Samples",
+        ylab="Pathways", margins=c(2, 20), labCol="", labRow=labrow,
+        scale="row", Colv=as.dendrogram(sampleClust),
+        Rowv=as.dendrogram(gsetClust))
 ```
 
 # Session information
