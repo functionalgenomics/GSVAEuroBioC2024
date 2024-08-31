@@ -8,11 +8,11 @@ author:
     affiliation: Dept. of Medicine and Life Sciences, Universitat Pompeu Fabra, Barcelona
     email: robert.castelo@upf.edu
 output:
-  bookdown::html_document2:
-    base_format: rmarkdown::html_vignette
-    fig_caption: yes
+  html_document:
     toc: true
     toc_depth: 2
+    fig_captions: yes
+link-citations: yes
 pkgdown:
   as_is: true
 vignette: >
@@ -20,7 +20,6 @@ vignette: >
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 bibliography: GSVAEuroBioC2024.bib
-link-citations: yes
 ---
 
 
