@@ -21,6 +21,7 @@ Imports:
     GSEABase,
     SummarizedExperiment,
     GSVA,
+    sva,
     limma,
     TENxPBMCData
 Suggests: 
