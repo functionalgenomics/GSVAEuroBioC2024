@@ -7,15 +7,15 @@ author:
   - name: Robert Castelo
     affiliation: Dept. of Medicine and Life Sciences, Universitat Pompeu Fabra, Barcelona
     email: robert.castelo@upf.edu
+output:
+  BiocStyle::html_document:
+    toc: true
+    toc_float: true
+    fig_captions: yes
 vignette: >
   %\VignetteIndexEntry{Analysis of bulk RNA-seq data}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
-output:
-  html_document:
-    toc: true
-    number_sections: true
-    fig_captions: yes
 bibliography: GSVAEuroBioC2024.bib
 ---
 
