@@ -113,7 +113,7 @@ We can see that `getGmt()` prompts an error. We can see below that this does
 not happen with `readGMT()` and that, by default, the first occurrence of the
 duplicated gene set has been removed.
 
-```{r, message=FALSE}
+```{r}
 genesets <- readGMT(URL, geneIdType=SymbolIdentifier())
 genesets
 any(duplicated(names(genesets)))
@@ -131,7 +131,7 @@ an object by default. However, if a user prefers using gene sets stored as a
 `list` object of `character` vectors, this is possible by setting the argument
 `valueType="list"` in the call to `readGMT()`.
 
-```{r, message=FALSE}
+```{r}
 genesets <- readGMT(fname, valueType="list")
 class(genesets)
 any(duplicated(names(genesets)))
