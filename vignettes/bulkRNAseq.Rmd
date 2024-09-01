@@ -270,7 +270,7 @@ mod <- cbind(mod, sv$sv)
 ## fit linear models
 fit <- lmFit(assay(es), mod)
 ## calculate moderated t-statistics
-fit.eb <- eBayes(fit)
+fit.eb <- eBayes(fit, robust=TRUE)
 ## summarize the extent of differential expression at 5% FDR
 res <- decideTests(fit.eb)
 summary(res)
@@ -297,7 +297,7 @@ below, we call again `eBayes()` using the `trend` parameter. In this case,
 however, there is no change in the number of FIR DE pathways.
 
 ```{r}
-fit.eb.trend <- eBayes(fit, trend=gssizes)
+fit.eb.trend <- eBayes(fit, robust=TRUE, trend=gssizes)
 res <- decideTests(fit.eb.trend)
 summary(res)
 ```
