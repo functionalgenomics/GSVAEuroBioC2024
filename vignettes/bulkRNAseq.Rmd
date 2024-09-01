@@ -269,7 +269,7 @@ sv <- sva(assay(es), mod, mod0)
 mod <- cbind(mod, sv$sv)
 ## fit linear models
 fit <- lmFit(assay(es), mod)
-## calculate moderated t-statistics
+## calculate moderated t-statistics using the robust regime
 fit.eb <- eBayes(fit, robust=TRUE)
 ## summarize the extent of differential expression at 5% FDR
 res <- decideTests(fit.eb)
@@ -294,7 +294,7 @@ where `x` is a vector of values corresponding to the sizes of the gene sets.
 As we have already seen, the values of these sizes can be easily obtained using
 GSVA's function `geneSetSizes()` on the output of the `gsva()` function. Here
 below, we call again `eBayes()` using the `trend` parameter. In this case,
-however, there is no change in the number of FIR DE pathways.
+however, the change in the number of FIR DE pathways is negligible.
 
 ```{r}
 fit.eb.trend <- eBayes(fit, robust=TRUE, trend=gssizes)
@@ -341,10 +341,15 @@ mask <- rownames(DEpwys_es) %in% adaptivegsets
 labrow[mask] <- paste("(ADAPTIVE)", labrow[mask], sep="_")
 labrow <- gsub("_", " ", gsub("GSE[0-9]+_", "", labrow))
 
+## pathway expression color scale from blue (low) to red (high)
+library(RColorBrewer)
+pwyexpcol <- colorRampPalette(brewer.pal(10, "RdBu"))(256)
+pwyexpcol <- hmcol[length(hmcol):1]
+
 ## generate heatmap
 heatmap(DEpwys_es, ColSideColors=fircolor[es$FIR], xlab="Samples",
         ylab="Pathways", margins=c(2, 20), labCol="", labRow=labrow,
-        scale="row", Colv=as.dendrogram(sampleClust),
+        col=pwyexpcol, scale="row", Colv=as.dendrogram(sampleClust),
         Rowv=as.dendrogram(gsetClust))
 ```
 
