@@ -114,7 +114,7 @@ not happen with `readGMT()` and that, by default, the first occurrence of the
 duplicated gene set has been removed.
 
 ```{r}
-genesets <- readGMT(URL, geneIdType=SymbolIdentifier())
+genesets <- readGMT(fname, geneIdType=SymbolIdentifier())
 genesets
 any(duplicated(names(genesets)))
 ```
