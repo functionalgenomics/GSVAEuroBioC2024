@@ -4,12 +4,24 @@ author:
   - name: Axel Klenk
     affiliation: Dept. of Medicine and Life Sciences, Universitat Pompeu Fabra, Barcelona
     email: axelvolker.klenk@upf.edu
+  - name: Pere Moles
+    affiliation: Dept. of Medicine and Life Sciences, Universitat Pompeu Fabra, Barcelona
+    email: pere.moles@upf.edu
   - name: Robert Castelo
     affiliation: Dept. of Medicine and Life Sciences, Universitat Pompeu Fabra, Barcelona
     email: robert.castelo@upf.edu
-output: rmarkdown::html_vignette
+date: "`r Sys.Date()`"
+output:
+  bookdown::html_document2:
+    base_format: rmarkdown::html_vignette
+    fig_caption: yes
+    toc: true
+pkgdown:
+  as_is: true
+bibliography: GSVAEuroBioC2024.bib
+link-citations: yes
 vignette: >
-  %\VignetteIndexEntry{Analysis of spatial omics data}
+  %\VignetteIndexEntry{Analysis of bulk RNA-seq data}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -18,9 +30,20 @@ vignette: >
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
-  comment = "#>"
+  comment = "#>",
+  fig.align="center",
+  fig.wide=TRUE
 )
+
+## from http://yihui.name/knitr/hooks#chunk_hooks
+knitr::knit_hooks$set(small.mar=function(before, options, envir) {
+                                  ## smaller margin on top and right
+                                  if (before)
+                                    par(mar=c(4, 5, 1, 1))
+                                })
 ```
+
+Vignette built using `GSVA`, version `r packageDescription("GSVA")[["Version"]]`.
 
 # Importing spatial omics data into a `SpatialExperiment` object
 

@@ -7,12 +7,20 @@ author:
   - name: Robert Castelo
     affiliation: Dept. of Medicine and Life Sciences, Universitat Pompeu Fabra, Barcelona
     email: robert.castelo@upf.edu
-output: rmarkdown::html_vignette
+date: "`r Sys.Date()`" 
+output:
+  bookdown::html_document2:
+    base_format: rmarkdown::html_vignette
+    fig_caption: yes
+    toc: true
+pkgdown:
+  as_is: true
+bibliography: GSVAEuroBioC2024.bib
+link-citations: yes
 vignette: >
   %\VignetteIndexEntry{Import gene sets from GMT files}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
-bibliography: GSVAEuroBioC2024.bib
 ---
 
 
@@ -22,6 +30,8 @@ knitr::opts_chunk$set(
   comment = "#>"
 )
 ```
+
+Vignette built using `GSVA`, version `r packageDescription("GSVA")[["Version"]]`.
 
 # What are GMT files
 
