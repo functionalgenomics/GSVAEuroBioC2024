@@ -318,21 +318,30 @@ pathways associated with adaptive immunity, with respect to
 FIR-unaffected neonates.
 
 ```{r heatmapdepwys, message=FALSE, warning=FALSE, echo=TRUE, fig.height=8, fig.width=10, dpi=100, fig.cap="Pathway-level signature of FIR. Heatmap of GSVA enrichment scores from pathways being called DE with 5% FDR between FIR-affected and unaffected neonates."}
+## get DE pathway GSVA enrichment scores, removing the covariates effect
 DEpwys_es <- removeBatchEffect(assay(es[DEpwys, ]),
                                covariates=mod[, 2:ncol(mod)],
                                design=mod[, 1:2])
+## cluster samples
 sam_col_map <- fircolor[es$FIR]
 names(sam_col_map) <- colnames(DEpwys_es)
 sampleClust <- hclust(as.dist(1-cor(DEpwys_es, method="spearman")),
                       method="complete")
+
+## cluster pathways
 gsetClust <- hclust(as.dist(1-cor(t(DEpwys_es), method="pearson")),
                     method="complete")
+
+## annotate pathways whether they are involved in the innate or in
+## the adaptive immune response
 labrow <- rownames(DEpwys_es)
 mask <- rownames(DEpwys_es) %in% innategsets
 labrow[mask] <- paste("(INNATE)", labrow[mask], sep="_")
 mask <- rownames(DEpwys_es) %in% adaptivegsets
 labrow[mask] <- paste("(ADAPTIVE)", labrow[mask], sep="_")
 labrow <- gsub("_", " ", gsub("GSE[0-9]+_", "", labrow))
+
+## generate heatmap
 heatmap(DEpwys_es, ColSideColors=fircolor[es$FIR], xlab="Samples",
         ylab="Pathways", margins=c(2, 20), labCol="", labRow=labrow,
         scale="row", Colv=as.dendrogram(sampleClust),
