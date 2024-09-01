@@ -370,8 +370,24 @@ and <code><a href="https://rdrr.io/pkg/GSVA/man/geneSets.html" class="external-l
 <span><span class="co">#&gt; GSE18804_SPLEEN_MACROPHAGE_VS_BRAIN_TUMORAL_MACROPHAGE_UP -0.13344892</span></span>
 <span><span class="co">#&gt; GSE18804_SPLEEN_MACROPHAGE_VS_COLON_TUMORAL_MACROPHAGE_UP -0.08684864</span></span>
 <span><span class="co">#&gt; GSE18804_SPLEEN_MACROPHAGE_VS_TUMORAL_MACROPHAGE_UP       -0.17536163</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">class</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/GSVA/man/geneSets.html" class="external-link">geneSets</a></span><span class="op">(</span><span class="va">es</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] "list"</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/GSVA/man/geneSets.html" class="external-link">geneSets</a></span><span class="op">(</span><span class="va">es</span><span class="op">)</span>, <span class="va">head</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; $GSE18804_SPLEEN_MACROPHAGE_VS_BRAIN_TUMORAL_MACROPHAGE_UP</span></span>
+<span><span class="co">#&gt; [1] "8540" "1645" "302"  "314"  "328"  "9582"</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $GSE18804_SPLEEN_MACROPHAGE_VS_COLON_TUMORAL_MACROPHAGE_UP</span></span>
+<span><span class="co">#&gt; [1] "51703" "136"   "29880" "240"   "64682" "313"  </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $GSE18804_SPLEEN_MACROPHAGE_VS_TUMORAL_MACROPHAGE_UP</span></span>
+<span><span class="co">#&gt; [1] "22"     "9429"   "55860"  "1645"   "347902" "302"   </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $GSE22886_NEUTROPHIL_VS_DC_UP</span></span>
+<span><span class="co">#&gt; [1] "101"    "84658"  "222487" "2334"   "57538"  "200315"</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $GSE22886_NEUTROPHIL_VS_MONOCYTE_UP</span></span>
+<span><span class="co">#&gt; [1] "8748"   "222487" "306"    "25825"  "699"    "762"   </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $GSE2585_THYMIC_MACROPHAGE_VS_MTEC_UP</span></span>
+<span><span class="co">#&gt; [1] "10347" "10449" "2015"  "3268"  "10327" "334"</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/GSVA/man/geneSets.html" class="external-link">geneSetSizes</a></span><span class="op">(</span><span class="va">es</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; GSE18804_SPLEEN_MACROPHAGE_VS_BRAIN_TUMORAL_MACROPHAGE_UP </span></span>
 <span><span class="co">#&gt;                                                       122 </span></span>
@@ -455,14 +471,14 @@ is about 100 genes), and from less heterogenous expression data.</p>
 Figure 6.1: Pathway-level differential expression analysis. Residual standard deviation of GSVA scores as a function of gene set size. Larger gene sets tend to have higher precision.
 </p>
 </div>
-<p>When this trend is present, we can use improve the statistical power to detect
+<p>When this trend is present, we may improve the statistical power to detect
 differentially expressed (DE) pathways by using the limma-trend pipeline. More
 concretely, we should call the <code><a href="https://rdrr.io/pkg/limma/man/ebayes.html" class="external-link">eBayes()</a></code> function with the argument <code>trend=x</code>,
 where <code>x</code> is a vector of values corresponding to the sizes of the gene sets.
-As we can see in the previous code chunk, these size values can be easily
-obtained using GSVA’s function <code><a href="https://rdrr.io/pkg/GSVA/man/geneSets.html" class="external-link">geneSetSizes()</a></code> on the output of the <code><a href="https://rdrr.io/pkg/GSVA/man/gsva.html" class="external-link">gsva()</a></code>
-function. Here below, we call again <code><a href="https://rdrr.io/pkg/limma/man/ebayes.html" class="external-link">eBayes()</a></code> using the <code>trend</code> parameter. In
-this case, however, the change in the number of DE pathway is negligible.</p>
+As we have already seen, the values of these sizes can be easily obtained using
+GSVA’s function <code><a href="https://rdrr.io/pkg/GSVA/man/geneSets.html" class="external-link">geneSetSizes()</a></code> on the output of the <code><a href="https://rdrr.io/pkg/GSVA/man/gsva.html" class="external-link">gsva()</a></code> function. Here
+below, we call again <code><a href="https://rdrr.io/pkg/limma/man/ebayes.html" class="external-link">eBayes()</a></code> using the <code>trend</code> parameter. In this case,
+however, there is no change in the number of FIR DE pathways.</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">fit.eb.trend</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/limma/man/ebayes.html" class="external-link">eBayes</a></span><span class="op">(</span><span class="va">fit</span>, trend<span class="op">=</span><span class="va">gssizes</span><span class="op">)</span></span>
 <span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/limma/man/decideTests.html" class="external-link">decideTests</a></span><span class="op">(</span><span class="va">fit.eb.trend</span><span class="op">)</span></span>
@@ -492,7 +508,10 @@ pathways associated with innate immunity, and an enrichment of downregulated
 pathways associated with adaptive immunity, with respect to
 FIR-unaffected neonates.</p>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">DEpwys_es</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html" class="external-link">assay</a></span><span class="op">(</span><span class="va">es</span><span class="op">[</span><span class="va">DEpwys</span>, <span class="op">]</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">DEpwys_es</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/limma/man/removeBatchEffect.html" class="external-link">removeBatchEffect</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html" class="external-link">assay</a></span><span class="op">(</span><span class="va">es</span><span class="op">[</span><span class="va">DEpwys</span>, <span class="op">]</span><span class="op">)</span>,</span>
+<span>                               covariates<span class="op">=</span><span class="va">mod</span><span class="op">[</span>, <span class="fl">2</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/nrow.html" class="external-link">ncol</a></span><span class="op">(</span><span class="va">mod</span><span class="op">)</span><span class="op">]</span>,</span>
+<span>                               design<span class="op">=</span><span class="va">mod</span><span class="op">[</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">2</span><span class="op">]</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Coefficients not estimable: FIRyes</span></span>
 <span><span class="va">sam_col_map</span> <span class="op">&lt;-</span> <span class="va">fircolor</span><span class="op">[</span><span class="va">es</span><span class="op">$</span><span class="va">FIR</span><span class="op">]</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">sam_col_map</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/row_colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">DEpwys_es</span><span class="op">)</span></span>
 <span><span class="va">sampleClust</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/hclust.html" class="external-link">hclust</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/dist.html" class="external-link">as.dist</a></span><span class="op">(</span><span class="fl">1</span><span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/stats/cor.html" class="external-link">cor</a></span><span class="op">(</span><span class="va">DEpwys_es</span>, method<span class="op">=</span><span class="st">"spearman"</span><span class="op">)</span><span class="op">)</span>,</span>
