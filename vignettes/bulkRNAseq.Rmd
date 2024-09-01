@@ -230,7 +230,7 @@ and `geneSetSizes()`.
 assayNames(se)
 assayNames(es)
 assay(es)[1:3, 1:3]
-head(lapply(geneSets(es), head)
+head(lapply(geneSets(es), head))
 head(geneSetSizes(es))
 ```
 
