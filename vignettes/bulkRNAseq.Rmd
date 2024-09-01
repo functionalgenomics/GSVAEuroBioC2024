@@ -344,7 +344,7 @@ labrow <- gsub("_", " ", gsub("GSE[0-9]+_", "", labrow))
 ## pathway expression color scale from blue (low) to red (high)
 library(RColorBrewer)
 pwyexpcol <- colorRampPalette(brewer.pal(10, "RdBu"))(256)
-pwyexpcol <- hmcol[length(hmcol):1]
+pwyexpcol <- pwyexpcol[length(pwyexpcol):1]
 
 ## generate heatmap
 heatmap(DEpwys_es, ColSideColors=fircolor[es$FIR], xlab="Samples",
