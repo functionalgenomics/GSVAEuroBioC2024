@@ -172,6 +172,12 @@ GMT file, stored in the workshop package, as follows.</p>
 <span><span class="co">#&gt;   types in collection:</span></span>
 <span><span class="co">#&gt;     geneIdType: SymbolIdentifier (1 total)</span></span>
 <span><span class="co">#&gt;     collectionType: NullCollection (1 total)</span></span></code></pre></div>
+<p>Next to the filename of the GMT file, we provided the argument
+<code>geneIdType=SymbolIdentifier()</code>. This argument adds the necessary metadata that
+later one allows other software to figure out what kind of gene identifiers are
+used in this collection of gene sets, to attempt mapping them to other type of
+identifiers, if necessary. While this argument is optional, we should always
+try to provide it.</p>
 </div>
 <div class="section level2" number="3">
 <h2 id="dealing-with-duplicated-gene-set-names">
