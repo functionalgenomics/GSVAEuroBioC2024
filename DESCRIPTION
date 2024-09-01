@@ -17,7 +17,6 @@ Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.0
 Depends: R (>= 4.4.0)
 Imports:
-    BiocStyle,
     org.Hs.eg.db,
     GSEABase,
     SummarizedExperiment,
@@ -28,6 +27,7 @@ Imports:
 Suggests: 
     knitr,
     rmarkdown,
+    bookdown,
     pkgdown
 URL: https://functionalgenomics.github.io/GSVAEuroBioC2024
 BugReports: https://github.com/functionalgenomics/GSVAEuroBioC2024/issues/new/choose
