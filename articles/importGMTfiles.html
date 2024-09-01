@@ -199,11 +199,13 @@ stored as part of this workshop package.</p>
 not happen with <code><a href="https://rdrr.io/pkg/GSVA/man/readGMT.html" class="external-link">readGMT()</a></code> and that, by default, the first occurrence of the
 duplicated gene set has been removed.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">genesets</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/GSVA/man/readGMT.html" class="external-link">readGMT</a></span><span class="op">(</span><span class="va">URL</span>, geneIdType<span class="op">=</span><span class="fu"><a href="https://rdrr.io/pkg/GSEABase/man/GeneIdentifierType-constructors.html" class="external-link">SymbolIdentifier</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">genesets</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/GSVA/man/readGMT.html" class="external-link">readGMT</a></span><span class="op">(</span><span class="va">fname</span>, geneIdType<span class="op">=</span><span class="fu"><a href="https://rdrr.io/pkg/GSEABase/man/GeneIdentifierType-constructors.html" class="external-link">SymbolIdentifier</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Warning in deduplicateGmtLines(lines, deduplUse): GMT contains duplicated gene</span></span>
+<span><span class="co">#&gt; set names; deduplicated using method: first</span></span>
 <span><span class="va">genesets</span></span>
 <span><span class="co">#&gt; GeneSetCollection</span></span>
-<span><span class="co">#&gt;   names: GOLDRATH_EFF_VS_MEMORY_CD8_TCELL_DN, GOLDRATH_EFF_VS_MEMORY_CD8_TCELL_UP, ..., KAECH_NAIVE_VS_MEMORY_CD8_TCELL_UP (4872 total)</span></span>
-<span><span class="co">#&gt;   unique identifiers: ABCA2, ABCC5, ..., LINC00841 (20457 total)</span></span>
+<span><span class="co">#&gt;   names: CORONEL_RFX7_DIRECT_TARGETS_UP, FOROUTAN_TGFB_EMT_UP, ..., SA_TRKA_RECEPTOR (6363 total)</span></span>
+<span><span class="co">#&gt;   unique identifiers: ABAT, DIP2A, ..., IGHG3 (21728 total)</span></span>
 <span><span class="co">#&gt;   types in collection:</span></span>
 <span><span class="co">#&gt;     geneIdType: SymbolIdentifier (1 total)</span></span>
 <span><span class="co">#&gt;     collectionType: NullCollection (1 total)</span></span>
