@@ -8,7 +8,7 @@ author:
     affiliation: Dept. of Medicine and Life Sciences, Universitat Pompeu Fabra, Barcelona
     email: robert.castelo@upf.edu
 output:
-  BiocStyle::html_document:
+  html_document:
     toc: true
     toc_depth: 2
     fig_captions: yes
