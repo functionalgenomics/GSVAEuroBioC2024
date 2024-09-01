@@ -44,23 +44,135 @@ Vignette built using `GSVA`, version `r packageDescription("GSVA")[["Version"]]`
 
 # Importing scRNA-seq data into a `SingleCellExperiment` object
 
-```{r, message=FALSE}
+In this vignette we will use the
+[TENxPBMCData](https://bioconductor.org/packages/TENxPBMCData) to download a
+[10X Genomics](https://support.10xgenomics.com/single-cell-gene-expression/datasets)
+single-cell RNA-seq data set generated from peripheral blood mononuclear cells
+(PBMC), into a
+[SingleCellExperiment](https://bioconductor.org/packages/SingleCellExperiment)
+object.
+
+```{r, message=FALSE, warning=FALSE}
+library(SingleCellExperiment)
 library(TENxPBMCData)
 
 sce <- TENxPBMCData(dataset="pbmc4k")
 sce
 ```
+This single-cell dataset consists of raw counts for `r nrow(sce)` genes by
+`r ncol(sce)` cells.
+
+```{r}
+assay(sce)[1:5, 1:8]
+```
+
+# Pre-processing of scRNA-seq data
+
+Here we do the pre-processing of the scRNA-seq dataset using the
+Bioconductor package [scuttle](https://bioconductor.org/packages/scuttle). We
+start by identifying mitochondrial genes.
+
+```{r, message=FALSE, warning=FALSE}
+library(scuttle)
+
+is_mito <- grepl("^MT-", rowData(sce)$Symbol_TENx)
+table(is_mito) 
+```
+Now calculate quality control (QC) metrics and filter out low-quality cells.
+
+```{r}
+sce <- quickPerCellQC(sce, subsets=list(Mito=is_mito),
+                      sub.fields="subsets_Mito_percent")
+dim(sce)
+```
+Figure \@ref(fig:cntxgene) below shows the empirical cumulative distribution of
+counts per gene in logarithmic scale.
+
+```{r cntxgene, echo=TRUE, small.mar=TRUE, fig.height=4, fig.width=4, units="in", dpi=100, fig.cap="Filtering lowly-expressed genes. Empirical cumulative distribution of UMI counts per gene. The red vertical bar indicates a cutoff value of 100 UMI counts per gene across all cells, below which genes will be filtered out."}
+cntxgene <- rowSums(assays(sce)$counts)+1
+plot.ecdf(cntxgene, xaxt="n", panel.first=grid(), xlab="UMI counts per gene",
+                    log="x", main="", xlim=c(1, 1e5), las=1)
+axis(1, at=10^(0:5), labels=10^(0:5))
+abline(v=100, lwd=2, col="red")
+```
+We filter out lowly-expressed genes, by selecting those with at least 100 UMI
+counts across all cells.
+
+```{r}
+sce <- sce[cntxgene >= 100, ]
+dim(sce)
+```
+Finally, we calculate library size factors and normalized log units of
+expression.
+
+```{r}
+sce <- computeLibraryFactors(sce)
+sce <- logNormCounts(sce)
+assayNames(sce)
+```
+The assay `logcounts` contains the filtered and normalized log units of
+expression that we should use as input to GSVA.
 
 # Importing gene sets
 
-```{r}
+Here we read a GMT file storing a collection of gene sets relevant for PBMC data
+derived from the data published by @triana2021single.
+
+```{r, message=FALSE, warning=FALSE}
+library(GSEABase)
 library(GSVA)
 
-fname <- "PBMC_gene_sets_TrianaEtAl2021.gmt"
-gsets <- readGMT(system.file("extdata", fname, package="GSVAEuroBioC2024"))
-
+fname <- system.file("extdata", "PBMC_gene_sets_TrianaEtAl2021.gmt.gz",
+                     package="GSVAEuroBioC2024")
+genesets <- readGMT(fname, geneIdType=SymbolIdentifier())
+genesets
 ```
-# How to run GSVA
+
+# Running GSVA on a `SingleCellExperiment` object
+
+GSVA can take as input a `SingleCellExperiment` object, but before we run
+GSVA we should do a couple of steps and considerations. In this vignette, genes
+in that object are defined by
+[Ensembl stable gene identifiers](https://www.ensembl.org/info/genome/stable_ids/index.html),
+i.e., they start with `ENSG`, while gene identifiers in the collection of genes
+we imported in the previous section correspond to
+[HUGO gene symbols](https://www.genenames.org). To facilitate that GSVA
+internally maps the gene symbols in gene sets to the corresponding Ensembl gene
+identifiers of the scRNA-seq data, we should add the following metadata to the
+`SingleCellExperiment` object.
+
+```{r}
+gsvaAnnotation(sce) <- ENSEMBLIdentifier("org.Hs.eg.db")
+```
+The assay data is stored as a sparse `DelayedMatrix` object using an `HDF5`
+backend. However, GSVA currently[^footnote-1] only provides support for sparse
+matrices stored in `dgCMatrix` objects.
+
+[^footnote-1]: We expect to provide support in the near future for sparse
+  on-disk matrices, such as sparse `DelayedMatrix` objects.
+
+This means that we need to coerce the assay we intend to use as input for
+GSVA to a `dgCMatrix`, as follows.
+
+```{r}
+assays(sce)$logcounts <- as(assays(sce)$logcounts, "dgCMatrix")
+```
+Independently of this previous issue, one should be aware of the name of the
+assay that contains the normalized expression values we want to provide as
+input to GSVA. In this case this assay is called `logcounts`. Now we can
+perform the first step to run GSVA, which consists of building a parameter
+object.
+
+```{r}
+gsvapar <- gsvaParam(sce, genesets, assay="logcounts", minSize=5)
+gsvapar
+```
+In the second and final step, we call the function `gsva()` with the previous
+parameter object as input.
+
+```{r}
+es <- gsva(gsvapar) ## about 40 seconds in a modern laptop
+```
 
 # Session information
 

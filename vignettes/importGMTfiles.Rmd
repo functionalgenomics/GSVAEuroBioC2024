@@ -86,6 +86,12 @@ class(genesets)
 length(genesets)
 genesets
 ```
+Next to the filename of the GMT file, we provided the argument
+`geneIdType=SymbolIdentifier()`. This argument adds the necessary metadata that
+later one allows other software to figure out what kind of gene identifiers are
+used in this collection of gene sets, to attempt mapping them to other type of
+identifiers, if necessary. While this argument is optional, we should always
+try to provide it.
 
 # Dealing with duplicated gene set names
 

@@ -24,7 +24,8 @@ Imports:
     GSVA,
     sva,
     limma,
-    TENxPBMCData
+    TENxPBMCData,
+    scuttle
 Suggests: 
     knitr,
     rmarkdown,
