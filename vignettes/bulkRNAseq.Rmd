@@ -230,7 +230,7 @@ and `geneSetSizes()`.
 assayNames(se)
 assayNames(es)
 assay(es)[1:3, 1:3]
-class(geneSets(es))
+head(lapply(geneSets(es), head)
 head(geneSetSizes(es))
 ```
 
@@ -287,14 +287,14 @@ plot(sqrt(gssizes), sqrt(fit.eb$sigma), xlab="Sqrt(gene sets sizes)",
           ylab="Sqrt(standard deviation)", las=1, pch=".", cex=4)
 lines(lowess(sqrt(gssizes), sqrt(fit.eb$sigma)), col="red", lwd=2)
 ```
-When this trend is present, we can use improve the statistical power to detect
+When this trend is present, we may improve the statistical power to detect
 differentially expressed (DE) pathways by using the limma-trend pipeline. More
 concretely, we should call the `eBayes()` function with the argument `trend=x`,
 where `x` is a vector of values corresponding to the sizes of the gene sets.
-As we can see in the previous code chunk, these size values can be easily
-obtained using GSVA's function `geneSetSizes()` on the output of the `gsva()`
-function. Here below, we call again `eBayes()` using the `trend` parameter. In
-this case, however, the change in the number of DE pathway is negligible.
+As we have already seen, the values of these sizes can be easily obtained using
+GSVA's function `geneSetSizes()` on the output of the `gsva()` function. Here
+below, we call again `eBayes()` using the `trend` parameter. In this case,
+however, there is no change in the number of FIR DE pathways.
 
 ```{r}
 fit.eb.trend <- eBayes(fit, trend=gssizes)
@@ -318,7 +318,9 @@ pathways associated with adaptive immunity, with respect to
 FIR-unaffected neonates.
 
 ```{r heatmapdepwys, message=FALSE, warning=FALSE, echo=TRUE, fig.height=8, fig.width=10, dpi=100, fig.cap="Pathway-level signature of FIR. Heatmap of GSVA enrichment scores from pathways being called DE with 5% FDR between FIR-affected and unaffected neonates."}
-DEpwys_es <- assay(es[DEpwys, ])
+DEpwys_es <- removeBatchEffect(assay(es[DEpwys, ]),
+                               covariates=mod[, 2:ncol(mod)],
+                               design=mod[, 1:2])
 sam_col_map <- fircolor[es$FIR]
 names(sam_col_map) <- colnames(DEpwys_es)
 sampleClust <- hclust(as.dist(1-cor(DEpwys_es, method="spearman")),
