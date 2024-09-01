@@ -105,31 +105,45 @@
 <span class="header-section-number">1</span> What are GMT files<a class="anchor" aria-label="anchor" href="#what-are-gmt-files"></a>
 </h2>
 <p>An important source of gene sets is the
-<a href="https://www.gsea-msigdb.org/gsea/msigdb" class="external-link">Molecular Signatures Database</a>
+<a href="https://www.gsea-msigdb.org/gsea/msigdb" class="external-link">Molecular Signatures Database (MSigDB)</a>
 <span class="citation">(<a href="#ref-subramanian2005gene">Subramanian et al. 2005</a>)</span>, which stores them in plain text files following the
 so-called
 <a href="https://software.broadinstitute.org/cancer/software/gsea/wiki/index.php/Data_formats#GMT:_Gene_Matrix_Transposed_file_format_.28.2A.gmt.29" class="external-link"><em>gene matrix transposed</em> (GMT) format</a>.
 In the GMT format, each line stores a gene set with the following values
 separated by tabs:</p>
 <ul>
-<li>A gene set identifier.</li>
+<li>A unique gene set identifier.</li>
 <li>A gene set description.</li>
 <li>One or more gene identifiers.</li>
 </ul>
 <p>Because each different gene set may consist of a different number of genes, each
-line in a GMT file may contain a different number of tab-separated values.</p>
+line in a GMT file may contain a different number of tab-separated values. This
+means that the GMT format is not a tabular format, and therefore cannot be directly
+read with base R functions such as <code><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.table()</a></code> or <code><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.csv()</a></code>.</p>
 </div>
 <div class="section level2" number="2">
 <h2 id="how-to-read-gmt-files">
 <span class="header-section-number">2</span> How to read GMT files<a class="anchor" aria-label="anchor" href="#how-to-read-gmt-files"></a>
 </h2>
-<p>We can read GMT files using the <code><a href="https://rdrr.io/pkg/GSVA/man/readGMT.html" class="external-link">readGMT()</a></code> function from the GSVA package.</p>
+<p>We need a specialized function to read GMT files. We can find such a function in the
+<a href="https://bioconductor.org/packages/GSEABase" class="external-link">GSEABase</a> package with <code><a href="https://rdrr.io/pkg/GSEABase/man/getObjects.html" class="external-link">getGmt()</a></code>, or
+in the <a href="https://bioconductor.org/packages/qusage" class="external-link">qusage</a> package with <code>read.gmt()</code>.</p>
+<p>GSVA also provides such a function called <code><a href="https://rdrr.io/pkg/GSVA/man/readGMT.html" class="external-link">readGMT()</a></code>, which takes as first argument
+the filename or URL of a, possibly compressed, GMT file. The call below illustrates
+how to read a GMT file from MSigDB providing its URL. Note that we also load the
+package
+<a href="https://bioconductor.org/packages/GSEABase" class="external-link">GSEABase</a> because, by default, the value
+returned by <code><a href="https://rdrr.io/pkg/GSVA/man/readGMT.html" class="external-link">readGMT()</a></code> is a <code>GeneSetCollection</code> object defined on that package.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">GSEABase</span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/rcastelo/GSVA" class="external-link">GSVA</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">URL</span> <span class="op">&lt;-</span> <span class="st">"https://data.broadinstitute.org/gsea-msigdb/msigdb/release/2023.2.Hs/c7.immunesigdb.v2023.2.Hs.symbols.gmt"</span></span>
 <span><span class="va">genesets</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/GSVA/man/readGMT.html" class="external-link">readGMT</a></span><span class="op">(</span><span class="va">URL</span>, geneIdType<span class="op">=</span><span class="fu"><a href="https://rdrr.io/pkg/GSEABase/man/GeneIdentifierType-constructors.html" class="external-link">SymbolIdentifier</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">class</a></span><span class="op">(</span><span class="va">genesets</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "GeneSetCollection"</span></span>
+<span><span class="co">#&gt; attr(,"package")</span></span>
+<span><span class="co">#&gt; [1] "GSEABase"</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">genesets</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] 4872</span></span>
 <span><span class="va">genesets</span></span>
@@ -139,127 +153,108 @@ line in a GMT file may contain a different number of tab-separated values.</p>
 <span><span class="co">#&gt;   types in collection:</span></span>
 <span><span class="co">#&gt;     geneIdType: SymbolIdentifier (1 total)</span></span>
 <span><span class="co">#&gt;     collectionType: NullCollection (1 total)</span></span></code></pre></div>
-<div class="section level3" number="2.1">
-<h3 id="differences-between-readgmt-and-getgmt">
-<span class="header-section-number">2.1</span> Differences between <code>readGMT()</code> and <code>getGmt()</code><a class="anchor" aria-label="anchor" href="#differences-between-readgmt-and-getgmt"></a>
-</h3>
-<p>Function <code><a href="https://rdrr.io/pkg/GSVA/man/readGMT.html" class="external-link">readGMT()</a></code> from package GSVA is based on the <code><a href="https://rdrr.io/pkg/GSEABase/man/getObjects.html" class="external-link">getGmt()</a></code> function from package GSEABase and behaves almost the same. It has, however, two extensions that may prove useful in certain cases.</p>
-<div class="section level4" number="2.1.1">
-<h4 id="gmt-files-with-duplicated-gene-set-identifiers">
-<span class="header-section-number">2.1.1</span> GMT files with duplicated gene set identifiers<a class="anchor" aria-label="anchor" href="#gmt-files-with-duplicated-gene-set-identifiers"></a>
-</h4>
-<p>When responding to a user issue, we discovered that some GMT files contain duplicated gene set identifiers, although this is forbidden by the file format’s definition, and, consequently, <code><a href="https://rdrr.io/pkg/GSEABase/man/getObjects.html" class="external-link">getGmt()</a></code> refuses to read them.</p>
+<p>If we have problems accessing that URL, we can also load a compressed version of this
+GMT file, stored in the workshop package, as follows.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">URL</span> <span class="op">&lt;-</span> <span class="st">"https://data.broadinstitute.org/gsea-msigdb/msigdb/release/7.5/c2.all.v7.5.symbols.gmt"</span></span>
-<span><span class="va">genesets</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/GSEABase/man/getObjects.html" class="external-link">getGmt</a></span><span class="op">(</span><span class="va">URL</span>, geneIdType<span class="op">=</span><span class="fu"><a href="https://rdrr.io/pkg/GSEABase/man/GeneIdentifierType-constructors.html" class="external-link">SymbolIdentifier</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Error in validObject(.Object): invalid class "GeneSetCollection" object: each setName must be distinct</span></span></code></pre></div>
-<p>In such a case, <code><a href="https://rdrr.io/pkg/GSVA/man/readGMT.html" class="external-link">readGMT()</a></code> will rather warn about the problem and resolve it using one of a range of strategies that are described in more detail on its help page (see <code><a href="https://rdrr.io/pkg/GSVA/man/readGMT.html" class="external-link">?readGMT</a></code>).</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">URL</span> <span class="op">&lt;-</span> <span class="st">"https://data.broadinstitute.org/gsea-msigdb/msigdb/release/7.5/c2.all.v7.5.symbols.gmt"</span></span>
-<span><span class="va">genesets</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/GSVA/man/readGMT.html" class="external-link">readGMT</a></span><span class="op">(</span><span class="va">URL</span>, geneIdType<span class="op">=</span><span class="fu"><a href="https://rdrr.io/pkg/GSEABase/man/GeneIdentifierType-constructors.html" class="external-link">SymbolIdentifier</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Warning in deduplicateGmtLines(lines, deduplUse): GMT contains duplicated gene</span></span>
-<span><span class="co">#&gt; set names; deduplicated using method: first</span></span>
+<code class="sourceCode R"><span><span class="va">fname</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"c7.immunesigdb.v2023.2.Hs.symbols.gmt.gz"</span>,</span>
+<span>                     package<span class="op">=</span><span class="st">"GSVAEuroBioC2024"</span><span class="op">)</span></span>
+<span><span class="va">genesets</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/GSVA/man/readGMT.html" class="external-link">readGMT</a></span><span class="op">(</span><span class="va">fname</span>, geneIdType<span class="op">=</span><span class="fu"><a href="https://rdrr.io/pkg/GSEABase/man/GeneIdentifierType-constructors.html" class="external-link">SymbolIdentifier</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">class</a></span><span class="op">(</span><span class="va">genesets</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "GeneSetCollection"</span></span>
+<span><span class="co">#&gt; attr(,"package")</span></span>
+<span><span class="co">#&gt; [1] "GSEABase"</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">genesets</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] 4872</span></span>
 <span><span class="va">genesets</span></span>
 <span><span class="co">#&gt; GeneSetCollection</span></span>
-<span><span class="co">#&gt;   names: CORONEL_RFX7_DIRECT_TARGETS_UP, FOROUTAN_TGFB_EMT_UP, ..., SA_TRKA_RECEPTOR (6363 total)</span></span>
-<span><span class="co">#&gt;   unique identifiers: ABAT, DIP2A, ..., IGHG3 (21728 total)</span></span>
+<span><span class="co">#&gt;   names: GOLDRATH_EFF_VS_MEMORY_CD8_TCELL_DN, GOLDRATH_EFF_VS_MEMORY_CD8_TCELL_UP, ..., KAECH_NAIVE_VS_MEMORY_CD8_TCELL_UP (4872 total)</span></span>
+<span><span class="co">#&gt;   unique identifiers: ABCA2, ABCC5, ..., LINC00841 (20457 total)</span></span>
+<span><span class="co">#&gt;   types in collection:</span></span>
+<span><span class="co">#&gt;     geneIdType: SymbolIdentifier (1 total)</span></span>
+<span><span class="co">#&gt;     collectionType: NullCollection (1 total)</span></span></code></pre></div>
+</div>
+<div class="section level2" number="3">
+<h2 id="dealing-with-duplicated-gene-set-names">
+<span class="header-section-number">3</span> Dealing with duplicated gene set names<a class="anchor" aria-label="anchor" href="#dealing-with-duplicated-gene-set-names"></a>
+</h2>
+<p>The specification of the <a href="https://software.broadinstitute.org/cancer/software/gsea/wiki/index.php/Data_formats#GMT:_Gene_Matrix_Transposed_file_format_.28.2A.gmt.29" class="external-link">GMT format</a>
+establishes that duplicated gene set names are not allowed. For this reason,
+the <code><a href="https://rdrr.io/pkg/GSEABase/man/getObjects.html" class="external-link">getGmt()</a></code> function from the
+<a href="https://bioconductor.org/packages/GSEABase" class="external-link">GSEABase</a> package prompts an error
+when duplicated gene names are found, while the <code>read.gmt()</code> function from the
+<a href="https://bioconductor.org/packages/qusage" class="external-link">qusage</a> package silently accepts them
+in a list with duplicated element names.</p>
+<p>The GSVA <code><a href="https://rdrr.io/pkg/GSVA/man/readGMT.html" class="external-link">readGMT()</a></code> function deals with duplicated gene set names as follows.
+By default, <code><a href="https://rdrr.io/pkg/GSVA/man/readGMT.html" class="external-link">readGMT()</a></code> warns the user about a duplicated gene set name and
+keeps only the first occurrence of the duplicated gene set in the returned
+object. We can illustrate this situation with a GMT file from the MSigDB
+database that happens to have a duplicated gene set name and which we have
+stored as part of this workshop package.</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">fname</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"c2.all.v7.5.symbols.gmt.gz"</span>,</span>
+<span>                     package<span class="op">=</span><span class="st">"GSVAEuroBioC2024"</span><span class="op">)</span></span>
+<span><span class="va">genesets</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/GSEABase/man/getObjects.html" class="external-link">getGmt</a></span><span class="op">(</span><span class="va">fname</span>, geneIdType<span class="op">=</span><span class="fu"><a href="https://rdrr.io/pkg/GSEABase/man/GeneIdentifierType-constructors.html" class="external-link">SymbolIdentifier</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Error in validObject(.Object): invalid class "GeneSetCollection" object: each setName must be distinct</span></span></code></pre></div>
+<p>We can see that <code><a href="https://rdrr.io/pkg/GSEABase/man/getObjects.html" class="external-link">getGmt()</a></code> prompts an error. We can see below that this does
+not happen with <code><a href="https://rdrr.io/pkg/GSVA/man/readGMT.html" class="external-link">readGMT()</a></code> and that, by default, the first occurrence of the
+duplicated gene set has been removed.</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">genesets</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/GSVA/man/readGMT.html" class="external-link">readGMT</a></span><span class="op">(</span><span class="va">URL</span>, geneIdType<span class="op">=</span><span class="fu"><a href="https://rdrr.io/pkg/GSEABase/man/GeneIdentifierType-constructors.html" class="external-link">SymbolIdentifier</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">genesets</span></span>
+<span><span class="co">#&gt; GeneSetCollection</span></span>
+<span><span class="co">#&gt;   names: GOLDRATH_EFF_VS_MEMORY_CD8_TCELL_DN, GOLDRATH_EFF_VS_MEMORY_CD8_TCELL_UP, ..., KAECH_NAIVE_VS_MEMORY_CD8_TCELL_UP (4872 total)</span></span>
+<span><span class="co">#&gt;   unique identifiers: ABCA2, ABCC5, ..., LINC00841 (20457 total)</span></span>
 <span><span class="co">#&gt;   types in collection:</span></span>
 <span><span class="co">#&gt;     geneIdType: SymbolIdentifier (1 total)</span></span>
 <span><span class="co">#&gt;     collectionType: NullCollection (1 total)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/args.html" class="external-link">args</a></span><span class="op">(</span><span class="va">readGMT</span><span class="op">)</span></span>
-<span><span class="co">#&gt; function (con, sep = "\t", geneIdType = NullIdentifier(), collectionType = NullCollection(), </span></span>
-<span><span class="co">#&gt;     valueType = c("GeneSetCollection", "list"), deduplUse = c("first", </span></span>
-<span><span class="co">#&gt;         "drop", "union", "smallest", "largest"), ...) </span></span>
-<span><span class="co">#&gt; NULL</span></span></code></pre></div>
+<span><span class="fu"><a href="https://rdrr.io/r/base/any.html" class="external-link">any</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/duplicated.html" class="external-link">duplicated</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">genesets</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] FALSE</span></span></code></pre></div>
+<p>The parameter <code>deduplUse</code> in the <code><a href="https://rdrr.io/pkg/GSVA/man/readGMT.html" class="external-link">readGMT()</a></code> function allow one to apply other
+policies to deal with duplicated gene set names, see its help page with
+<code><a href="https://rdrr.io/pkg/GSVA/man/readGMT.html" class="external-link">?readGMT</a></code>.</p>
 </div>
-<div class="section level4" number="2.1.2">
-<h4 id="return-a-list-instead-of-a-genesetcollection">
-<span class="header-section-number">2.1.2</span> Return a <code>list</code> instead of a <code>GeneSetCollection</code><a class="anchor" aria-label="anchor" href="#return-a-list-instead-of-a-genesetcollection"></a>
-</h4>
-<p>Using gene sets in a <code>GeneSetCollection</code> object offers a number of advantages inluding automatic gene identifier mapping and therefore <code><a href="https://rdrr.io/pkg/GSVA/man/readGMT.html" class="external-link">readGMT()</a></code> returns such an object by default. If, however, a user prefers using gene sets represented as a <code>list</code> of <code>character</code> vectors, this is possible without multiple conversions by setting argument <code>valueType="list"</code>.</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">URL</span> <span class="op">&lt;-</span> <span class="st">"https://data.broadinstitute.org/gsea-msigdb/msigdb/release/2023.2.Hs/c7.immunesigdb.v2023.2.Hs.symbols.gmt"</span></span>
-<span><span class="va">genesets</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/GSVA/man/readGMT.html" class="external-link">readGMT</a></span><span class="op">(</span><span class="va">URL</span>, valueType<span class="op">=</span><span class="st">"list"</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">genesets</span>, <span class="fl">2</span><span class="op">)</span></span>
-<span><span class="co">#&gt; $GOLDRATH_EFF_VS_MEMORY_CD8_TCELL_DN</span></span>
-<span><span class="co">#&gt;   [1] "ABCA2"    "ABCC5"    "ABHD14A"  "ACADM"    "ACP5"     "ACP6"    </span></span>
-<span><span class="co">#&gt;   [7] "ADAM22"   "ADCY7"    "ADGRG3"   "AKAP9"    "ANKRD10"  "ARL4C"   </span></span>
-<span><span class="co">#&gt;  [13] "ASH1L"    "B3GALT6"  "BCKDHB"   "BCL2"     "BCL2L11"  "BRD3"    </span></span>
-<span><span class="co">#&gt;  [19] "C12orf57" "C6orf136" "CA12"     "CANT1"    "CCND2"    "CCNL2"   </span></span>
-<span><span class="co">#&gt;  [25] "CCR7"     "CD7"      "CD96"     "CHCHD7"   "CIPC"     "COQ9"    </span></span>
-<span><span class="co">#&gt;  [31] "COX7A2L"  "CRLF3"    "CST7"     "CTSW"     "CYP4V2"   "DALRD3"  </span></span>
-<span><span class="co">#&gt;  [37] "DBNDD2"   "DBP"      "DDIT3"    "DDX51"    "DGKA"     "DIAPH2"  </span></span>
-<span><span class="co">#&gt;  [43] "DNAAF10"  "DPH5"     "DUSP12"   "EIF2AK4"  "ELP3"     "EMB"     </span></span>
-<span><span class="co">#&gt;  [49] "EML5"     "ENTREP3"  "EOMES"    "EPS15L1"  "EVL"      "EZH1"    </span></span>
-<span><span class="co">#&gt;  [55] "FAM8A1"   "GALNT11"  "GBE1"     "GMIP"     "GNL2"     "GSTK1"   </span></span>
-<span><span class="co">#&gt;  [61] "GTF2I"    "H2AJ"     "HSD17B11" "HSD17B8"  "HSF1"     "IAPP"    </span></span>
-<span><span class="co">#&gt;  [67] "ICE1"     "IFITM10"  "IL4R"     "IL6R"     "IL6ST"    "IL7R"    </span></span>
-<span><span class="co">#&gt;  [73] "ITM2C"    "ITPR2"    "JUN"      "KCNJ8"    "KLF17"    "KLF2"    </span></span>
-<span><span class="co">#&gt;  [79] "LAMP1"    "LTB"      "LYSMD1"   "LYSMD2"   "MAN2C1"   "MAP4K3"  </span></span>
-<span><span class="co">#&gt;  [85] "MBP"      "MCOLN2"   "MECP2"    "METTL3"   "MFNG"     "MLYCD"   </span></span>
-<span><span class="co">#&gt;  [91] "MRPL23"   "MTFR1L"   "NACC2"    "NCKAP1"   "NDUFA7"   "NECAP1"  </span></span>
-<span><span class="co">#&gt;  [97] "NEDD4"    "NEDD4L"   "NOTCH4"   "NSG2"     "PAQR7"    "PDGFB"   </span></span>
-<span><span class="co">#&gt; [103] "PDK1"     "PDRG1"    "PHLDB1"   "PISD"     "PLEKHA1"  "PLEKHA5" </span></span>
-<span><span class="co">#&gt; [109] "POLR1B"   "POLR3A"   "PPOX"     "PPP1R14B" "PRKACB"   "PRMT3"   </span></span>
-<span><span class="co">#&gt; [115] "PRSS12"   "PSME2"    "PTPN22"   "PURA"     "QDPR"     "RABAC1"  </span></span>
-<span><span class="co">#&gt; [121] "RAD52"    "RASA4"    "RASSF5"   "RERE"     "RFLNB"    "RGS10"   </span></span>
-<span><span class="co">#&gt; [127] "RIMOC1"   "RNASE4"   "RPL14"    "RPL19"    "RPL39"    "RPLP0"   </span></span>
-<span><span class="co">#&gt; [133] "RPLP1"    "RPP14"    "RPS16"    "RPS18"    "RPS19"    "RPS23"   </span></span>
-<span><span class="co">#&gt; [139] "RPS7"     "RPS8"     "RRP1B"    "RTKN"     "RTTN"     "SBDS"    </span></span>
-<span><span class="co">#&gt; [145] "SELL"     "SEMA4B"   "SESN1"    "SETD4"    "SH3BP5"   "SHISA5"  </span></span>
-<span><span class="co">#&gt; [151] "SIAH1"    "SIPA1L2"  "SIT1"     "SIX6"     "SLC11A2"  "SLC12A7" </span></span>
-<span><span class="co">#&gt; [157] "SLC26A2"  "SLTM"     "SNRK"     "SPICE1"   "STAT4"    "SUPT6H"  </span></span>
-<span><span class="co">#&gt; [163] "SURF2"    "SUSD6"    "TAF1A"    "TAF1C"    "TCF7"     "TDRP"    </span></span>
-<span><span class="co">#&gt; [169] "TESK1"    "TK2"      "TLK2"     "TMC6"     "TMED4"    "TNIP1"   </span></span>
-<span><span class="co">#&gt; [175] "TRAF1"    "TRAF3IP2" "TRAF5"    "TRMT1"    "TSEN34"   "TSR1"    </span></span>
-<span><span class="co">#&gt; [181] "TTC14"    "TTC27"    "TTC3"     "TXK"      "UBLCP1"   "USP18"   </span></span>
-<span><span class="co">#&gt; [187] "VKORC1"   "WDR13"    "WDR43"    "WDR75"    "XPC"      "XRCC5"   </span></span>
-<span><span class="co">#&gt; [193] "YPEL3"    "ZBTB20"   "ZEB1"     "ZFP1"     "ZFP90"    "ZKSCAN3" </span></span>
-<span><span class="co">#&gt; [199] "ZNF274"   "ZNF692"  </span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; $GOLDRATH_EFF_VS_MEMORY_CD8_TCELL_UP</span></span>
-<span><span class="co">#&gt;   [1] "ADAM8"     "AK3"       "ANLN"      "ANXA1"     "ANXA2"     "ANXA4"    </span></span>
-<span><span class="co">#&gt;   [7] "ASF1B"     "ASPM"      "ATP5IF1"   "ATP6V1A"   "AURKA"     "AURKB"    </span></span>
-<span><span class="co">#&gt;  [13] "BATF3"     "BHLHE40"   "BIRC5"     "BRCA1"     "BUB1"      "C3"       </span></span>
-<span><span class="co">#&gt;  [19] "CA2"       "CAPG"      "CASP3"     "CBX1"      "CCNA2"     "CCNB2"    </span></span>
-<span><span class="co">#&gt;  [25] "CCNF"      "CCR2"      "CD244"     "CD99"      "CDC20"     "CDC25C"   </span></span>
-<span><span class="co">#&gt;  [31] "CDC45"     "CDC6"      "CDCA3"     "CDCA8"     "CDK1"      "CDKN2C"   </span></span>
-<span><span class="co">#&gt;  [37] "CDKN3"     "CENPA"     "CHAF1A"    "CHEK1"     "CIP2A"     "CISD1"    </span></span>
-<span><span class="co">#&gt;  [43] "CKAP5"     "CKS1B"     "CKS2"      "CLCN5"     "CMC2"      "CRMP1"    </span></span>
-<span><span class="co">#&gt;  [49] "DBI"       "DCK"       "DEGS1"     "DHFR"      "DHRS1"     "DLGAP5"   </span></span>
-<span><span class="co">#&gt;  [55] "DNA2"      "DNAJC1"    "DOCK5"     "DTL"       "DUSP2"     "E2F8"     </span></span>
-<span><span class="co">#&gt;  [61] "ECT2"      "EGR1"      "EMP1"      "EMP3"      "EZH2"      "F2RL3"    </span></span>
-<span><span class="co">#&gt;  [67] "FANCM"     "FDFT1"     "FGL2"      "FKBP5"     "FPR2"      "GABARAPL1"</span></span>
-<span><span class="co">#&gt;  [73] "GALNT3"    "GEM"       "GGH"       "GMNN"      "GTF2B"     "GZMA"     </span></span>
-<span><span class="co">#&gt;  [79] "GZMB"      "GZMK"      "H1-0"      "H2AX"      "H2AZ1"     "H3-4"     </span></span>
-<span><span class="co">#&gt;  [85] "HMGB3"     "HP"        "IDI1"      "IFI27L2"   "IFITM3"    "IFNG"     </span></span>
-<span><span class="co">#&gt;  [91] "INCENP"    "IQGAP3"    "IRF4"      "IRF8"      "ISG20"     "ITGAX"    </span></span>
-<span><span class="co">#&gt;  [97] "KIF11"     "KIF20A"    "KIF22"     "KIF23"     "KIF2C"     "KIF4A"    </span></span>
-<span><span class="co">#&gt; [103] "KLRG1"     "KPNA2"     "LAG3"      "LGALS1"    "LGALS3"    "LIG1"     </span></span>
-<span><span class="co">#&gt; [109] "LITAF"     "LMNB1"     "LSP1"      "LXN"       "LYN"       "MAD2L1"   </span></span>
-<span><span class="co">#&gt; [115] "MAPK6"     "MCM10"     "MIS18BP1"  "MKI67"     "MPEG1"     "MRPL18"   </span></span>
-<span><span class="co">#&gt; [121] "MT1E"      "MT2A"      "MTM1"      "MYADM"     "NCAPH"     "NDRG1"    </span></span>
-<span><span class="co">#&gt; [127] "NEK2"      "NFYB"      "NR4A1"     "NRP1"      "NUDT4"     "NUP62"    </span></span>
-<span><span class="co">#&gt; [133] "NUSAP1"    "PCLAF"     "PDCD1"     "PDK3"      "PERP"      "PLAC8"    </span></span>
-<span><span class="co">#&gt; [139] "PLK4"      "POLA1"     "POLE2"     "PRC1"      "PRDX4"     "PRIM1"    </span></span>
-<span><span class="co">#&gt; [145] "PSMA5"     "RAD51"     "RAD51AP1"  "RAN"       "RBL1"      "RFC5"     </span></span>
-<span><span class="co">#&gt; [151] "RHD"       "RNASEH2B"  "ROM1"      "RRM1"      "RRM2"      "S100A10"  </span></span>
-<span><span class="co">#&gt; [157] "S100A4"    "S100A8"    "SERPINB9"  "SIVA1"     "SMARCC1"   "SMC2"     </span></span>
-<span><span class="co">#&gt; [163] "SNX10"     "SNX3"      "SPDL1"     "SQLE"      "STMN1"     "STT3B"    </span></span>
-<span><span class="co">#&gt; [169] "SUN1"      "SUZ12"     "SYCE2"     "SYPL1"     "TACC3"     "TAGLN2"   </span></span>
-<span><span class="co">#&gt; [175] "TCF19"     "TIPIN"     "TK1"       "TKTL1"     "TMEM14C"   "TMEM50B"  </span></span>
-<span><span class="co">#&gt; [181] "TMEM97"    "TMPO"      "TOP2A"     "TSPAN32"   "TTK"       "TUBA1A"   </span></span>
-<span><span class="co">#&gt; [187] "TUBA1B"    "TUBA1C"    "TUBB3"     "TXN"       "TYMS"      "TYROBP"   </span></span>
-<span><span class="co">#&gt; [193] "UBE2N"     "UBE2T"     "UCHL5"     "UCK2"      "VPS45"     "WEE1"     </span></span>
-<span><span class="co">#&gt; [199] "XBP1"      "YBX3"</span></span></code></pre></div>
-</div>
-</div>
-</div>
-<div class="section level2" number="3">
-<h2 id="session-information">
-<span class="header-section-number">3</span> Session information<a class="anchor" aria-label="anchor" href="#session-information"></a>
+<div class="section level2" number="4">
+<h2 id="returning-a-list-instead-of-a-genesetcollection">
+<span class="header-section-number">4</span> Returning a <code>list</code> instead of a <code>GeneSetCollection</code><a class="anchor" aria-label="anchor" href="#returning-a-list-instead-of-a-genesetcollection"></a>
 </h2>
+<p>Storing gene sets in a <code>GeneSetCollection</code> object offers a number of advantages,
+inluding the addition of metadata that enables an automatic mapping of the gene
+identifiers that form the gene sets. For this reason, <code><a href="https://rdrr.io/pkg/GSVA/man/readGMT.html" class="external-link">readGMT()</a></code> returns such
+an object by default. However, if a user prefers using gene sets stored as a
+<code>list</code> object of <code>character</code> vectors, this is possible by setting the argument
+<code>valueType="list"</code> in the call to <code><a href="https://rdrr.io/pkg/GSVA/man/readGMT.html" class="external-link">readGMT()</a></code>.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">genesets</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/GSVA/man/readGMT.html" class="external-link">readGMT</a></span><span class="op">(</span><span class="va">fname</span>, valueType<span class="op">=</span><span class="st">"list"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Warning in deduplicateGmtLines(lines, deduplUse): GMT contains duplicated gene</span></span>
+<span><span class="co">#&gt; set names; deduplicated using method: first</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">class</a></span><span class="op">(</span><span class="va">genesets</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "list"</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/any.html" class="external-link">any</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/duplicated.html" class="external-link">duplicated</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">genesets</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] FALSE</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="va">genesets</span>, <span class="va">head</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; $CORONEL_RFX7_DIRECT_TARGETS_UP</span></span>
+<span><span class="co">#&gt; [1] "ABAT"  "DIP2A" "KLF9"  "PTMS"  "TOB2"  "ARL15"</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $FOROUTAN_TGFB_EMT_UP</span></span>
+<span><span class="co">#&gt; [1] "ABCA1"   "ACTN1"   "JAG1"    "ALOX5AP" "APBB2"   "ARNTL"  </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $FOROUTAN_TGFB_EMT_DN</span></span>
+<span><span class="co">#&gt; [1] "ADORA2B" "ALDH1A3" "ALDH3A2" "ANK3"    "BIRC3"   "AQP3"   </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $FOROUTAN_PRODRANK_TGFB_EMT_UP</span></span>
+<span><span class="co">#&gt; [1] "ABCA1"   "ACTN1"   "JAG1"    "ALOX5AP" "APBB2"   "ARNTL"  </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $FOROUTAN_PRODRANK_TGFB_EMT_DN</span></span>
+<span><span class="co">#&gt; [1] "ADORA2B" "ALDH3A2" "ANK3"    "BIRC3"   "AREG"    "DST"    </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $FOROUTAN_INTEGRATED_TGFB_EMT_UP</span></span>
+<span><span class="co">#&gt; [1] "ALOX5AP" "BMPR2"   "CALD1"   "CDH2"    "CDH11"   "COL1A1"</span></span></code></pre></div>
+</div>
+<div class="section level2" number="5">
+<h2 id="session-information">
+<span class="header-section-number">5</span> Session information<a class="anchor" aria-label="anchor" href="#session-information"></a>
+</h2>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/sessionInfo.html" class="external-link">sessionInfo</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt; R version 4.4.1 (2024-06-14)</span></span>
 <span><span class="co">#&gt; Platform: x86_64-pc-linux-gnu</span></span>
