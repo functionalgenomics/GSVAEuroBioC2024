@@ -9,17 +9,16 @@ author:
     email: robert.castelo@upf.edu
 output:
   html_document:
+    fig_caption: yes
     toc: true
-    toc_depth: 2
-    fig_captions: yes
-link-citations: yes
 pkgdown:
   as_is: true
+bibliography: GSVAEuroBioC2024.bib
+link-citations: yes
 vignette: >
   %\VignetteIndexEntry{Analysis of bulk RNA-seq data}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
-bibliography: GSVAEuroBioC2024.bib
 ---
 
 
