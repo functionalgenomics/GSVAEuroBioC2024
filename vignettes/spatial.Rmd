@@ -21,7 +21,7 @@ pkgdown:
 bibliography: GSVAEuroBioC2024.bib
 link-citations: yes
 vignette: >
-  %\VignetteIndexEntry{Analysis of bulk RNA-seq data}
+  %\VignetteIndexEntry{Analysis of spatial omics data}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
