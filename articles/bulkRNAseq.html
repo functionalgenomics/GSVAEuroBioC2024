@@ -223,7 +223,7 @@ Figure 2.1: Gene-level exploration. Multidimensional scaling (MDS) plot at gene 
 <h2 id="importing-gene-sets">
 <span class="header-section-number">3</span> Importing gene sets<a class="anchor" aria-label="anchor" href="#importing-gene-sets"></a>
 </h2>
-<p><span class="citation">(<a href="#ref-Costa2021"><strong>Costa2021?</strong></a>)</span> genome report a postnatal activation of the innate immune system
+<p><span class="citation">Costa et al. (<a href="#ref-costa2021genome">2021</a>)</span> report a postnatal activation of the innate immune system
 and an impairment of the adaptive immunity. For the purpose of exploring these
 results at pathway level, we will download the C7 collection of immunologic
 signature gene sets from
@@ -345,10 +345,13 @@ and parellel execution through the Bioconductor package
 <span><span class="co">#&gt; colnames(21): BS03 BS04 ... BS23 BS24</span></span>
 <span><span class="co">#&gt; colData names(2): FIR Sex</span></span></code></pre></div>
 <p>Because the input expression data was provided in a <code>SummmarizedExperiment</code>
-object, the output of <code><a href="https://rdrr.io/pkg/GSVA/man/gsva.html" class="external-link">gsva()</a></code> is an identical <code>SummarizedExperiment</code> object,
-with the exception that the one or more matrices of molecular data in the
-assay slot of the object have been replaced by a single matrix of GSVA
-enrichment scores.</p>
+object, the output of <code><a href="https://rdrr.io/pkg/GSVA/man/gsva.html" class="external-link">gsva()</a></code> is again a <code>SummarizedExperiment</code> object,
+with two main differences with respect to the one given as input: (1)
+the one or more matrices of molecular data in the assay slot of the input
+object have been replaced by a single matrix of GSVA enrichment scores under
+the assay name <code>es</code>; and (2) the collection of mapped and filtered gene sets
+is included in the object and can be accessed using the methods <code><a href="https://rdrr.io/pkg/GSVA/man/geneSets.html" class="external-link">geneSets()</a></code>
+and <code><a href="https://rdrr.io/pkg/GSVA/man/geneSets.html" class="external-link">geneSetSizes()</a></code>.</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html" class="external-link">assayNames</a></span><span class="op">(</span><span class="va">se</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] "logCPM"</span></span>
@@ -366,7 +369,22 @@ enrichment scores.</p>
 <span><span class="co">#&gt;                                                                  BS05</span></span>
 <span><span class="co">#&gt; GSE18804_SPLEEN_MACROPHAGE_VS_BRAIN_TUMORAL_MACROPHAGE_UP -0.13344892</span></span>
 <span><span class="co">#&gt; GSE18804_SPLEEN_MACROPHAGE_VS_COLON_TUMORAL_MACROPHAGE_UP -0.08684864</span></span>
-<span><span class="co">#&gt; GSE18804_SPLEEN_MACROPHAGE_VS_TUMORAL_MACROPHAGE_UP       -0.17536163</span></span></code></pre></div>
+<span><span class="co">#&gt; GSE18804_SPLEEN_MACROPHAGE_VS_TUMORAL_MACROPHAGE_UP       -0.17536163</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">class</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/GSVA/man/geneSets.html" class="external-link">geneSets</a></span><span class="op">(</span><span class="va">es</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "list"</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/GSVA/man/geneSets.html" class="external-link">geneSetSizes</a></span><span class="op">(</span><span class="va">es</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; GSE18804_SPLEEN_MACROPHAGE_VS_BRAIN_TUMORAL_MACROPHAGE_UP </span></span>
+<span><span class="co">#&gt;                                                       122 </span></span>
+<span><span class="co">#&gt; GSE18804_SPLEEN_MACROPHAGE_VS_COLON_TUMORAL_MACROPHAGE_UP </span></span>
+<span><span class="co">#&gt;                                                       141 </span></span>
+<span><span class="co">#&gt;       GSE18804_SPLEEN_MACROPHAGE_VS_TUMORAL_MACROPHAGE_UP </span></span>
+<span><span class="co">#&gt;                                                       147 </span></span>
+<span><span class="co">#&gt;                              GSE22886_NEUTROPHIL_VS_DC_UP </span></span>
+<span><span class="co">#&gt;                                                       105 </span></span>
+<span><span class="co">#&gt;                        GSE22886_NEUTROPHIL_VS_MONOCYTE_UP </span></span>
+<span><span class="co">#&gt;                                                        82 </span></span>
+<span><span class="co">#&gt;                      GSE2585_THYMIC_MACROPHAGE_VS_MTEC_UP </span></span>
+<span><span class="co">#&gt;                                                       142</span></span></code></pre></div>
 </div>
 <div class="section level2" number="5">
 <h2 id="data-exploration-at-pathway-level">
@@ -412,15 +430,15 @@ heterogeneity using surrogate variable analysis <span class="citation">(<a href=
 <span><span class="va">mod</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/cbind.html" class="external-link">cbind</a></span><span class="op">(</span><span class="va">mod</span>, <span class="va">sv</span><span class="op">$</span><span class="va">sv</span><span class="op">)</span></span>
 <span><span class="co">## fit linear models</span></span>
 <span><span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/limma/man/lmFit.html" class="external-link">lmFit</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html" class="external-link">assay</a></span><span class="op">(</span><span class="va">es</span><span class="op">)</span>, <span class="va">mod</span><span class="op">)</span></span>
-<span><span class="co">## calculate moderated t-statistics using the robust regime</span></span>
-<span><span class="va">fit.eb</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/limma/man/ebayes.html" class="external-link">eBayes</a></span><span class="op">(</span><span class="va">fit</span>, robust<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="co">## calculate moderated t-statistics</span></span>
+<span><span class="va">fit.eb</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/limma/man/ebayes.html" class="external-link">eBayes</a></span><span class="op">(</span><span class="va">fit</span><span class="op">)</span></span>
 <span><span class="co">## summarize the extent of differential expression at 5% FDR</span></span>
 <span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/limma/man/decideTests.html" class="external-link">decideTests</a></span><span class="op">(</span><span class="va">fit.eb</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">res</span><span class="op">)</span></span>
 <span><span class="co">#&gt;        (Intercept) FIRyes                </span></span>
-<span><span class="co">#&gt; Down            24     12  39  39  33  55</span></span>
-<span><span class="co">#&gt; NotSig         118    100  64  79  69  92</span></span>
-<span><span class="co">#&gt; Up               8     38  47  32  48   3</span></span></code></pre></div>
+<span><span class="co">#&gt; Down            24     12  38  40  33  54</span></span>
+<span><span class="co">#&gt; NotSig         118     99  65  78  70  93</span></span>
+<span><span class="co">#&gt; Up               8     39  47  32  47   3</span></span></code></pre></div>
 <p>As shown in Figure <a href="#fig:esstdevxgssize">6.1</a> below, GSVA scores tend to have
 higher precision for larger gene sets, albeit this trend breaks at the end of
 gene set sizes in this case. This trend is usually more clear when GSVA scores
@@ -446,28 +464,28 @@ obtained using GSVA’s function <code><a href="https://rdrr.io/pkg/GSVA/man/gen
 function. Here below, we call again <code><a href="https://rdrr.io/pkg/limma/man/ebayes.html" class="external-link">eBayes()</a></code> using the <code>trend</code> parameter. In
 this case, however, the change in the number of DE pathway is negligible.</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">fit.eb.trend</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/limma/man/ebayes.html" class="external-link">eBayes</a></span><span class="op">(</span><span class="va">fit</span>, robust<span class="op">=</span><span class="cn">TRUE</span>, trend<span class="op">=</span><span class="va">gssizes</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">fit.eb.trend</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/limma/man/ebayes.html" class="external-link">eBayes</a></span><span class="op">(</span><span class="va">fit</span>, trend<span class="op">=</span><span class="va">gssizes</span><span class="op">)</span></span>
 <span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/limma/man/decideTests.html" class="external-link">decideTests</a></span><span class="op">(</span><span class="va">fit.eb.trend</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">res</span><span class="op">)</span></span>
 <span><span class="co">#&gt;        (Intercept) FIRyes                </span></span>
-<span><span class="co">#&gt; Down            24     13  39  41  34  57</span></span>
-<span><span class="co">#&gt; NotSig         121     98  64  75  69  90</span></span>
-<span><span class="co">#&gt; Up               5     39  47  34  47   3</span></span></code></pre></div>
+<span><span class="co">#&gt; Down            24     12  39  41  34  59</span></span>
+<span><span class="co">#&gt; NotSig         121     99  64  76  69  88</span></span>
+<span><span class="co">#&gt; Up               5     39  47  33  47   3</span></span></code></pre></div>
 <p>We can select DE pathways with FDR &lt; 5% as follows.</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">tt</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/limma/man/toptable.html" class="external-link">topTable</a></span><span class="op">(</span><span class="va">fit.eb.trend</span>, coef<span class="op">=</span><span class="fl">2</span>, n<span class="op">=</span><span class="cn">Inf</span><span class="op">)</span></span>
 <span><span class="va">DEpwys</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/row_colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">tt</span><span class="op">)</span><span class="op">[</span><span class="va">tt</span><span class="op">$</span><span class="va">adj.P.Val</span> <span class="op">&lt;=</span> <span class="fl">0.05</span><span class="op">]</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">DEpwys</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] 52</span></span>
+<span><span class="co">#&gt; [1] 51</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">DEpwys</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] "GSE3039_CD4_TCELL_VS_ALPHABETA_CD8_TCELL_UP"           </span></span>
-<span><span class="co">#&gt; [2] "GSE3982_NEUTROPHIL_VS_CENT_MEMORY_CD4_TCELL_UP"        </span></span>
-<span><span class="co">#&gt; [3] "GSE3982_EOSINOPHIL_VS_CENT_MEMORY_CD4_TCELL_UP"        </span></span>
+<span><span class="co">#&gt; [2] "GSE3982_EOSINOPHIL_VS_CENT_MEMORY_CD4_TCELL_UP"        </span></span>
+<span><span class="co">#&gt; [3] "GSE3982_NEUTROPHIL_VS_CENT_MEMORY_CD4_TCELL_UP"        </span></span>
 <span><span class="co">#&gt; [4] "GSE36392_EOSINOPHIL_VS_NEUTROPHIL_IL25_TREATED_LUNG_UP"</span></span>
 <span><span class="co">#&gt; [5] "GSE3982_NEUTROPHIL_VS_TH2_UP"                          </span></span>
 <span><span class="co">#&gt; [6] "GSE22886_NEUTROPHIL_VS_DC_UP"</span></span></code></pre></div>
 <p>Figure <a href="#fig:heatmapdepwys">6.2</a> below shows a heatmap of the GSVA enrichment
-scores of the subset of the 52 DE pathways, clustered by
+scores of the subset of the 51 DE pathways, clustered by
 pathway and sample. We may observe that, consistently with the findings of
 <span class="citation">Costa et al. (<a href="#ref-costa2021genome">2021</a>)</span>, FIR-affected neonates display an enrichment of upregulated
 pathways associated with innate immunity, and an enrichment of downregulated
