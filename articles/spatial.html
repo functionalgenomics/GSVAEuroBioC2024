@@ -83,16 +83,18 @@
       <h1 data-toc-skip>Analysis of spatial omics data</h1>
                         <h4 data-toc-skip class="author">Axel Klenk</h4>
             <address class="author_afil">
-      Dept. of Medicine and Life Sciences, Universitat Pompeu Fabra,
-Barcelona<br><a class="author_email" href="mailto:#"></a><a href="mailto:axelvolker.klenk@upf.edu" class="email">axelvolker.klenk@upf.edu</a>
+      Dept. of Medicine and Life Sciences, Universitat Pompeu Fabra, Barcelona<br><a class="author_email" href="mailto:#"></a><a href="mailto:axelvolker.klenk@upf.edu" class="email">axelvolker.klenk@upf.edu</a>
       </address>
-                              <h4 data-toc-skip class="author">Robert
-Castelo</h4>
+                              <h4 data-toc-skip class="author">Pere Moles</h4>
             <address class="author_afil">
-      Dept. of Medicine and Life Sciences, Universitat Pompeu Fabra,
-Barcelona<br><a class="author_email" href="mailto:#"></a><a href="mailto:robert.castelo@upf.edu" class="email">robert.castelo@upf.edu</a>
+      Dept. of Medicine and Life Sciences, Universitat Pompeu Fabra, Barcelona<br><a class="author_email" href="mailto:#"></a><a href="mailto:pere.moles@upf.edu" class="email">pere.moles@upf.edu</a>
+      </address>
+                              <h4 data-toc-skip class="author">Robert Castelo</h4>
+            <address class="author_afil">
+      Dept. of Medicine and Life Sciences, Universitat Pompeu Fabra, Barcelona<br><a class="author_email" href="mailto:#"></a><a href="mailto:robert.castelo@upf.edu" class="email">robert.castelo@upf.edu</a>
       </address>
                   
+            <h4 data-toc-skip class="date">2024-09-01</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/functionalgenomics/GSVAEuroBioC2024/blob/devel/vignettes/spatial.Rmd" class="external-link"><code>vignettes/spatial.Rmd</code></a></small>
       <div class="hidden name"><code>spatial.Rmd</code></div>
@@ -101,21 +103,25 @@ Barcelona<br><a class="author_email" href="mailto:#"></a><a href="mailto:robert.
 
     
     
-<div class="section level2">
-<h2 id="importing-spatial-omics-data-into-a-spatialexperiment-object">Importing spatial omics data into a <code>SpatialExperiment</code>
-object<a class="anchor" aria-label="anchor" href="#importing-spatial-omics-data-into-a-spatialexperiment-object"></a>
+<p>Vignette built using <code>GSVA</code>, version 1.53.16.</p>
+<div class="section level2" number="1">
+<h2 id="importing-spatial-omics-data-into-a-spatialexperiment-object">
+<span class="header-section-number">1</span> Importing spatial omics data into a <code>SpatialExperiment</code> object<a class="anchor" aria-label="anchor" href="#importing-spatial-omics-data-into-a-spatialexperiment-object"></a>
 </h2>
 </div>
-<div class="section level2">
-<h2 id="importing-gene-sets">Importing gene sets<a class="anchor" aria-label="anchor" href="#importing-gene-sets"></a>
+<div class="section level2" number="2">
+<h2 id="importing-gene-sets">
+<span class="header-section-number">2</span> Importing gene sets<a class="anchor" aria-label="anchor" href="#importing-gene-sets"></a>
 </h2>
 </div>
-<div class="section level2">
-<h2 id="how-to-run-gsva">How to run GSVA<a class="anchor" aria-label="anchor" href="#how-to-run-gsva"></a>
+<div class="section level2" number="3">
+<h2 id="how-to-run-gsva">
+<span class="header-section-number">3</span> How to run GSVA<a class="anchor" aria-label="anchor" href="#how-to-run-gsva"></a>
 </h2>
 </div>
-<div class="section level2">
-<h2 id="session-information">Session information<a class="anchor" aria-label="anchor" href="#session-information"></a>
+<div class="section level2" number="4">
+<h2 id="session-information">
+<span class="header-section-number">4</span> Session information<a class="anchor" aria-label="anchor" href="#session-information"></a>
 </h2>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/sessionInfo.html" class="external-link">sessionInfo</a></span><span class="op">(</span><span class="op">)</span></span>
@@ -142,19 +148,20 @@ object<a class="anchor" aria-label="anchor" href="#importing-spatial-omics-data-
 <span><span class="co">#&gt; [1] stats     graphics  grDevices utils     datasets  methods   base     </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; loaded via a namespace (and not attached):</span></span>
-<span><span class="co">#&gt;  [1] digest_0.6.37     desc_1.4.3        R6_2.5.1          fastmap_1.2.0    </span></span>
+<span><span class="co">#&gt;  [1] digest_0.6.37     R6_2.5.1          bookdown_0.40     fastmap_1.2.0    </span></span>
 <span><span class="co">#&gt;  [5] xfun_0.47         cachem_1.1.0      knitr_1.48        htmltools_0.5.8.1</span></span>
 <span><span class="co">#&gt;  [9] rmarkdown_2.28    lifecycle_1.0.4   cli_3.6.3         sass_0.4.9       </span></span>
-<span><span class="co">#&gt; [13] pkgdown_2.1.0     textshaping_0.4.0 jquerylib_0.1.4   systemfonts_1.1.0</span></span>
-<span><span class="co">#&gt; [17] compiler_4.4.1    tools_4.4.1       ragg_1.3.2        evaluate_0.24.0  </span></span>
-<span><span class="co">#&gt; [21] bslib_0.8.0       yaml_2.3.10       jsonlite_1.8.8    rlang_1.1.4      </span></span>
-<span><span class="co">#&gt; [25] fs_1.6.4          htmlwidgets_1.6.4</span></span></code></pre></div>
+<span><span class="co">#&gt; [13] jquerylib_0.1.4   compiler_4.4.1    tools_4.4.1       evaluate_0.24.0  </span></span>
+<span><span class="co">#&gt; [17] bslib_0.8.0       yaml_2.3.10       jsonlite_1.8.8    rlang_1.1.4      </span></span>
+<span><span class="co">#&gt; [21] htmlwidgets_1.6.4</span></span></code></pre></div>
 </div>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
 
-      </div>
+        <nav id="toc" data-toggle="toc"><h2 data-toc-skip>Contents</h2>
+    </nav>
+</div>
 
 </div>
 
