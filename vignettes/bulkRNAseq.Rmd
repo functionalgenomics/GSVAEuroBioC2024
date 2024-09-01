@@ -265,16 +265,16 @@ mod <- cbind(mod, sv$sv)
 ## fit linear models
 fit <- lmFit(assay(es), mod)
 ## calculate moderated t-statistics using the robust regime
-fit.eb <- eBayes(fit)
+fit.eb <- eBayes(fit, robust=TRUE)
 ## summarize the extent of differential expression at 5% FDR
 res <- decideTests(fit.eb)
 summary(res)
 ```
-As shown in Figure \@ref(fig:esstdevxgssize) below, we may observe that GSVA
-scores have higher precision for larger gene sets. GSVA scores derived from
-gene sets that include small sizes (our smallest gene set here is about
-100 genes), and from less heterogenous expression data, show such a trend
-more clearly.
+As shown in Figure \@ref(fig:esstdevxgssize) below, GSVA scores tend to have
+higher precision for larger gene sets, albeit this trend breaks at the end of
+gene set sizes in this case. This trend is usually more clear when GSVA scores
+are derived from gene sets including smaller sizes (our smallest gene set here
+is about 100 genes), and from less heterogenous expression data.
 
 ```{r esstdevxgssize, message=FALSE, warning=FALSE, echo=TRUE, small.mar=TRUE, fig.height=4, fig.width=4, dpi=100, fig.cap="Pathway-level differential expression analysis. Residual standard deviation of GSVA scores as a function of gene set size. Larger gene sets tend to have higher precision."}
 gssizes <- geneSetSizes(es)
@@ -292,7 +292,7 @@ function. Here below, we call again `eBayes()` using the `trend` parameter. In
 this case, however, the change in the number of DE pathway is negligible.
 
 ```{r}
-fit.eb.trend <- eBayes(fit, trend=gssizes)
+fit.eb.trend <- eBayes(fit, robust=TRUE, trend=gssizes)
 res <- decideTests(fit.eb.trend)
 summary(res)
 ```
