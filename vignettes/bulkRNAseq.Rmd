@@ -140,7 +140,7 @@ plotMDS(assay(se), col=fircolor[se$FIR], pch=sexpch[se$Sex])
 
 # Importing gene sets
 
-@Costa2021 genome report a postnatal activation of the innate immune system
+@costa2021genome report a postnatal activation of the innate immune system
 and an impairment of the adaptive immunity. For the purpose of exploring these
 results at pathway level, we will download the C7 collection of immunologic
 signature gene sets from
@@ -218,15 +218,20 @@ es <- gsva(gsvapar)
 es
 ```
 Because the input expression data was provided in a `SummmarizedExperiment`
-object, the output of `gsva()` is an identical `SummarizedExperiment` object,
-with the exception that the one or more matrices of molecular data in the
-assay slot of the object have been replaced by a single matrix of GSVA
-enrichment scores.
+object, the output of `gsva()` is again a `SummarizedExperiment` object,
+with two main differences with respect to the one given as input: (1)
+the one or more matrices of molecular data in the assay slot of the input
+object have been replaced by a single matrix of GSVA enrichment scores under
+the assay name `es`; and (2) the collection of mapped and filtered gene sets
+is included in the object and can be accessed using the methods `geneSets()`
+and `geneSetSizes()`.
 
 ```{r}
 assayNames(se)
 assayNames(es)
 assay(es)[1:3, 1:3]
+class(geneSets(es))
+head(geneSetSizes(es))
 ```
 
 # Data exploration at pathway level
@@ -264,8 +269,8 @@ sv <- sva(assay(es), mod, mod0)
 mod <- cbind(mod, sv$sv)
 ## fit linear models
 fit <- lmFit(assay(es), mod)
-## calculate moderated t-statistics using the robust regime
-fit.eb <- eBayes(fit, robust=TRUE)
+## calculate moderated t-statistics
+fit.eb <- eBayes(fit)
 ## summarize the extent of differential expression at 5% FDR
 res <- decideTests(fit.eb)
 summary(res)
@@ -292,7 +297,7 @@ function. Here below, we call again `eBayes()` using the `trend` parameter. In
 this case, however, the change in the number of DE pathway is negligible.
 
 ```{r}
-fit.eb.trend <- eBayes(fit, robust=TRUE, trend=gssizes)
+fit.eb.trend <- eBayes(fit, trend=gssizes)
 res <- decideTests(fit.eb.trend)
 summary(res)
 ```
