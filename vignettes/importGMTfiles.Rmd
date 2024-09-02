@@ -63,7 +63,7 @@ the filename or URL of a, possibly compressed, GMT file. The call below illustra
 how to read a GMT file from MSigDB providing its URL. Note that we also load the
 package 
 [GSEABase](https://bioconductor.org/packages/GSEABase) because, by default, the value
-returned by `readGMT()` is a `GeneSetCollection` object defined on that package.
+returned by `readGMT()` is a `GeneSetCollection` object defined in that package.
 
 ```{r, message=FALSE, warning=FALSE}
 library(GSEABase)
@@ -88,7 +88,7 @@ genesets
 ```
 Next to the filename of the GMT file, we provided the argument
 `geneIdType=SymbolIdentifier()`. This argument adds the necessary metadata that
-later one allows other software to figure out what kind of gene identifiers are
+later on allows other software to figure out what kind of gene identifiers are
 used in this collection of gene sets, to attempt mapping them to other type of
 identifiers, if necessary. While this argument is optional, we should always
 try to provide it.
@@ -107,7 +107,7 @@ The GSVA `readGMT()` function deals with duplicated gene set names as follows.
 By default, `readGMT()` warns the user about a duplicated gene set name and
 keeps only the first occurrence of the duplicated gene set in the returned
 object. We can illustrate this situation with a GMT file from the MSigDB
-database that happens to have a duplicated gene set name and which we have
+database that happens to have duplicated gene set names and which we have
 stored as part of this workshop package.
 
 ```{r, message=FALSE, error=TRUE}
@@ -116,8 +116,8 @@ fname <- system.file("extdata", "c2.all.v7.5.symbols.gmt.gz",
 genesets <- getGmt(fname, geneIdType=SymbolIdentifier())
 ```
 We can see that `getGmt()` prompts an error. We can see below that this does
-not happen with `readGMT()` and that, by default, the first occurrence of the
-duplicated gene set has been removed.
+not happen with `readGMT()` and that, by default, all but the first occurrence of the
+duplicated gene set have been removed.
 
 ```{r}
 genesets <- readGMT(fname, geneIdType=SymbolIdentifier())
@@ -131,7 +131,7 @@ policies to deal with duplicated gene set names, see its help page with
 # Returning a `list` instead of a `GeneSetCollection`
 
 Storing gene sets in a `GeneSetCollection` object offers a number of advantages,
-inluding the addition of metadata that enables an automatic mapping of the gene
+including the addition of metadata that enables an automatic mapping of the gene
 identifiers that form the gene sets. For this reason, `readGMT()` returns such
 an object by default. However, if a user prefers using gene sets stored as a
 `list` object of `character` vectors, this is possible by setting the argument

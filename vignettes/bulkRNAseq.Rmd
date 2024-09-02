@@ -56,7 +56,7 @@ We start by building a
 [SummarizedExperiment](https://bioconductor.org/packages/SummarizedExperiment)
 object from these RNA-seq data. A corresponding matrix of normalized log-CPM
 units of expression is stored as part of this workshop package, where
-lowly-expressed genes have been already filtered out. We should load these data
+lowly-expressed genes have been already filtered out. We should load this data
 as follows.
 
 ```{r}
@@ -120,9 +120,9 @@ gsvaAnnotation(se) <- EntrezIdentifier("org.Hs.eg.db")
 
 # Data exploration at gene level
 
-We do a brief data exploration at gene level, to have a sense of what can
-we expect in our analysis at pathway level. Figure \@ref(fig:genelevelmds)
-below shows the projection in two dimensions of sample dissmilarity by means
+We do a brief data exploration at gene level, to have a sense of what we can
+expect in our analysis at pathway level. Figure \@ref(fig:genelevelmds)
+below shows the projection in two dimensions of sample dissimilarity by means
 of a
 [multidimensional scaling (MDS)](https://en.wikipedia.org/wiki/Multidimensional_scaling)
 plot, produced with the `plotMDS()` function of the Bioconductor package
@@ -146,7 +146,7 @@ results at pathway level, we will download the C7 collection of immunologic
 signature gene sets from
 [MSigDB](https://www.gsea-msigdb.org/gsea/msigdb/human/collection_details.jsp#C7),
 concretely the subcollection ImmuneSigDB. Here we use the GSVA function
-`readGMT()`, which allow us to directly download the GMT file from the MSigDB
+`readGMT()`, which allows us to directly download the GMT file from the MSigDB
 database.
 
 ```{r, eval=FALSE, message=FALSE}
