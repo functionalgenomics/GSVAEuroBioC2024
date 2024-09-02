@@ -90,7 +90,7 @@
       Dept. of Medicine and Life Sciences, Universitat Pompeu Fabra, Barcelona<br><a class="author_email" href="mailto:#"></a><a href="mailto:robert.castelo@upf.edu" class="email">robert.castelo@upf.edu</a>
       </address>
                   
-            <h4 data-toc-skip class="date">2024-09-01</h4>
+            <h4 data-toc-skip class="date">2024-09-02</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/functionalgenomics/GSVAEuroBioC2024/blob/devel/vignettes/bulkRNAseq.Rmd" class="external-link"><code>vignettes/bulkRNAseq.Rmd</code></a></small>
       <div class="hidden name"><code>bulkRNAseq.Rmd</code></div>
@@ -115,7 +115,7 @@ them had been exposed to a fetal inflammatory response (FIR) before birth.</p>
 <a href="https://bioconductor.org/packages/SummarizedExperiment" class="external-link">SummarizedExperiment</a>
 object from these RNA-seq data. A corresponding matrix of normalized log-CPM
 units of expression is stored as part of this workshop package, where
-lowly-expressed genes have been already filtered out. We should load these data
+lowly-expressed genes have been already filtered out. We should load this data
 as follows.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">fname</span> <span class="op">&lt;-</span> <span class="st">"CostaEtAl2021_FIRDBS_bulkRNAseq_data_ENTREZID.csv.gz"</span></span>
@@ -197,9 +197,9 @@ gene sets and RNA-seq data, we should add annotation metadata to the
 <h2 id="data-exploration-at-gene-level">
 <span class="header-section-number">2</span> Data exploration at gene level<a class="anchor" aria-label="anchor" href="#data-exploration-at-gene-level"></a>
 </h2>
-<p>We do a brief data exploration at gene level, to have a sense of what can
-we expect in our analysis at pathway level. Figure <a href="#fig:genelevelmds">2.1</a>
-below shows the projection in two dimensions of sample dissmilarity by means
+<p>We do a brief data exploration at gene level, to have a sense of what we can
+expect in our analysis at pathway level. Figure <a href="#fig:genelevelmds">2.1</a>
+below shows the projection in two dimensions of sample dissimilarity by means
 of a
 <a href="https://en.wikipedia.org/wiki/Multidimensional_scaling" class="external-link">multidimensional scaling (MDS)</a>
 plot, produced with the <code><a href="https://rdrr.io/pkg/limma/man/plotMDS.html" class="external-link">plotMDS()</a></code> function of the Bioconductor package
@@ -229,7 +229,7 @@ results at pathway level, we will download the C7 collection of immunologic
 signature gene sets from
 <a href="https://www.gsea-msigdb.org/gsea/msigdb/human/collection_details.jsp#C7" class="external-link">MSigDB</a>,
 concretely the subcollection ImmuneSigDB. Here we use the GSVA function
-<code><a href="https://rdrr.io/pkg/GSVA/man/readGMT.html" class="external-link">readGMT()</a></code>, which allow us to directly download the GMT file from the MSigDB
+<code><a href="https://rdrr.io/pkg/GSVA/man/readGMT.html" class="external-link">readGMT()</a></code>, which allows us to directly download the GMT file from the MSigDB
 database.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">URL</span> <span class="op">&lt;-</span> <span class="st">"https://data.broadinstitute.org/gsea-msigdb/msigdb/release/2023.2.Hs/c7.immunesigdb.v2023.2.Hs.symbols.gmt"</span></span>

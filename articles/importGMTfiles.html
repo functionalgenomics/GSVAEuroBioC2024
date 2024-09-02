@@ -90,7 +90,7 @@
       Dept. of Medicine and Life Sciences, Universitat Pompeu Fabra, Barcelona<br><a class="author_email" href="mailto:#"></a><a href="mailto:robert.castelo@upf.edu" class="email">robert.castelo@upf.edu</a>
       </address>
                   
-            <h4 data-toc-skip class="date">2024-09-01</h4>
+            <h4 data-toc-skip class="date">2024-09-02</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/functionalgenomics/GSVAEuroBioC2024/blob/devel/vignettes/importGMTfiles.Rmd" class="external-link"><code>vignettes/importGMTfiles.Rmd</code></a></small>
       <div class="hidden name"><code>importGMTfiles.Rmd</code></div>
@@ -133,7 +133,7 @@ the filename or URL of a, possibly compressed, GMT file. The call below illustra
 how to read a GMT file from MSigDB providing its URL. Note that we also load the
 package
 <a href="https://bioconductor.org/packages/GSEABase" class="external-link">GSEABase</a> because, by default, the value
-returned by <code><a href="https://rdrr.io/pkg/GSVA/man/readGMT.html" class="external-link">readGMT()</a></code> is a <code>GeneSetCollection</code> object defined on that package.</p>
+returned by <code><a href="https://rdrr.io/pkg/GSVA/man/readGMT.html" class="external-link">readGMT()</a></code> is a <code>GeneSetCollection</code> object defined in that package.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">GSEABase</span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/rcastelo/GSVA" class="external-link">GSVA</a></span><span class="op">)</span></span>
@@ -174,7 +174,7 @@ GMT file, stored in the workshop package, as follows.</p>
 <span><span class="co">#&gt;     collectionType: NullCollection (1 total)</span></span></code></pre></div>
 <p>Next to the filename of the GMT file, we provided the argument
 <code>geneIdType=SymbolIdentifier()</code>. This argument adds the necessary metadata that
-later one allows other software to figure out what kind of gene identifiers are
+later on allows other software to figure out what kind of gene identifiers are
 used in this collection of gene sets, to attempt mapping them to other type of
 identifiers, if necessary. While this argument is optional, we should always
 try to provide it.</p>
@@ -194,7 +194,7 @@ in a list with duplicated element names.</p>
 By default, <code><a href="https://rdrr.io/pkg/GSVA/man/readGMT.html" class="external-link">readGMT()</a></code> warns the user about a duplicated gene set name and
 keeps only the first occurrence of the duplicated gene set in the returned
 object. We can illustrate this situation with a GMT file from the MSigDB
-database that happens to have a duplicated gene set name and which we have
+database that happens to have duplicated gene set names and which we have
 stored as part of this workshop package.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">fname</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"c2.all.v7.5.symbols.gmt.gz"</span>,</span>
@@ -202,8 +202,8 @@ stored as part of this workshop package.</p>
 <span><span class="va">genesets</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/GSEABase/man/getObjects.html" class="external-link">getGmt</a></span><span class="op">(</span><span class="va">fname</span>, geneIdType<span class="op">=</span><span class="fu"><a href="https://rdrr.io/pkg/GSEABase/man/GeneIdentifierType-constructors.html" class="external-link">SymbolIdentifier</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Error in validObject(.Object): invalid class "GeneSetCollection" object: each setName must be distinct</span></span></code></pre></div>
 <p>We can see that <code><a href="https://rdrr.io/pkg/GSEABase/man/getObjects.html" class="external-link">getGmt()</a></code> prompts an error. We can see below that this does
-not happen with <code><a href="https://rdrr.io/pkg/GSVA/man/readGMT.html" class="external-link">readGMT()</a></code> and that, by default, the first occurrence of the
-duplicated gene set has been removed.</p>
+not happen with <code><a href="https://rdrr.io/pkg/GSVA/man/readGMT.html" class="external-link">readGMT()</a></code> and that, by default, all but the first occurrence of the
+duplicated gene set have been removed.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">genesets</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/GSVA/man/readGMT.html" class="external-link">readGMT</a></span><span class="op">(</span><span class="va">fname</span>, geneIdType<span class="op">=</span><span class="fu"><a href="https://rdrr.io/pkg/GSEABase/man/GeneIdentifierType-constructors.html" class="external-link">SymbolIdentifier</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Warning in deduplicateGmtLines(lines, deduplUse): GMT contains duplicated gene</span></span>
@@ -226,7 +226,7 @@ policies to deal with duplicated gene set names, see its help page with
 <span class="header-section-number">4</span> Returning a <code>list</code> instead of a <code>GeneSetCollection</code><a class="anchor" aria-label="anchor" href="#returning-a-list-instead-of-a-genesetcollection"></a>
 </h2>
 <p>Storing gene sets in a <code>GeneSetCollection</code> object offers a number of advantages,
-inluding the addition of metadata that enables an automatic mapping of the gene
+including the addition of metadata that enables an automatic mapping of the gene
 identifiers that form the gene sets. For this reason, <code><a href="https://rdrr.io/pkg/GSVA/man/readGMT.html" class="external-link">readGMT()</a></code> returns such
 an object by default. However, if a user prefers using gene sets stored as a
 <code>list</code> object of <code>character</code> vectors, this is possible by setting the argument
