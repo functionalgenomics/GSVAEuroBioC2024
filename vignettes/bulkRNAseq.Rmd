@@ -213,7 +213,7 @@ as its first argument, other arguments to this function control its verbosity
 and parellel execution through the Bioconductor package
 [BiocParallel](https://bioconductor.org/packages/BiocParallel).
 
-```{r, message=FALSE}
+```{r}
 es <- gsva(gsvapar)
 es
 ```
