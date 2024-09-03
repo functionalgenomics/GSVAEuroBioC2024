@@ -99,7 +99,7 @@
 
     
     
-<p>Vignette built using <code>GSVA</code>, version 1.53.16.</p>
+<p>Vignette built using <code>GSVA</code>, version 1.53.17.</p>
 <div class="section level2" number="1">
 <h2 id="importing-bulk-rna-seq-data-into-a-summarizedexperiment-object">
 <span class="header-section-number">1</span> Importing bulk RNA-seq data into a <code>SummarizedExperiment</code> object<a class="anchor" aria-label="anchor" href="#importing-bulk-rna-seq-data-into-a-summarizedexperiment-object"></a>
@@ -326,12 +326,12 @@ and parellel execution through the Bioconductor package
 <a href="https://bioconductor.org/packages/BiocParallel" class="external-link">BiocParallel</a>.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">es</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/GSVA/man/gsva.html" class="external-link">gsva</a></span><span class="op">(</span><span class="va">gsvapar</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Mapping identifiers between gene sets and feature names.</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Mapping identifiers</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Estimating GSVA scores for 150 gene sets.</span></span>
-<span><span class="co">#&gt; Figuring out automatically how to estimate ECDFs</span></span>
-<span><span class="co">#&gt; Estimating ECDFs with Gaussian kernels</span></span>
-<span><span class="co">#&gt;   |                                                                              |                                                                      |   0%  |                                                                              |===                                                                   |   5%  |                                                                              |=======                                                               |  10%  |                                                                              |==========                                                            |  14%  |                                                                              |=============                                                         |  19%  |                                                                              |=================                                                     |  24%  |                                                                              |====================                                                  |  29%  |                                                                              |=======================                                               |  33%  |                                                                              |===========================                                           |  38%  |                                                                              |==============================                                        |  43%  |                                                                              |=================================                                     |  48%  |                                                                              |=====================================                                 |  52%  |                                                                              |========================================                              |  57%  |                                                                              |===========================================                           |  62%  |                                                                              |===============================================                       |  67%  |                                                                              |==================================================                    |  71%  |                                                                              |=====================================================                 |  76%  |                                                                              |=========================================================             |  81%  |                                                                              |============================================================          |  86%  |                                                                              |===============================================================       |  90%  |                                                                              |===================================================================   |  95%  |                                                                              |======================================================================| 100%</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Calculating GSVA scores for 150 gene sets</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> kcdf='auto' (default)</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Row-wise ECDF estimation with Gaussian kernels</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Calculations finished</span></span>
 <span><span class="va">es</span></span>
 <span><span class="co">#&gt; class: SummarizedExperiment </span></span>
 <span><span class="co">#&gt; dim: 150 21 </span></span>
@@ -584,7 +584,7 @@ Figure 6.2: Pathway-level signature of FIR. Heatmap of GSVA enrichment scores fr
 <span><span class="co">#&gt;  [3] BiocParallel_1.39.0         genefilter_1.87.0          </span></span>
 <span><span class="co">#&gt;  [5] mgcv_1.9-1                  nlme_3.1-166               </span></span>
 <span><span class="co">#&gt;  [7] org.Hs.eg.db_3.19.1         limma_3.61.9               </span></span>
-<span><span class="co">#&gt;  [9] GSVA_1.53.16                GSEABase_1.67.0            </span></span>
+<span><span class="co">#&gt;  [9] GSVA_1.53.17                GSEABase_1.67.0            </span></span>
 <span><span class="co">#&gt; [11] graph_1.83.0                annotate_1.83.0            </span></span>
 <span><span class="co">#&gt; [13] XML_3.99-0.17               AnnotationDbi_1.67.0       </span></span>
 <span><span class="co">#&gt; [15] SummarizedExperiment_1.35.1 Biobase_2.65.1             </span></span>
