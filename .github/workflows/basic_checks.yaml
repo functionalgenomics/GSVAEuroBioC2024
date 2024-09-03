@@ -43,7 +43,7 @@ jobs:
       - name: Install the very last available GSVA
         run: |
           BiocManager::install("rcastelo/GSVA", ask=FALSE)
-        shell: RScript {0}
+        shell: Rscript {0}
 
       - name: Check
         env:
