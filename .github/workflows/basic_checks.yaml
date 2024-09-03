@@ -22,7 +22,6 @@ jobs:
       - name: Query dependencies and update old packages
         run: |
           BiocManager::install(ask=FALSE)
-          BiocManager::install("rcastelo/GSVA", ask=FALSE)
           saveRDS(remotes::dev_package_deps(dependencies = TRUE), ".github/depends.Rds", version = 2)
         shell: Rscript {0}
         
@@ -40,6 +39,11 @@ jobs:
           remotes::install_deps(dependencies = TRUE, repos = BiocManager::repositories())
           remotes::install_cran("rcmdcheck")
         shell: Rscript {0}
+
+      - name: Install the very last available GSVA
+        run: |
+          BiocManager::install("rcastelo/GSVA", ask=FALSE)
+        shell: RScript {0}
 
       - name: Check
         env:

@@ -21,6 +21,7 @@ Imports:
     org.Hs.eg.db,
     GSEABase,
     SummarizedExperiment,
+    SingleCellExperiment,
     GSVA,
     sva,
     limma,
