@@ -59,7 +59,7 @@ Run the workshop with Docker by first using the following command:
 ```sh
 docker run -d -e PASSWORD=bioc -p 8787:8787 ghcr.io/functionalgenomics/gsvaeurobioc2024:latest
 ```
-Second, open the url [localhost:8787](https://localhost:8787) in a new tab of
+Second, open the url [localhost:8787](localhost:8787) in a new tab of
 your web browser.
 
 ## Workshop goals and objectives
