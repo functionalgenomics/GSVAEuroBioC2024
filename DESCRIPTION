@@ -1,6 +1,6 @@
 Package: GSVAEuroBioC2024
 Title: Pathway-centric analyses of omics data with GSVA
-Version: 2.0.2
+Version: 3.20.0
 Authors@R: c(person(given = "Robert",
                     family = "Castelo",
                     role = c("aut", "cre"),
@@ -26,7 +26,10 @@ Imports:
     sva,
     limma,
     TENxPBMCData,
-    scuttle
+    scuttle,
+    scran,
+    scater,
+    igraph
 Suggests: 
     knitr,
     rmarkdown,

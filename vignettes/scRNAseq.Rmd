@@ -115,14 +115,15 @@ expression that we should use as input to GSVA.
 
 # Importing gene sets
 
-Here we read a GMT file storing a collection of gene sets relevant for PBMC data
-derived from the data published by @triana2021single.
+Here we read a GMT file storing a collection of 22 gene sets used by
+@diaz2019evaluation to benchmark methods for cell type assignment in PBMC
+scRNA-seq data.
 
 ```{r, message=FALSE, warning=FALSE}
 library(GSEABase)
 library(GSVA)
 
-fname <- system.file("extdata", "PBMC_gene_sets_TrianaEtAl2021.gmt.gz",
+fname <- system.file("extdata", "pbmc_cell_type_gene_set_signatures.gmt.gz",
                      package="GSVAEuroBioC2024")
 genesets <- readGMT(fname, geneIdType=SymbolIdentifier())
 genesets
@@ -131,8 +132,8 @@ genesets
 # Running GSVA on a `SingleCellExperiment` object
 
 GSVA can take as input a `SingleCellExperiment` object, but before we run
-GSVA we should do a couple of steps and considerations. In this vignette, genes
-in that object are defined by
+GSVA we should take a couple of steps and considerations. In this vignette,
+genes in that object are defined by
 [Ensembl stable gene identifiers](https://www.ensembl.org/info/genome/stable_ids/index.html),
 i.e., they start with `ENSG`, while gene identifiers in the collection of genes
 we imported in the previous section correspond to
@@ -164,14 +165,66 @@ perform the first step to run GSVA, which consists of building a parameter
 object.
 
 ```{r}
-gsvapar <- gsvaParam(sce, genesets, assay="logcounts", minSize=5)
+gsvapar <- gsvaParam(sce, genesets, assay="logcounts")
 gsvapar
 ```
 In the second and final step, we call the function `gsva()` with the previous
 parameter object as input.
 
 ```{r}
-es <- gsva(gsvapar) ## about 40 seconds in a modern laptop
+es <- gsva(gsvapar)
+```
+
+# Using GSVA scores to assign cell types
+
+Following [@amezquita2020clustering], and some of the steps described in Chapter
+5 Clustering of the
+[OSCA book](https://bioconductor.org/books/3.16/OSCA/clustering.html), here we
+use GSVA scores to create first a nearst-neighbor graph of the cells using the
+function `buildSNNGraph()` from the Bioconductor package
+[scran](https://bioconductor.org/packages/scran), and then use this graph to
+cluster the cells using the community detection algorithm implemented in the
+function `cluster_walktrap()` from the CRAN package
+[igraph](https://bioconductor.org/packages/igraph).
+
+```{r, message=FALSE, warning=FALSE}
+library(scran)
+library(igraph)
+
+g <- buildSNNGraph(es, k=20, assay.type="es")
+
+colLabels(es) <- factor(cluster_walktrap(g)$membership)
+table(colLabels(es))
+```
+We set `k=20` in the call to `buildSNNGraph()` so that we get a number of
+clusters close to the number of cell types found in PBMCs (T cells, B cells,
+NK cells, monocytes and dendritic cells).
+
+Similarly to @diaz2019evaluation, we apply a very simple cell type assignment
+algorithm, which consists of selecting at each cell the gene set with highest
+GSVA score, tallying the selected gene sets per cluster, and assigning to the
+cluster the most frequent gene set, storing tat assignment in the column data
+of the `SingleCellExperiment` object.
+
+```{r}
+whmax <- apply(assay(es), 2, which.max)
+gsetsxlabels <- split(rownames(es)[whmax], colLabels(es))
+gsetsxlabels <- names(sapply(sapply(gsetsxlabels, table), which.max))
+colData(es)$gsetsxlabel <- gsetsxlabels[es$label]
+```
+Finally, using the Bioconductor package
+[scater](https://bioconductor.org/packages/scater), we calculate the first
+two PCA components on the GSVA scores and use them for visualizing in Figure
+\@ref(fig:gsvaclusters) the similarity between cells in terms of GSVA scores
+project in two dimensions, the clusters based on the community detection
+algorithm and the cell type assignments based on gene sets.
+
+```{r gsvaclusters, echo=TRUE, small.mar=TRUE, fig.height=4, fig.width=4, units="in", dpi=100, fig.cap="Cell type assignments of PBMC scRNA-seq data, based on GSVA scores."}
+library(scater)
+
+set.seed(123)
+es <- runPCA(es, assay.type="es", ncomponents=2)
+plotReducedDim(es, dimred="PCA", colour_by="label", text_by="gsetsxlabel")
 ```
 
 # Session information
