@@ -18,8 +18,6 @@ navbar:
           href: articles/bulkRNAseq.html
         - text: Analysis of single-cell RNA-seq data
           href: articles/scRNAseq.html
-        - text: Analysis of spatial omics data
-          href: articles/spatial.html
   right:
     - icon: fa-github
       href: https://github.com/functionalgenomics/GSVAEuroBioC2024

@@ -1,4 +1,4 @@
-# Pathway-centric analyses of omics data with GSVA <img align="right" src="images/CZI.png" height="100"/> <img align="right" src="images/GSVA.png" height="100"/>
+# Pathway-centric analyses of omics data with GSVA <img align="right" src="https://raw.githubusercontent.com/functionalgenomics/GSVAEuroBioC2024/master/images/CZI.png" height="100"/> <img align="right" src="https://raw.githubusercontent.com/functionalgenomics/GSVAEuroBioC2024/master/images/GSVA.png" height="100"/>
 
 ## Quick-install
 
@@ -42,10 +42,9 @@ version.
 
 | Activity                             | Time |
 |--------------------------------------|------|
-| Import gene set annotations          |  5m  |
+| Import gene set annotations          | 10m  |
 | Analysis of bulk RNA-seq data        | 15m  |
-| Analysis of single-cell RNA-seq data | 10m  |
-| Analysis of spatial RNA-seq data     | 10m  |
+| Analysis of single-cell RNA-seq data | 15m  |
 
 ## Docker commands for this workshop
 
