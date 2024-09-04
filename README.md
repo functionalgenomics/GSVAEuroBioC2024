@@ -1,11 +1,4 @@
-# Pathway-centric analyses of omics data with GSVA
-
-<img align="right" src="images/GSVA.png" height="100"/>
-<img align="right" src="images/czi.png" height="100"/>
-<br>
-<br>
-<br>
-<br>
+# Pathway-centric analyses of omics data with GSVA <img align="right" src="images/GSVA.png" height="100"/> <img align="right" src="images/czi.png" height="100"/>
 
 ## Quick-install
 
