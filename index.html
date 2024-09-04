@@ -139,8 +139,9 @@
 </h2>
 <p>The Docker image for this workshop is available on the GitHub Container Registry. Pull (download) the image with the following command:</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="ex">docker</span> pull ghcr.io/functionalgenomics/gsvaeurobioc2024:latest</span></code></pre></div>
-<p>Run the workshop with Docker by using the following command:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="ex">docker</span> run <span class="at">-e</span> PASSWORD=bioc <span class="at">-p</span> 8787:8787 ghcr.io/functionalgenomics/gsvaeurobioc2024:latest</span></code></pre></div>
+<p>Run the workshop with Docker by first using the following command:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="ex">docker</span> run <span class="at">-d</span> <span class="at">-e</span> PASSWORD=bioc <span class="at">-p</span> 8787:8787 ghcr.io/functionalgenomics/gsvaeurobioc2024:latest</span></code></pre></div>
+<p>Second, open the url <a href="https://localhost:8787" class="external-link">localhost:8787</a> in a new tab of your web browser.</p>
 </div>
 <div class="section level2">
 <h2 id="workshop-goals-and-objectives">Workshop goals and objectives<a class="anchor" aria-label="anchor" href="#workshop-goals-and-objectives"></a>
