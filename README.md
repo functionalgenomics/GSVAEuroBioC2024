@@ -1,5 +1,8 @@
 # Pathway-centric analyses of omics data with GSVA
 
+<img align="right" src="images/GSVA.png" height="200"/>
+<img align="right" src="images/czi.png" height="200"/>
+
 # Quick-install
 
 ```
@@ -22,7 +25,12 @@ Barcelona
 # Workshop description
 
 This workshop demonstrates how to use GSVA to conduct pathway-centric analyses of
-omics data.
+omics data. It uses the current development version of GSVA available at the time
+of EuroBioC2024, which contains a number of new features that will become part of
+the next version of GSVA 2.0 in the next release of Bioconductor on October 2024.
+Some of the features illustrated in this workshop may change until GSVA 2.0 is
+released, and others that are currently missing may still become part of that
+version.
 
 **Keywords**: pathway analysis, transcriptomics, proteomics
 

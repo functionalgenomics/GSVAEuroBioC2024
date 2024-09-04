@@ -177,7 +177,7 @@ es <- gsva(gsvapar)
 
 # Using GSVA scores to assign cell types
 
-Following [@amezquita2020clustering], and some of the steps described in Chapter
+Following [@amezquita2020orchestrating], and some of the steps described in Chapter
 5 Clustering of the
 [OSCA book](https://bioconductor.org/books/3.16/OSCA/clustering.html), here we
 use GSVA scores to create first a nearst-neighbor graph of the cells using the
@@ -203,7 +203,7 @@ NK cells, monocytes and dendritic cells).
 Similarly to @diaz2019evaluation, we apply a very simple cell type assignment
 algorithm, which consists of selecting at each cell the gene set with highest
 GSVA score, tallying the selected gene sets per cluster, and assigning to the
-cluster the most frequent gene set, storing tat assignment in the column data
+cluster the most frequent gene set, storing that assignment in the column data
 of the `SingleCellExperiment` object.
 
 ```{r}
@@ -219,7 +219,7 @@ two PCA components on the GSVA scores and use them for visualizing in Figure
 project in two dimensions, the clusters based on the community detection
 algorithm and the cell type assignments based on gene sets.
 
-```{r gsvaclusters, echo=TRUE, small.mar=TRUE, fig.height=4, fig.width=4, units="in", dpi=100, fig.cap="Cell type assignments of PBMC scRNA-seq data, based on GSVA scores."}
+```{r gsvaclusters, echo=TRUE, message=FALSE, warning=FALSE, small.mar=TRUE, fig.height=5, fig.width=6, units="in", dpi=100, fig.cap="Cell type assignments of PBMC scRNA-seq data, based on GSVA scores."}
 library(scater)
 
 set.seed(123)
