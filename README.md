@@ -1,9 +1,9 @@
 # Pathway-centric analyses of omics data with GSVA
 
-<img align="right" src="images/GSVA.png" height="200"/>
-<img align="right" src="images/czi.png" height="200"/>
+<img align="right" src="images/GSVA.png" height="100"/>
+<img align="right" src="images/czi.png" height="100"/>
 
-# Quick-install
+## Quick-install
 
 ```
 BiocManager::install(
@@ -11,7 +11,7 @@ BiocManager::install(
 )
 ```
 
-# Instructor names and contact information
+## Instructor names and contact information
 
 [Axel Klenk](mailto:axelvolker.klenk@upf.edu),
 [Robert Castelo](mailto:robert.castelo@upf.edu)
@@ -22,7 +22,7 @@ Universitat Pompeu Fabra
 
 Barcelona
 
-# Workshop description
+## Workshop description
 
 This workshop demonstrates how to use GSVA to conduct pathway-centric analyses of
 omics data. It uses the current development version of GSVA available at the time
