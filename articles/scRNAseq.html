@@ -286,11 +286,11 @@ parameter object as input.</p>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> kcdf='auto' (default)</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> GSVA sparse algorithm</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Direct row-wise ECDFs estimation</span></span>
-<span><span class="co">#&gt; Calculating GSVA scores <span style="color: #00BB00;">■■■                             </span>   7% | ETA: 13s</span></span>
-<span><span class="co">#&gt; Calculating GSVA scores <span style="color: #00BB00;">■■■■■■■■                        </span>  24% | ETA: 10s</span></span>
-<span><span class="co">#&gt; Calculating GSVA scores <span style="color: #00BB00;">■■■■■■■■■■■■■■■                 </span>  47% | ETA:  7s</span></span>
-<span><span class="co">#&gt; Calculating GSVA scores <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■          </span>  71% | ETA:  4s</span></span>
-<span><span class="co">#&gt; Calculating GSVA scores <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■■■■■■■■   </span>  94% | ETA:  1s</span></span>
+<span><span class="co">#&gt; Calculating GSVA scores <span style="color: #00BB00;">■■■                             </span>   8% | ETA: 12s</span></span>
+<span><span class="co">#&gt; Calculating GSVA scores <span style="color: #00BB00;">■■■■■■■■■■                      </span>  29% | ETA:  9s</span></span>
+<span><span class="co">#&gt; Calculating GSVA scores <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■               </span>  52% | ETA:  6s</span></span>
+<span><span class="co">#&gt; Calculating GSVA scores <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■■■        </span>  76% | ETA:  3s</span></span>
+<span><span class="co">#&gt; Calculating GSVA scores <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ </span> 100% | ETA:  0s</span></span>
 <span><span class="co">#&gt; Calculating GSVA scores <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ </span> 100% | ETA:  0s</span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Calculations finished</span></span></code></pre></div>
 </div>
@@ -298,7 +298,7 @@ parameter object as input.</p>
 <h2 id="using-gsva-scores-to-assign-cell-types">
 <span class="header-section-number">5</span> Using GSVA scores to assign cell types<a class="anchor" aria-label="anchor" href="#using-gsva-scores-to-assign-cell-types"></a>
 </h2>
-<p>Following <span class="citation">(<a href="#ref-amezquita2020clustering"><strong>amezquita2020clustering?</strong></a>)</span>, and some of the steps described in Chapter
+<p>Following <span class="citation">(<a href="#ref-amezquita2020orchestrating">Amezquita et al. 2020</a>)</span>, and some of the steps described in Chapter
 5 Clustering of the
 <a href="https://bioconductor.org/books/3.16/OSCA/clustering.html" class="external-link">OSCA book</a>, here we
 use GSVA scores to create first a nearst-neighbor graph of the cells using the
@@ -324,7 +324,7 @@ NK cells, monocytes and dendritic cells).</p>
 <p>Similarly to <span class="citation">Diaz-Mejia et al. (<a href="#ref-diaz2019evaluation">2019</a>)</span>, we apply a very simple cell type assignment
 algorithm, which consists of selecting at each cell the gene set with highest
 GSVA score, tallying the selected gene sets per cluster, and assigning to the
-cluster the most frequent gene set, storing tat assignment in the column data
+cluster the most frequent gene set, storing that assignment in the column data
 of the <code>SingleCellExperiment</code> object.</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">whmax</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/apply.html" class="external-link">apply</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html" class="external-link">assay</a></span><span class="op">(</span><span class="va">es</span><span class="op">)</span>, <span class="fl">2</span>, <span class="va">which.max</span><span class="op">)</span></span>
@@ -339,7 +339,6 @@ project in two dimensions, the clusters based on the community detection
 algorithm and the cell type assignments based on gene sets.</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="http://bioconductor.org/packages/scater/" class="external-link">scater</a></span><span class="op">)</span></span>
-<span><span class="co">#&gt; Loading required package: ggplot2</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">123</span><span class="op">)</span></span>
 <span><span class="va">es</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocSingular/man/runPCA.html" class="external-link">runPCA</a></span><span class="op">(</span><span class="va">es</span>, assay.type<span class="op">=</span><span class="st">"es"</span>, ncomponents<span class="op">=</span><span class="fl">2</span><span class="op">)</span></span>
@@ -437,6 +436,9 @@ Figure 5.1: Cell type assignments of PBMC scRNA-seq data, based on GSVA scores.
 <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
 </h2>
 <div id="refs" class="references csl-bib-body hanging-indent" entry-spacing="0">
+<div id="ref-amezquita2020orchestrating" class="csl-entry">
+Amezquita, Robert A, Aaron TL Lun, Etienne Becht, Vince J Carey, Lindsay N Carpp, Ludwig Geistlinger, Federico Marini, et al. 2020. <span>“Orchestrating Single-Cell Analysis with Bioconductor.”</span> <em>Nature Methods</em> 17 (2): 137–45. <a href="https://doi.org/10.1038/s41592-019-0654-x" class="external-link">https://doi.org/10.1038/s41592-019-0654-x</a>.
+</div>
 <div id="ref-diaz2019evaluation" class="csl-entry">
 Diaz-Mejia, J Javier, Elaine C Meng, Alexander R Pico, Sonya A MacParland, Troy Ketela, Trevor J Pugh, Gary D Bader, and John H Morris. 2019. <span>“Evaluation of Methods to Assign Cell Type Labels to Cell Clusters from Single-Cell RNA-Sequencing Data.”</span> <em>F1000Research</em> 8. <a href="https://doi.org/10.12688/f1000research.18490.3" class="external-link">https://doi.org/10.12688/f1000research.18490.3</a>.
 </div>
