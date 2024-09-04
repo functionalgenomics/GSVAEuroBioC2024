@@ -54,12 +54,13 @@ Registry. Pull (download) the image with the following command:
 ```sh
 docker pull ghcr.io/functionalgenomics/gsvaeurobioc2024:latest
 ```
-
-Run the workshop with Docker by using the following command:
+Run the workshop with Docker by first using the following command:
 
 ```sh
-docker run -e PASSWORD=bioc -p 8787:8787 ghcr.io/functionalgenomics/gsvaeurobioc2024:latest
+docker run -d -e PASSWORD=bioc -p 8787:8787 ghcr.io/functionalgenomics/gsvaeurobioc2024:latest
 ```
+Second, open the url [localhost:8787](https://localhost:8787) in a new tab of
+your web browser.
 
 ## Workshop goals and objectives
 
