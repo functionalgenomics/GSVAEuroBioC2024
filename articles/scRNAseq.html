@@ -32,7 +32,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">GSVAEuroBioC2024</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">3.20.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">3.20.2</span>
       </span>
     </div>
 
@@ -87,7 +87,7 @@
       Dept. of Medicine and Life Sciences, Universitat Pompeu Fabra, Barcelona<br><a class="author_email" href="mailto:#"></a><a href="mailto:robert.castelo@upf.edu" class="email">robert.castelo@upf.edu</a>
       </address>
                   
-            <h4 data-toc-skip class="date">2024-09-05</h4>
+            <h4 data-toc-skip class="date">2024-09-08</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/functionalgenomics/GSVAEuroBioC2024/blob/devel/vignettes/scRNAseq.Rmd" class="external-link"><code>vignettes/scRNAseq.Rmd</code></a></small>
       <div class="hidden name"><code>scRNAseq.Rmd</code></div>
@@ -96,7 +96,7 @@
 
     
     
-<p>Vignette built using <code>GSVA</code>, version 1.53.19.</p>
+<p>Vignette built using <code>GSVA</code>, version 1.53.20.</p>
 <div class="section level2" number="1">
 <h2 id="importing-scrna-seq-data-into-a-singlecellexperiment-object">
 <span class="header-section-number">1</span> Importing scRNA-seq data into a <code>SingleCellExperiment</code> object<a class="anchor" aria-label="anchor" href="#importing-scrna-seq-data-into-a-singlecellexperiment-object"></a>
@@ -276,18 +276,17 @@ object.</p>
 parameter object as input.</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">es</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/GSVA/man/gsva.html" class="external-link">gsva</a></span><span class="op">(</span><span class="va">gsvapar</span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> GSVA version 1.53.19</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> GSVA version 1.53.20</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Mapping identifiers</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Calculating GSVA scores for 22 gene sets</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> kcdf='auto' (default)</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> GSVA sparse algorithm</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Direct row-wise ECDFs estimation</span></span>
-<span><span class="co">#&gt; Estimating ECDFs <span style="color: #00BB00;">■■■■■■■■■■■■■■■                 </span>  48% |  ETA:  1s</span></span>
-<span><span class="co">#&gt; Calculating GSVA scores <span style="color: #00BB00;">■■■                             </span>   8% | ETA: 12s</span></span>
-<span><span class="co">#&gt; Calculating GSVA scores <span style="color: #00BB00;">■■■■■■■■■■■                     </span>  32% | ETA:  9s</span></span>
-<span><span class="co">#&gt; Calculating GSVA scores <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■              </span>  56% | ETA:  6s</span></span>
-<span><span class="co">#&gt; Calculating GSVA scores <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■■■■       </span>  80% | ETA:  3s</span></span>
+<span><span class="co">#&gt; Calculating GSVA scores <span style="color: #00BB00;">■■■                             </span>   7% | ETA: 12s</span></span>
+<span><span class="co">#&gt; Calculating GSVA scores <span style="color: #00BB00;">■■■■■■■■■■                      </span>  28% | ETA:  9s</span></span>
+<span><span class="co">#&gt; Calculating GSVA scores <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■               </span>  52% | ETA:  6s</span></span>
+<span><span class="co">#&gt; Calculating GSVA scores <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■■■        </span>  76% | ETA:  3s</span></span>
 <span><span class="co">#&gt; Calculating GSVA scores <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ </span> 100% | ETA:  0s</span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Calculations finished</span></span></code></pre></div>
 </div>
@@ -378,8 +377,8 @@ Figure 5.1: Cell type assignments of PBMC scRNA-seq data, based on GSVA scores.
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; other attached packages:</span></span>
 <span><span class="co">#&gt;  [1] scater_1.33.4               ggplot2_3.5.1              </span></span>
-<span><span class="co">#&gt;  [3] igraph_2.0.3                scran_1.33.1               </span></span>
-<span><span class="co">#&gt;  [5] org.Hs.eg.db_3.19.1         GSVA_1.53.19               </span></span>
+<span><span class="co">#&gt;  [3] igraph_2.0.3                scran_1.33.2               </span></span>
+<span><span class="co">#&gt;  [5] org.Hs.eg.db_3.19.1         GSVA_1.53.20               </span></span>
 <span><span class="co">#&gt;  [7] GSEABase_1.67.0             graph_1.83.0               </span></span>
 <span><span class="co">#&gt;  [9] annotate_1.83.0             XML_3.99-0.17              </span></span>
 <span><span class="co">#&gt; [11] AnnotationDbi_1.67.0        scuttle_1.15.4             </span></span>
@@ -398,23 +397,23 @@ Figure 5.1: Cell type assignments of PBMC scRNA-seq data, based on GSVA scores.
 <span><span class="co">#&gt;   [4] magick_2.8.4             farver_2.1.2             rmarkdown_2.28          </span></span>
 <span><span class="co">#&gt;   [7] zlibbioc_1.51.1          vctrs_0.6.5              memoise_2.0.1           </span></span>
 <span><span class="co">#&gt;  [10] htmltools_0.5.8.1        AnnotationHub_3.13.3     curl_5.2.2              </span></span>
-<span><span class="co">#&gt;  [13] BiocNeighbors_1.23.0     Rhdf5lib_1.27.0          sass_0.4.9              </span></span>
+<span><span class="co">#&gt;  [13] BiocNeighbors_1.99.0     Rhdf5lib_1.27.0          sass_0.4.9              </span></span>
 <span><span class="co">#&gt;  [16] bslib_0.8.0              htmlwidgets_1.6.4        cachem_1.1.0            </span></span>
 <span><span class="co">#&gt;  [19] mime_0.12                lifecycle_1.0.4          pkgconfig_2.0.3         </span></span>
 <span><span class="co">#&gt;  [22] rsvd_1.0.5               R6_2.5.1                 fastmap_1.2.0           </span></span>
 <span><span class="co">#&gt;  [25] GenomeInfoDbData_1.2.12  digest_0.6.37            colorspace_2.1-1        </span></span>
 <span><span class="co">#&gt;  [28] dqrng_0.4.1              irlba_2.3.5.1            ExperimentHub_2.13.1    </span></span>
-<span><span class="co">#&gt;  [31] RSQLite_2.3.7            beachmat_2.21.5          labeling_0.4.3          </span></span>
+<span><span class="co">#&gt;  [31] RSQLite_2.3.7            beachmat_2.21.6          labeling_0.4.3          </span></span>
 <span><span class="co">#&gt;  [34] filelock_1.0.3           fansi_1.0.6              httr_1.4.7              </span></span>
 <span><span class="co">#&gt;  [37] compiler_4.4.1           bit64_4.0.5              withr_3.0.1             </span></span>
 <span><span class="co">#&gt;  [40] BiocParallel_1.39.0      viridis_0.6.5            DBI_1.2.3               </span></span>
 <span><span class="co">#&gt;  [43] highr_0.11               rappdirs_0.3.3           rjson_0.2.22            </span></span>
-<span><span class="co">#&gt;  [46] bluster_1.15.0           tools_4.4.1              vipor_0.4.7             </span></span>
+<span><span class="co">#&gt;  [46] bluster_1.15.1           tools_4.4.1              vipor_0.4.7             </span></span>
 <span><span class="co">#&gt;  [49] beeswarm_0.4.0           glue_1.7.0               rhdf5filters_1.17.0     </span></span>
 <span><span class="co">#&gt;  [52] grid_4.4.1               cluster_2.1.6            generics_0.1.3          </span></span>
 <span><span class="co">#&gt;  [55] gtable_0.3.5             BiocSingular_1.21.2      ScaledMatrix_1.13.0     </span></span>
 <span><span class="co">#&gt;  [58] metapod_1.13.0           utf8_1.2.4               XVector_0.45.0          </span></span>
-<span><span class="co">#&gt;  [61] ggrepel_0.9.5            BiocVersion_3.20.0       pillar_1.9.0            </span></span>
+<span><span class="co">#&gt;  [61] ggrepel_0.9.6            BiocVersion_3.20.0       pillar_1.9.0            </span></span>
 <span><span class="co">#&gt;  [64] limma_3.61.9             dplyr_1.1.4              BiocFileCache_2.13.0    </span></span>
 <span><span class="co">#&gt;  [67] lattice_0.22-6           bit_4.0.5                tidyselect_1.2.1        </span></span>
 <span><span class="co">#&gt;  [70] locfit_1.5-9.10          Biostrings_2.73.1        knitr_1.48              </span></span>

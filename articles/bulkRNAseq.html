@@ -32,7 +32,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">GSVAEuroBioC2024</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">3.20.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">3.20.2</span>
       </span>
     </div>
 
@@ -87,7 +87,7 @@
       Dept. of Medicine and Life Sciences, Universitat Pompeu Fabra, Barcelona<br><a class="author_email" href="mailto:#"></a><a href="mailto:robert.castelo@upf.edu" class="email">robert.castelo@upf.edu</a>
       </address>
                   
-            <h4 data-toc-skip class="date">2024-09-05</h4>
+            <h4 data-toc-skip class="date">2024-09-08</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/functionalgenomics/GSVAEuroBioC2024/blob/devel/vignettes/bulkRNAseq.Rmd" class="external-link"><code>vignettes/bulkRNAseq.Rmd</code></a></small>
       <div class="hidden name"><code>bulkRNAseq.Rmd</code></div>
@@ -96,7 +96,7 @@
 
     
     
-<p>Vignette built using <code>GSVA</code>, version 1.53.19.</p>
+<p>Vignette built using <code>GSVA</code>, version 1.53.20.</p>
 <div class="section level2" number="1">
 <h2 id="importing-bulk-rna-seq-data-into-a-summarizedexperiment-object">
 <span class="header-section-number">1</span> Importing bulk RNA-seq data into a <code>SummarizedExperiment</code> object<a class="anchor" aria-label="anchor" href="#importing-bulk-rna-seq-data-into-a-summarizedexperiment-object"></a>
@@ -323,12 +323,12 @@ and parellel execution through the Bioconductor package
 <a href="https://bioconductor.org/packages/BiocParallel" class="external-link">BiocParallel</a>.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">es</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/GSVA/man/gsva.html" class="external-link">gsva</a></span><span class="op">(</span><span class="va">gsvapar</span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> GSVA version 1.53.19</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> GSVA version 1.53.20</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Mapping identifiers</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Calculating GSVA scores for 150 gene sets</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> kcdf='auto' (default)</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> GSVA sparse algorithm</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> GSVA dense (classical) algorithm</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Row-wise ECDF estimation with Gaussian kernels</span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Calculations finished</span></span>
 <span><span class="va">es</span></span>
@@ -583,7 +583,7 @@ Figure 6.2: Pathway-level signature of FIR. Heatmap of GSVA enrichment scores fr
 <span><span class="co">#&gt;  [3] BiocParallel_1.39.0         genefilter_1.87.0          </span></span>
 <span><span class="co">#&gt;  [5] mgcv_1.9-1                  nlme_3.1-166               </span></span>
 <span><span class="co">#&gt;  [7] org.Hs.eg.db_3.19.1         limma_3.61.9               </span></span>
-<span><span class="co">#&gt;  [9] GSVA_1.53.19                GSEABase_1.67.0            </span></span>
+<span><span class="co">#&gt;  [9] GSVA_1.53.20                GSEABase_1.67.0            </span></span>
 <span><span class="co">#&gt; [11] graph_1.83.0                annotate_1.83.0            </span></span>
 <span><span class="co">#&gt; [13] XML_3.99-0.17               AnnotationDbi_1.67.0       </span></span>
 <span><span class="co">#&gt; [15] SummarizedExperiment_1.35.1 Biobase_2.65.1             </span></span>
@@ -605,7 +605,7 @@ Figure 6.2: Pathway-level signature of FIR. Heatmap of GSVA enrichment scores fr
 <span><span class="co">#&gt; [19] S4Arrays_1.5.7              htmlwidgets_1.6.4          </span></span>
 <span><span class="co">#&gt; [21] bit_4.0.5                   DelayedArray_0.31.11       </span></span>
 <span><span class="co">#&gt; [23] abind_1.4-5                 HDF5Array_1.33.6           </span></span>
-<span><span class="co">#&gt; [25] grid_4.4.1                  beachmat_2.21.5            </span></span>
+<span><span class="co">#&gt; [25] grid_4.4.1                  beachmat_2.21.6            </span></span>
 <span><span class="co">#&gt; [27] xtable_1.8-4                edgeR_4.3.14               </span></span>
 <span><span class="co">#&gt; [29] Rhdf5lib_1.27.0             cli_3.6.3                  </span></span>
 <span><span class="co">#&gt; [31] rmarkdown_2.28              crayon_1.5.3               </span></span>
